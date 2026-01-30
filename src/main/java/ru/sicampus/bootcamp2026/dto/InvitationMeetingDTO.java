@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class InvitationMeetingDTO {
-    private Long Id;
+    private Long id;
     private String status;
     private String message;
     private MeetingDTO meeting;

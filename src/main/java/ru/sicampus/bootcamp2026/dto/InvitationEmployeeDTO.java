@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class InvitationEmployeeDTO {
-    private Long Id;
+    private Long id;
     private String status;
     private EmployeeDTO employee;
 }

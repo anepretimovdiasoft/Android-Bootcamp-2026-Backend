@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.service;
 
+import ru.sicampus.bootcamp2026.dto.InvitationEmployeeDTO;
 import ru.sicampus.bootcamp2026.dto.InvitationMeetingDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingCreateDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
@@ -11,4 +12,5 @@ public interface MeetingService {
     MeetingDTO createMeeting(MeetingCreateDTO meetingCreateDTO);
     MeetingDTO getMeetingByID(Long Id);
     List<InvitationMeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end);
+    List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long Id);
 }
