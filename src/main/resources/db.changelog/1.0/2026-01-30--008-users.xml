@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-users" author="igramagadev">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="users"/></not></preConditions>
+        <createTable tableName="users">
+            <column name="id" type="INT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="email" type="VARCHAR(255)"><constraints nullable="false" unique="true"/></column>
+            <column name="password" type="VARCHAR(255)"><constraints nullable="false"/></column>
+            <column name="full_name" type="VARCHAR(255)"><constraints nullable="false"/></column>
+
+            <column name="job_title_id" type="INT"><constraints nullable="false" foreignKeyName="fk_users_job" references="job_titles(id)"/></column>
+            <column name="department_id" type="INT"><constraints nullable="false" foreignKeyName="fk_users_dept" references="departments(id)"/></column>
+            <column name="role_id" type="INT"><constraints nullable="false" foreignKeyName="fk_users_role" references="user_roles(id)"/></column>
+
+            <column name="age" type="INT"/>
+            <column name="contact_info" type="VARCHAR(255)"/>
+            <column name="avatar_url" type="VARCHAR(255)"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
