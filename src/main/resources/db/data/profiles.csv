@@ -1,0 +1,6 @@
+id,user_id,first_name,last_name,photo_url,phone,created_at,updated_at
+1,1,Иван,Петров,https://example.com/photos/ivan.jpg,+7-900-123-45-67,2024-01-15 10:00:00,2024-01-15 10:00:00
+2,2,Мария,Иванова,https://example.com/photos/maria.jpg,+7-900-234-56-78,2024-01-15 10:00:00,2024-01-15 10:00:00
+3,3,Алексей,Сидоров,https://example.com/photos/alex.jpg,+7-900-345-67-89,2024-01-15 10:00:00,2024-01-15 10:00:00
+4,4,Елена,Кузнецова,https://example.com/photos/elena.jpg,+7-900-456-78-90,2024-01-15 10:00:00,2024-01-15 10:00:00
+5,5,Дмитрий,Волков,https://example.com/photos/dmitry.jpg,+7-900-567-89-01,2024-01-15 10:00:00,2024-01-15 10:00:00
