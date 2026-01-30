@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 
@@ -12,8 +13,8 @@ public class MeetingCreateDTO {
     private String name;
     @NotBlank
     private String description;
-    @NotBlank
+    @NotNull
     private LocalDateTime startTime;
-    @NotBlank
+    @NotNull
     private LocalDateTime endTime;
 }
