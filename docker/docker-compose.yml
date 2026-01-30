@@ -1,0 +1,14 @@
+services:
+  backend-app:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    container_name: backend-app
+    ports:
+      - "8080:8080"
+    networks:
+      - main_network
+
+networks:
+  main_network:
+    external: true
