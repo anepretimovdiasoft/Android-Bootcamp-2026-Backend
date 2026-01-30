@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+<changeSet id="2026-28-01--0004-invitations" author="alikhodievskii">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <tableExists tableName="invitations"/>
+        </not>
+    </preConditions>
+    <createTable tableName="invitations">
+        <column name="meeting_id" type="bigint">
+            <constraints nullable="false" notNullConstraintName="meeting_id_not_null"
+                         foreignKeyName="fk_meetings_invitations"
+                         referencedTableName="meetings"
+                         referencedColumnNames="id"/>
+        </column>
+        <column name="user_id" type="bigint">
+            <constraints nullable="false" notNullConstraintName="user_id_not_null"
+                         foreignKeyName="fk_users_invitations"
+                         referencedTableName="users"
+                         referencedColumnNames="id"/>
+        </column>
+        <column name="status" type="varchar(20)">
+            <constraints nullable="false" notNullConstraintName="status_not_null"/>
+        </column>
+    </createTable>
+</changeSet>
+</databaseChangeLog>

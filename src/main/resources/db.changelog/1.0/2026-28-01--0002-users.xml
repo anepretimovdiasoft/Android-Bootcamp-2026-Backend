@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+<changeSet id="2026-28-01--0002-users" author="alikhodievskii">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <tableExists tableName="users"/>
+        </not>
+    </preConditions>
+    <createTable tableName="users">
+        <column name="id" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="login" type="varchar(100)">
+            <constraints unique="true" nullable="false" notNullConstraintName="login_not_null"/>
+        </column>
+        <column name="password" type="varchar(100)">
+            <constraints nullable="false" notNullConstraintName="password_not_null"/>
+        </column>
+        <column name="name" type="varchar(100)">
+            <constraints nullable="false" notNullConstraintName="name_not_null"/>
+        </column>
+        <column name="lastname" type="varchar(100)">
+            <constraints nullable="false" notNullConstraintName="lastname_not_null"/>
+        </column>
+
+        <column name="position_id" type="bigint">
+            <constraints nullable="false" notNullConstraintName="position_id_not_null" foreignKeyName="fk_positions_users"
+                         referencedTableName="positions"
+                         referencedColumnNames="id"/>
+        </column>
+        <column name="aboutMe" type="text">
+            <constraints nullable="true"/>
+        </column>
+    </createTable>
+</changeSet>
+</databaseChangeLog>
