@@ -67,7 +67,7 @@ public class MeetingController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
     })
-    ResponseEntity<List<InvitationMeetingDTO>> getSchedule(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
+    ResponseEntity<List<MeetingDTO>> getSchedule(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
         return ResponseEntity.ok(meetingService.getSchedule(start, end));
     }
 }

@@ -37,7 +37,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<InvitationMeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end) {
+    public List<MeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end) {
         return List.of();
     }
 

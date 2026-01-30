@@ -11,6 +11,6 @@ import java.util.List;
 public interface MeetingService {
     MeetingDTO createMeeting(MeetingCreateDTO meetingCreateDTO);
     MeetingDTO getMeetingByID(Long Id);
-    List<InvitationMeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end);
+    List<MeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end);
     List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long Id);
 }
