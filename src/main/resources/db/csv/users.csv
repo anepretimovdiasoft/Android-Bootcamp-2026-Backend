@@ -1,0 +1,4 @@
+name;role;password
+Alice;USER;pass1
+Bob;USER;pass2
+Admin;ADMIN;adminpass
