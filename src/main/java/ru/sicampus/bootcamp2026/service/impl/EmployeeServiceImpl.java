@@ -52,6 +52,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDTO> searchEmployees(String search) {
+        if(search == null) {
+            return employeeRepository.findAll().stream().map(EmployeeMapper::convertToDTO).toList();
+        }
         return employeeRepository.findByNameStartsWithIgnoreCase(search).stream().map(EmployeeMapper::convertToDTO).toList();
     }
 }
