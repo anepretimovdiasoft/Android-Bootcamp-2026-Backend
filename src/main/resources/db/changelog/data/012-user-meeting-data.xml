@@ -9,11 +9,7 @@
 
     <changeSet id="012-user-meeting-seed" author="nikita">
 
-        <loadData
-                file="db/cs"
-                tableName="user_meeting"
-                separator=";"
-                encoding="UTF-8"/>
+        <loadData file="db/csv/user_meeting.csv" tableName="user_meeting" separator=";" encoding="UTF-8"/>
 
     </changeSet>
 
