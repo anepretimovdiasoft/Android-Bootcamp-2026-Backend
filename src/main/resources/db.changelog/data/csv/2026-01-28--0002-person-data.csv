@@ -1,4 +1,5 @@
-name;login;password;department_id
-Иванов Иван;ivanov@example.com;12345678;2
-Сидоров Иван;sidorov@example.com;qwerty123;2
-Петров Иван;petrov@example.com;abcdefgh;1
+name;login;password;department_id;photo_url
+Иванов Иван;ivanov@example.com;12345678;2;https://sun9-79.userapi.com/impg/g6WaJeTKenuQVBosRzcB6_T4m8JXp53SfD0LUQ/cNDpcj9MYD4.jpg?size=1080x786&quality=96&sign=dbbf39e77af9dfeea2802e6bfb4d9dcd&type=album
+Сидоров Иван;sidorov@example.com;qwerty123;2;https://sun9-79.userapi.com/impg/g6WaJeTKenuQVBosRzcB6_T4m8JXp53SfD0LUQ/cNDpcj9MYD4.jpg?size=1080x786&quality=96&sign=dbbf39e77af9dfeea2802e6bfb4d9dcd&type=album
+Петров Иван;petrov@example.com;abcdefgh;1;https://sun9-79.userapi.com/impg/g6WaJeTKenuQVBosRzcB6_T4m8JXp53SfD0LUQ/cNDpcj9MYD4.jpg?size=1080x786&quality=96&sign=dbbf39e77af9dfeea2802e6bfb4d9dcd&type=album
+Авдеев Иван;avdeev@example.com;utfuty;1;https://sun9-79.userapi.com/impg/g6WaJeTKenuQVBosRzcB6_T4m8JXp53SfD0LUQ/cNDpcj9MYD4.jpg?size=1080x786&quality=96&sign=dbbf39e77af9dfeea2802e6bfb4d9dcd&type=album
