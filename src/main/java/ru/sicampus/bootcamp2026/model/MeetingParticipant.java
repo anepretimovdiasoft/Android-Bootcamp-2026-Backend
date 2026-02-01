@@ -17,12 +17,12 @@ public class MeetingParticipant {
     private MeetingParticipantId id = new MeetingParticipantId();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("meetingId")//связывает поле meetingId составного ключа с полем meetingId сущности Meeting
+    @MapsId("meetingId") // Связывает поле meetingId составного ключа с полем meetingId сущности Meeting
     @JoinColumn(name = "meeting_id", nullable = false)
     private Meeting meetingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")//тоже самое но для User
+    @MapsId("userId") // То же самое, но для User
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
 

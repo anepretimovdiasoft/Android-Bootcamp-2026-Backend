@@ -17,8 +17,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)//переопределяет e&hc только для полей с аннотацией @EqualsAndHashCode.Include
-@Table(name = "users")/*
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // Переопределяет e&hc только для полей с аннотацией @EqualsAndHashCode.Include
+@Table(name = "users") /*
        TODO: добавить индексы
 */
 public class User {
@@ -30,19 +30,19 @@ public class User {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @NotBlank//валидация на уровне приложения
+    @NotBlank // Валидация на уровне приложения
     @Size(max = 50)
-    @Column(name = "username", nullable = false, length = 50)//валидация на уровне БД
+    @Column(name = "username", nullable = false, length = 50) // Валидация на уровне БД
     private String username;
 
     @NotBlank
     @Email
-    @Size(max = 255)//стандарт RFC 5321 максимум 254 символа
+    @Size(max = 255) // Стандарт RFC 5321 максимум 254 символа
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @NotBlank
-    @Size(min = 60, max = 255)//минимум для BCrypt хэша
+    @Size(min = 60, max = 255) // Минимум для BCrypt хэша
     @Column(name = "hashed_password", nullable = false)
     private String hashedPassword;
 
@@ -60,8 +60,8 @@ public class User {
 
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.ALL,//удаление всех токенов вместе с пользователем
-            orphanRemoval = true,//удаление токена из коллекции -> удаление из бд
+            cascade = CascadeType.ALL, // Удаление всех токенов вместе с пользователем
+            orphanRemoval = true,// Удаление токена из коллекции -> удаление из бд
             fetch = FetchType.LAZY
     )
     private List<RefreshToken> refreshTokens = new ArrayList<>();

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Embeddable
-public class MeetingParticipantId {// промежуточная сущность описывающая составной ключ
+public class MeetingParticipantId { // Промежуточная сущность описывающая составной ключ
     private UUID meetingId;
     private UUID userId;
 }
