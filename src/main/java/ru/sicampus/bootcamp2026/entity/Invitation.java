@@ -30,8 +30,8 @@ public class Invitation {
     @Enumerated(value = EnumType.STRING)
     private InvitationStatus status;
 
-    @Column
-    private LocalDateTime responded_at;
+    @Column(name = "responded_at")
+    private LocalDateTime respondedAt;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

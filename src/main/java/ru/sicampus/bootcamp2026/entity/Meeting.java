@@ -20,13 +20,13 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 50, nullable = false)
     private String address;
 
-    @Column(length = 500)
+    @Column(length = 140)
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
