@@ -1,4 +1,4 @@
-name;lastName;phoneNumber;login;email;password;department;position
-Сергей; Савельев;+79999999999;ser;sssavelev@gmail.com;1111;отдел разработки;разработчик
-Дана; Воронова;+78888888888;dan;vDana@gmail.com;2222;Отдел работы с гитом;уборщица и посудомойка
-Амаль;Шенкао;+74444444444;amal;sAval@gmail.com;4444;Отдел фигма;Дизайнер
+name;lastName;phoneNumber;login;email;password;department;position;photo_url
+Сергей; Савельев;+79999999999;ser;sssavelev@gmail.com;1111;отдел разработки;разработчик;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg
+Дана; Воронова;+78888888888;dan;vDana@gmail.com;2222;Отдел работы с гитом;уборщица и посудомойка;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg
+Амаль;Шенкао;+74444444444;amal;sAval@gmail.com;4444;Отдел фигма;Дизайнер;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg

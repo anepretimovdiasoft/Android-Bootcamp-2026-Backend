@@ -33,6 +33,7 @@
             </column>
             <column name="department" type="VARCHAR(100)"/>
             <column name="position" type="VARCHAR(100)"/>
+            <column name="photo_url" type="VARCHAR(100)"/>
         </createTable>
     </changeSet>
 
