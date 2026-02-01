@@ -18,7 +18,7 @@
             <column name="title" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="address" type="VARCHAR(300)">
+            <column name="address" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(500)"/>
