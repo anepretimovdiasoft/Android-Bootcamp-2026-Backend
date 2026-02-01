@@ -9,6 +9,12 @@ target/
 *.iml
 *.ipr
 
+# Build artifacts
+*.jar
+*.war
+*.ear
+*.class
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -31,7 +37,7 @@ build/
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
+### OS ###
 .DS_Store
 
 .PVS-Studio

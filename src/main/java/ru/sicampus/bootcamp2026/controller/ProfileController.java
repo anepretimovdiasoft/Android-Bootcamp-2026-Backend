@@ -12,7 +12,7 @@ import ru.sicampus.bootcamp2026.dto.response.UserProfileResponse;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/profile")
+@RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
 public class ProfileController {
 
@@ -46,7 +46,7 @@ public class ProfileController {
      * Сброс пароля
      */
     @PutMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         /*
             TODO: Получить текущего пользователя и сбросить пароль
         */
@@ -57,7 +57,7 @@ public class ProfileController {
      * Обновление аватара
      */
     @PutMapping("/avatar")
-    public ResponseEntity<UserProfileResponse> updateAvatar(@RequestBody UpdateAvatarRequest request) {
+    public ResponseEntity<UserProfileResponse> updateAvatar(@Valid @RequestBody UpdateAvatarRequest request) {
         /*
             TODO: Получить текущего пользователя и обновить аватар
         */

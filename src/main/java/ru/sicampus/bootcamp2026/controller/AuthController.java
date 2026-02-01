@@ -10,7 +10,7 @@ import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
 
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
