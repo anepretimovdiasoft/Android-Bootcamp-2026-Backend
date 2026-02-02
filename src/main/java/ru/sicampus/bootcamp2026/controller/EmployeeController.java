@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.EmployeeDTO;
 import ru.sicampus.bootcamp2026.dto.EmployeeEditDTO;
@@ -31,7 +32,6 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createEmployee(employeeRegisterDTO));
     }
 
-    // TODO: When security is added
     @PostMapping("/login")
     @Operation(summary = "Login")
     @ApiResponses(value = {
@@ -39,11 +39,10 @@ public class EmployeeController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
 
     })
-    ResponseEntity<EmployeeDTO> login() {
-        return ResponseEntity.ok(new EmployeeDTO());
+    ResponseEntity<EmployeeDTO> login(Authentication authentication) {
+        return ResponseEntity.ok(employeeService.getEmployeeByUsername(authentication.getName()));
     }
-
-    // TODO: When security is added
+    
     @PatchMapping()
     @Operation(summary = "Edit user's own profile")
     @ApiResponses(value = {
@@ -52,8 +51,8 @@ public class EmployeeController {
             @ApiResponse(responseCode = "400", description = "Invalid data"),
 
     })
-    public ResponseEntity<EmployeeDTO> patchVoid(@RequestBody @Valid EmployeeEditDTO employeeEditDTO) {
-        return ResponseEntity.ok(new EmployeeDTO());
+    public ResponseEntity<EmployeeDTO> patchVoid(@RequestBody @Valid EmployeeEditDTO employeeEditDTO, Authentication authentication) {
+        return ResponseEntity.ok(employeeService.editEmployee(employeeEditDTO, authentication.getName()));
     }
 
     @GetMapping("/{username}")

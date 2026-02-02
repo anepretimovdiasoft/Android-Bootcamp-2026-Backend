@@ -38,7 +38,11 @@ public class Employee implements UserDetails {
     @Column(name = "photo_url")
     private String photoUrl;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "employee_authority",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
     Set<Authority> authorities;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)

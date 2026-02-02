@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.sicampus.bootcamp2026.exception.EmployeeAlreadyExistsException;
 import ru.sicampus.bootcamp2026.exception.EmployeeNotFoundException;
+import ru.sicampus.bootcamp2026.exception.InvalidMeetingDateException;
 import ru.sicampus.bootcamp2026.exception.MeetingNotFoundExeception;
 
 import java.util.HashMap;
@@ -22,11 +23,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmployeeAlreadyExistsException.class)
     public ResponseEntity<String> handleEmployeeAlreadyExistsException(EmployeeAlreadyExistsException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
     @ExceptionHandler(MeetingNotFoundExeception.class)
     public ResponseEntity<String> handleMeetingNotFoundExeception(MeetingNotFoundExeception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(InvalidMeetingDateException.class)
+    public ResponseEntity<String> handleInvalidMeetingDateException(InvalidMeetingDateException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

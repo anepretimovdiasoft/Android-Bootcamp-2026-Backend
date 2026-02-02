@@ -20,11 +20,17 @@ public class MeetingMapper {
         meetingDTO.setOwnerName(meeting.getOwner().getName());
 
         Set<Invitation> inv = meeting.getInvitations(); // For reducing database query counr
-        long total = inv.size();
-        long accepted = inv.stream().filter(i -> i.getStatus().equals("ACCEPTED")).toList().size();
+        if(inv != null) {
+            long total = inv.size();
+            long accepted = inv.stream().filter(i -> i.getStatus().equals("ACCEPTED")).toList().size();
 
-        meetingDTO.setTotalInvitations(total);
-        meetingDTO.setAcceptedInvitations(accepted);
+            meetingDTO.setTotalInvitations(total);
+            meetingDTO.setAcceptedInvitations(accepted);
+        }
+        else {
+            meetingDTO.setTotalInvitations(1L);
+            meetingDTO.setAcceptedInvitations(1L);
+        }
 
         return meetingDTO;
     }

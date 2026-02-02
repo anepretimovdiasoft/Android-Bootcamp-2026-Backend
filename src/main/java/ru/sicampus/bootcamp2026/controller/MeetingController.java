@@ -7,9 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.InvitationEmployeeDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationMeetingDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingCreateDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
 import ru.sicampus.bootcamp2026.service.MeetingService;
@@ -23,7 +23,6 @@ public class MeetingController {
     @Autowired
     MeetingService meetingService;
 
-    // TODO: When security is added
     @PostMapping("/")
     @Operation(summary = "Create meeting")
     @ApiResponses(value = {
@@ -32,8 +31,8 @@ public class MeetingController {
             @ApiResponse(responseCode = "400", description = "Invalid data"),
 
     })
-    ResponseEntity<MeetingDTO> createMeeting(@RequestBody @Valid MeetingCreateDTO meetingCreateDTO) {
-        return ResponseEntity.ok(meetingService.createMeeting(meetingCreateDTO));
+    ResponseEntity<MeetingDTO> createMeeting(@RequestBody @Valid MeetingCreateDTO meetingCreateDTO, Authentication authentication) {
+        return ResponseEntity.ok(meetingService.createMeeting(meetingCreateDTO, authentication.getName()));
     }
 
     @GetMapping("/{id}")
@@ -67,7 +66,7 @@ public class MeetingController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
     })
-    ResponseEntity<List<MeetingDTO>> getSchedule(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
-        return ResponseEntity.ok(meetingService.getSchedule(start, end));
+    ResponseEntity<List<MeetingDTO>> getSchedule(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end, Authentication authentication) {
+        return ResponseEntity.ok(meetingService.getSchedule(start, end, authentication.getName()));
     }
 }

@@ -7,12 +7,12 @@
 
     <preConditions>
         <not>
-            <tableExists tableName="employee-authority"/>
+            <tableExists tableName="employee_authority"/>
         </not>
     </preConditions>
 
     <changeSet id="2026-02-02--0005-employee-authority" author="indx0">
-        <createTable tableName="employee-authority">
+        <createTable tableName="employee_authority">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

@@ -3,15 +3,20 @@ package ru.sicampus.bootcamp2026.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.InvitationEmployeeDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationMeetingDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingCreateDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
+import ru.sicampus.bootcamp2026.entity.Employee;
+import ru.sicampus.bootcamp2026.entity.Invitation;
 import ru.sicampus.bootcamp2026.entity.Meeting;
+import ru.sicampus.bootcamp2026.exception.InvalidMeetingDateException;
 import ru.sicampus.bootcamp2026.exception.MeetingNotFoundExeception;
+import ru.sicampus.bootcamp2026.repository.EmployeeRepository;
+import ru.sicampus.bootcamp2026.repository.InvitationRepository;
 import ru.sicampus.bootcamp2026.repository.MeetingRepository;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 import ru.sicampus.bootcamp2026.util.InvitationEmployeeMapper;
 import ru.sicampus.bootcamp2026.util.MeetingMapper;
+import ru.sicampus.bootcamp2026.util.MeetingValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,9 +27,41 @@ public class MeetingServiceImpl implements MeetingService {
     @Autowired
     MeetingRepository meetingRepository;
 
+    @Autowired
+    InvitationRepository invitationRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
+
     @Override
-    public MeetingDTO createMeeting(MeetingCreateDTO meetingCreateDTO) {
-        return null;
+    public MeetingDTO createMeeting(MeetingCreateDTO meetingCreateDTO, String username) {
+        if(!MeetingValidator.validateStartEnd(meetingCreateDTO.getStartTime(), meetingCreateDTO.getEndTime())) {
+            throw new InvalidMeetingDateException("Invalid start or end time");
+        }
+
+        if(meetingRepository.existsByOwner_UsernameAndStartTime(username, meetingCreateDTO.getStartTime())) {
+            throw new InvalidMeetingDateException("You already have a meeting at this time");
+        }
+
+        Employee emp = employeeRepository.findByUsername(username);
+
+        Meeting meeting = new Meeting();
+        meeting.setName(meetingCreateDTO.getName());
+        meeting.setDescription(meetingCreateDTO.getDescription());
+        meeting.setStartTime(meetingCreateDTO.getStartTime());
+        meeting.setEndTime(meetingCreateDTO.getEndTime());
+        meeting.setOwner(emp);
+        meetingRepository.save(meeting);
+
+        Invitation invitation = new Invitation();
+        invitation.setEmployee(emp);
+        invitation.setMeeting(meeting);
+        invitation.setStatus("ACCEPTED");
+
+        invitationRepository.save(invitation);
+
+
+        return MeetingMapper.convertToDTO(meeting);
     }
 
     @Override
@@ -37,8 +74,20 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<MeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end) {
-        return List.of();
+    public List<MeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end, String username) {
+//        List<MeetingDTO> schedule = invitationRepository.findByEmployee_UsernameAndStatus(username, "ACCEPTED").stream().filter(i -> {
+//            LocalDateTime startTime = i.getMeeting().getStartTime();
+//            LocalDateTime endTime = i.getMeeting().getEndTime();
+//            return startTime.isAfter(start) && endTime.isBefore(end);
+//        }).map(Invitation::getMeeting).map(MeetingMapper::convertToDTO).toList();
+
+//        List<MeetingDTO> schedule = meetingRepository.findByInvitations_Employee_UsernameAndInvitations_StatusAndStartTimeBetween(username, "ACCEPTED", start, end).stream()
+//                .map(Invitation::getMeeting).map(MeetingMapper::convertToDTO).toList();
+
+        List<MeetingDTO> schedule = meetingRepository.findByInvitations_Employee_UsernameAndInvitations_StatusAndStartTimeBetween(username, "ACCEPTED", start, end).stream()
+                .map(MeetingMapper::convertToDTO).toList();
+
+        return schedule;
     }
 
     @Override

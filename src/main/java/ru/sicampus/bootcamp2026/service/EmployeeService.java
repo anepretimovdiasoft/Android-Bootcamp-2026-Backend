@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface EmployeeService {
     EmployeeDTO createEmployee(EmployeeRegisterDTO employeeRegisterDTO);
-    EmployeeDTO editEmployee(EmployeeEditDTO employeeEditDTO);
+    EmployeeDTO editEmployee(EmployeeEditDTO employeeEditDTO, String username);
     EmployeeDTO getEmployeeByUsername(String username);
     List<EmployeeDTO> searchEmployees(String search);
 }

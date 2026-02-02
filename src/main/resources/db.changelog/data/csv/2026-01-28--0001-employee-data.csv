@@ -1,3 +1,3 @@
 name;position;username;email;phone_number;password;photo_url
-Калугин Олег Дмитриевич;Глава отдела разработки;indexzero;me@indexzero.ru;+79969121617;123456;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
-Иванов Иван Иванович;DevOps;iv_ivan;ivan@indexzero.ru;+79969121212;123456;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
+Калугин Олег Дмитриевич;Глава отдела разработки;indexzero;me@indexzero.ru;+79969121617;$2a$12$a/xfnD.89ekdkJCAlsI.8O5FhKqSd5n84ZSxT.RtCyWgWfPAiG5Xy;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
+Иванов Иван Иванович;DevOps;iv_ivan;ivan@indexzero.ru;+79969121212;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
