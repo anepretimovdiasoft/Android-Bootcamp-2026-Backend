@@ -9,7 +9,7 @@
             <column name="id" type="BIGINT" autoIncrement="true" >
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
-            <column name="Employee_id" type="BIGINT">
+            <column name="Employee_User" type="BIGINT">
                 <constraints nullable="false" unique="false" references="Employee(id)" foreignKeyName="fk_Contact_Employee"/>
             </column>
             <column name="name" type="VARCHAR(100)">

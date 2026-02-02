@@ -12,6 +12,12 @@
             <column name="name" type="VARCHAR(100)" >
                 <constraints nullable="false" unique="true"/>
              </column>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="father_name" type="VARCHAR(100)">
+                <constraints nullable="false" unique="false"/>
+            </column>
             <column name="mail" type="VARCHAR(100)">
                 <constraints nullable="true" unique="true"/>
             </column>
@@ -21,8 +27,11 @@
             <column name="age" type="BIGINT" >
                 <constraints nullable="false" unique="false" checkConstraint="age>=18"/>
             </column>
-            <column name="сhosenness" type="BOOLEAN" defaultValueBoolean="false">
-                <constraints nullable="false" unique="false"/>
+            <column name="сhosenness" type="BOOLEAN">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="password" type="VARCHAR">
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>
