@@ -32,7 +32,7 @@
                          referencedTableName="positions"
                          referencedColumnNames="id"/>
         </column>
-        <column name="aboutMe" type="text">
+        <column name="about_me" type="text">
             <constraints nullable="true"/>
         </column>
     </createTable>

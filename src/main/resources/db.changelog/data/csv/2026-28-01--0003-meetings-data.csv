@@ -1,3 +1,3 @@
-organizer_id;title;start_at;end_at;type;description;location
-1;"Team Sync";"2026-02-01 10:00:00";"2026-02-01 11:00:00";"online";"Weekly team sync-up";"https://telemost.yandex.ru/12345"
-2;"Client Demo";"2026-02-03 15:30:00";"2026-02-03 16:30:00";"hybrid";"Product demo for client XYZ";"Conference Room B"
+organizer_id;title;start_at;end_at;type;description;location;url
+1;"Team Sync";"2026-02-01 10:00:00";"2026-02-01 11:00:00";"online";"Weekly team sync-up";;"https://telemost.yandex.ru/12345"
+2;"Client Demo";"2026-02-03 15:30:00";"2026-02-03 16:30:00";"hybrid";"Product demo for client XYZ";"Conference Room B";

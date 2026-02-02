@@ -11,6 +11,9 @@
         </not>
     </preConditions>
     <createTable tableName="invitations">
+        <column name="id" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
         <column name="meeting_id" type="bigint">
             <constraints nullable="false" notNullConstraintName="meeting_id_not_null"
                          foreignKeyName="fk_meetings_invitations"
