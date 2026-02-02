@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <preConditions>
+        <not>
+            <tableExists tableName="employee-authority"/>
+        </not>
+    </preConditions>
+
+    <changeSet id="2026-02-02--0005-employee-authority" author="indx0">
+        <createTable tableName="employee-authority">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="employee_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_empauth_employee" referencedTableName="employee"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="authority_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_empauth_authority" referencedTableName="authority"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

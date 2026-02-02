@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2026.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "employee")
-public class Employee {
+public class Employee implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -36,6 +37,9 @@ public class Employee {
 
     @Column(name = "photo_url")
     private String photoUrl;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    Set<Authority> authorities;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private Set<Invitation> invitations;
