@@ -25,7 +25,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="accepted" type="BOOLEAN">
+            <column name="accepted" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
 
@@ -36,7 +36,8 @@
                 baseColumnNames="user_id"
                 referencedTableName="users"
                 referencedColumnNames="id"
-                constraintName="fk_user_meeting_user"/>
+                constraintName="fk_user_meeting_user"
+        />
 
         <addForeignKeyConstraint
                 baseTableName="user_meeting"

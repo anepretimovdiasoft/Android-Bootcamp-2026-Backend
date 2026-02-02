@@ -1,4 +1,4 @@
-name;role;password
-Alice;USER;pass1
-Bob;USER;pass2
-Admin;ADMIN;adminpass
+name;role;login
+Alice;USER;Alice123
+Bob;USER;Bob123
+Admin;ADMIN;Admin123

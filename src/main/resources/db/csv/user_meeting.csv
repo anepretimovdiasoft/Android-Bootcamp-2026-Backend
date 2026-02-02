@@ -1,4 +1,4 @@
 user_id;meeting_id;accepted
-1;1;true
-2;1;false
-3;2;true
+1;1;ACCEPTED
+2;1;DECLINED
+3;2;PENDING

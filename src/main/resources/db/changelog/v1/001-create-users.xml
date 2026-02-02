@@ -25,11 +25,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="role" type="VARCHAR(50)">
+            <column name="login" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="password" type="VARCHAR(255)">
+            <column name="role" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
 
