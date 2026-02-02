@@ -8,7 +8,7 @@ import ru.sicampus.bootcamp2026.dto.InvitationMeetingDTO;
 import java.util.List;
 
 public interface InvitationService {
-    InvitationDTO createInvitation(InvitationCreateDTO invitationCreateDTO);
-    InvitationDTO answerInvitation(InvitationAnswerDTO invitationAnswerDTO);
-    List<InvitationMeetingDTO> getActiveInvitations();
+    InvitationDTO createInvitation(InvitationCreateDTO invitationCreateDTO, String username);
+    InvitationDTO answerInvitation(InvitationAnswerDTO invitationAnswerDTO, String username);
+    List<InvitationMeetingDTO> getActiveInvitations(String username);
 }

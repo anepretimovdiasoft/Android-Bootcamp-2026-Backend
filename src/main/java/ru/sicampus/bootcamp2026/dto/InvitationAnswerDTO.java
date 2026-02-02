@@ -12,6 +12,6 @@ public class InvitationAnswerDTO {
     private Long Id;
 
     @NotBlank(message = "Status cannot be blank")
-    @Pattern(regexp = "^(ACCEPTED|PENDING|DECLINED)$", message = "Status can only be ACCEPTED, PENDING, or DECLINED")
+    @Pattern(regexp = "^(ACCEPTED|DECLINED)$", message = "Status can only be ACCEPTED, PENDING, or DECLINED")
     private String status;
 }

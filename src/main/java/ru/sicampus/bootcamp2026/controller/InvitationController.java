@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +30,10 @@ public class InvitationController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid Data"),
     })
-    ResponseEntity<InvitationDTO> answerInvitation(@RequestBody @Valid InvitationAnswerDTO invitationAnswerDTO) {
-        return ResponseEntity.ok(invitationService.answerInvitation(invitationAnswerDTO));
+    ResponseEntity<InvitationDTO> answerInvitation(@RequestBody @Valid InvitationAnswerDTO invitationAnswerDTO, Authentication authentication) {
+        return ResponseEntity.ok(invitationService.answerInvitation(invitationAnswerDTO, authentication.getName()));
     }
 
-    // TODO: When security is added
     @PostMapping("/")
     @Operation(summary = "Create Invitation")
     @ApiResponses(value = {
@@ -41,18 +41,17 @@ public class InvitationController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid Data"),
     })
-    ResponseEntity<InvitationDTO> createInvitation(@RequestBody @Valid InvitationCreateDTO invitationCreateDTO) {
-        return ResponseEntity.ok(invitationService.createInvitation(invitationCreateDTO));
+    ResponseEntity<InvitationDTO> createInvitation(@RequestBody @Valid InvitationCreateDTO invitationCreateDTO, Authentication authentication) {
+        return ResponseEntity.ok(invitationService.createInvitation(invitationCreateDTO, authentication.getName()));
     }
 
-    // TODO: When security is added
     @GetMapping("/active")
     @Operation(summary = "Get active invitations")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
     })
-    ResponseEntity<List<InvitationMeetingDTO>> getActiveInvitations() {
-        return ResponseEntity.ok(invitationService.getActiveInvitations());
+    ResponseEntity<List<InvitationMeetingDTO>> getActiveInvitations(Authentication authentication) {
+        return ResponseEntity.ok(invitationService.getActiveInvitations(authentication.getName()));
     }
 }

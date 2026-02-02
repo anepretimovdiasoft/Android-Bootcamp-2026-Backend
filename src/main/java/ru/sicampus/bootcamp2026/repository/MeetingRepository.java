@@ -12,7 +12,12 @@ import java.util.List;
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     boolean existsByOwner_UsernameAndStartTime(String username, LocalDateTime startTime);
 
+    @EntityGraph(attributePaths = {"owner"})
+    Meeting findByIdAndOwner_Username(Long id, String username);
+
     @EntityGraph(attributePaths = {"invitations", "invitations.employee"})
     List<Meeting> findByInvitations_Employee_UsernameAndInvitations_StatusAndStartTimeBetween(String username, String status, LocalDateTime startTime,
                                                                                  LocalDateTime endTime);
+    @EntityGraph(attributePaths = {"invitations", "invitations.employee"})
+    boolean existsByInvitations_Employee_UsernameAndStartTime(String username, LocalDateTime startTime);
 }
