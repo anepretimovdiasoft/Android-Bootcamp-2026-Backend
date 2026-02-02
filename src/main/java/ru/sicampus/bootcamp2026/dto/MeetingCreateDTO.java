@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 
 @Data
 public class MeetingCreateDTO {
-    @NotBlank
+    @NotBlank(message = "Meeting name cannot be blank")
     private String name;
-    @NotBlank
+    @NotBlank(message = "Meeting description cannot be blank")
     private String description;
     @NotNull
     private LocalDateTime startTime;

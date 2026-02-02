@@ -8,25 +8,25 @@ import lombok.Data;
 
 @Data
 public class EmployeeRegisterDTO {
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Position cannot be blank")
     private String position;
 
-    @NotBlank
-    @Size(min = 4)
+    @NotBlank(message = "Username cannot be blank")
+    @Size(min = 4, message = "Username must be at least 4 symbols")
     private String username;
 
-    @Email
-    @NotBlank
+    @Email(message = "Invalid email")
+    @NotBlank(message = "Email cannot be blank")
     private String email;
 
-    @NotBlank
-    @Pattern(regexp = "^\\+7\\d{10}$")
+    @NotBlank(message = "Phone cannot be blank")
+    @Pattern(regexp = "^\\+7\\d{10}$", message = "Invalid phone number")
     private String phoneNumber;
 
-    @NotBlank
-    @Size(min = 10)
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 10, message = "Password must be at least 10 symbols")
     private String password;
 }

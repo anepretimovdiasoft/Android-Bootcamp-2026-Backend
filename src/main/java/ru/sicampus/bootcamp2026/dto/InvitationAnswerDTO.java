@@ -8,10 +8,10 @@ import lombok.Data;
 
 @Data
 public class InvitationAnswerDTO {
-    @NotNull
+    @NotNull(message = "Invitation ID cannot be null")
     private Long Id;
 
-    @NotBlank
-    @Pattern(regexp = "^(ACCEPTED|PENDING|DECLINED)$")
+    @NotBlank(message = "Status cannot be blank")
+    @Pattern(regexp = "^(ACCEPTED|PENDING|DECLINED)$", message = "Status can only be ACCEPTED, PENDING, or DECLINED")
     private String status;
 }
