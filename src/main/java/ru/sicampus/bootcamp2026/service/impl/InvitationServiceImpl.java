@@ -65,6 +65,10 @@ public class InvitationServiceImpl implements InvitationService {
         if(!inv.getEmployee().getUsername().equals(username)) {
             throw new InvitationNotOwnedException("Invitation does not owned by the employee");
         }
+        if(invitationRepository.existsByEmployee_UsernameAndMeeting_StartTimeAndStatus(username, inv.getMeeting().getStartTime(), "ACCEPTED")
+                && invitationAnswerDTO.getStatus().equals("ACCEPTED")) {
+            throw new InvalidMeetingDateException("You are busy at this time");
+        }
 
         inv.setStatus(invitationAnswerDTO.getStatus());
 

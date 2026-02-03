@@ -19,4 +19,7 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
 
     @EntityGraph(attributePaths = {"employee", "meeting"})
     boolean existsByMeeting_StartTimeAndEmployee_IdAndStatus(LocalDateTime startTime, Long employeeId, String status);
+
+    @EntityGraph(attributePaths = {"employee", "meeting"})
+    boolean existsByEmployee_UsernameAndMeeting_StartTimeAndStatus(String username, LocalDateTime startTime, String status);
 }
