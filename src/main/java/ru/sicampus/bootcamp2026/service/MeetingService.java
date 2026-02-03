@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
 public interface MeetingService {
 
     /**
@@ -38,12 +37,9 @@ public interface MeetingService {
     void deleteMeeting(UUID organizerId, UUID meetingId);
 
     /**
-     * Получение встреч в определённом временном интервале
-     */
-    List<MeetingResponse> getMeetingsInRange(UUID userId, Instant start, Instant end);
-
-    /**
      * Получение встреч по статусу
      */
     List<MeetingResponse> getMeetingsByStatus(UUID userId, MeetingStatus status);
+
+
 }

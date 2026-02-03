@@ -7,7 +7,6 @@ import ru.sicampus.bootcamp2026.dto.response.UserProfileResponse;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
 public interface ProfileService {
 
     /**

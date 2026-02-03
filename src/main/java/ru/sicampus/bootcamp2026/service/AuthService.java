@@ -7,7 +7,6 @@ import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
 
 import java.util.UUID;
 
-@Repository
 public interface AuthService {
 
     /**
@@ -34,4 +33,6 @@ public interface AuthService {
      * Получение текущего пользователя из контекста безопасности
      */
     UUID getCurrentUserId();
+
+    void resetPassword(UUID userId);
 }

@@ -60,14 +60,6 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<MeetingResponse> getMeetingsInRange(UUID userId, Instant start, Instant end) {
-        /*
-            TODO: Реализовать поиск встреч в диапазоне времени
-        */
-        throw new UnsupportedOperationException("Метод getMeetingsInRange еще не реализован");
-    }
-
-    @Override
     public List<MeetingResponse> getMeetingsByStatus(UUID userId, MeetingStatus status) {
         /*
             TODO: Реализовать поиск встреч по статусу

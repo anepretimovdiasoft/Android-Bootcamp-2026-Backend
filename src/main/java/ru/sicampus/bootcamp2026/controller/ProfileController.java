@@ -65,7 +65,7 @@ public class ProfileController {
     }
 
     /**
-     * Получение списка всех пользователей для выбора участников встречи
+     * Получение списка всех пользователей для выбора участников встречи (поиск)
      */
     @GetMapping("/public/all")
     public ResponseEntity<List<UserProfileResponse>> getAllUsers() {
@@ -74,5 +74,7 @@ public class ProfileController {
         */
         throw new UnsupportedOperationException("Метод getAllUsers еще не реализован");
     }
+
+
 
 }

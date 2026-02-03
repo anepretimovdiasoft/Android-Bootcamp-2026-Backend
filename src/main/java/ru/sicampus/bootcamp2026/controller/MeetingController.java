@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.request.CreateMeetingRequest;
+import ru.sicampus.bootcamp2026.dto.request.FreeTimeRequest;
+import ru.sicampus.bootcamp2026.dto.response.FreeTimeResponse;
 import ru.sicampus.bootcamp2026.dto.response.MeetingResponse;
+import ru.sicampus.bootcamp2026.model.User;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 
 import java.util.List;
@@ -25,9 +28,7 @@ public class MeetingController {
      * Получение всех встреч текущего пользователя
      */
     @GetMapping
-    public ResponseEntity<List<MeetingResponse>> getUserMeetings(
-            @RequestParam(required = false) String status
-    ) {
+    public ResponseEntity<List<MeetingResponse>> getUserMeetings() {
         /*
             TODO: Получить текущего пользователя и вернуть его встречи
         */
@@ -75,4 +76,11 @@ public class MeetingController {
         throw new UnsupportedOperationException("Метод deleteMeeting еще не реализован");
     }
 
+    @GetMapping("/freeTime")
+    public ResponseEntity<FreeTimeResponse> getFreeTime(List<FreeTimeRequest> requests) {
+        /*
+            TODO: Получить интервалы когда пользователи свободны (String, String)
+        */
+        throw new UnsupportedOperationException("Метод getFreeTime еще не реализован");
+    }
 }

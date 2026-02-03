@@ -25,7 +25,6 @@ public class MeetingResponse {
     private Instant endTime;
     private MeetingStatus status;
     private Instant createdAt;
-    private Instant updatedAt;
     private OrganizerInfo organizer;
     private List<ParticipantInfo> participants;
 
@@ -46,8 +45,6 @@ public class MeetingResponse {
     public static class ParticipantInfo {
         private UUID id;
         private String username;
-        private String email;
-        private ParticipantStatus status;
     }
 
 }

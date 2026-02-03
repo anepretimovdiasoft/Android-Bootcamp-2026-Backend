@@ -25,7 +25,7 @@ public class RefreshToken {
     @Id
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)// У одного пользователя может быть множество токенов(пк,телефон,ноутбук)
+    @ManyToOne(fetch = FetchType.LAZY)// У одного пользователя может быть множество токенов (пк, телефон, ноутбук)
     @JoinColumn(name = "user_id_id")
     private User userId;
 
