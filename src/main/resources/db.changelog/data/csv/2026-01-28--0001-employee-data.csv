@@ -1,13 +1,13 @@
 name;position;username;email;phone_number;password;photo_url
-Калугин Олег Дмитриевич;Глава отдела разработки;indexzero;me@indexzero.ru;+79969121617;$2a$12$a/xfnD.89ekdkJCAlsI.8O5FhKqSd5n84ZSxT.RtCyWgWfPAiG5Xy;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
-Иванов Иван Иванович;DevOps;iv_ivan;ivan@indexzero.ru;+79969121212;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
-Морозов Дмитрий Георгиевич;Глава отдела маркетинга;mor_dmitriy;morozov@company.ru;+79964851647;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
-Соколова Кира Михайловна;Дизайнер;kira_sokolova;kira_sokolova@company.ru;+79997771122;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
-Наумов Максим Всеволодович;QA-инженер;max_naumov;max_naumov@company.ru;+79995553344;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg
-Покровский Иван Янович;Frontend-разработчик;ivan_pokrovskiy;ivan_porkrovskiy@company.ru;+79081833554;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/nNCMzRkx/pfp1.jpg
-Титова Мария Владиславовна;Backend-разработчик;maria_titova;maria_titova@company.ru;+79309551918;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/SwTZ5hyk/pfp2.jpg
-Макарова Арина Алексеевна;QA-инженер;arina_makarova;arina_makarova@company.ru;+79869830631;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/5h6f2nrM/pfp3.jpg
-Свиридов Сергей Егорович;Маркетолог;sergey_sviridov;sergey_sidorov@company.ru;+79869830632;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/BVfXHGg6/pfp4.jpg
-Морозова Валерия Данииловна;Дизайнер;valeria_morozova;valeria_morozova@company.ru;+79892658289;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/gFyC8cXM/pfp5.png
-Галкина Нина Макаровна;HR;nina_galkina;nina_galkina@company.ru;+79239050533;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/nNCMzRkx/pfp1.jpg
-Андреева Вера Артемьевнаж;HR;vera_andreeva;vera_andreeva@company.ru;+79501333214;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://i.ibb.co/SwTZ5hyk/pfp2.jpg
+Калугин Олег Дмитриевич;Глава отдела разработки;indexzero;me@indexzero.ru;+79969121617;$2a$12$a/xfnD.89ekdkJCAlsI.8O5FhKqSd5n84ZSxT.RtCyWgWfPAiG5Xy;https://bootcamp-back.indx0.ru:8000/images/pfp1.jpg
+Иванов Иван Иванович;DevOps;iv_ivan;ivan@indexzero.ru;+79969121212;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp2.jpg
+Морозов Дмитрий Георгиевич;Глава отдела маркетинга;mor_dmitriy;morozov@company.ru;+79964851647;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp3.jpg
+Соколова Кира Михайловна;Дизайнер;kira_sokolova;kira_sokolova@company.ru;+79997771122;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp4.jpg
+Наумов Максим Всеволодович;QA-инженер;max_naumov;max_naumov@company.ru;+79995553344;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp5.jpg
+Покровский Иван Янович;Frontend-разработчик;ivan_pokrovskiy;ivan_porkrovskiy@company.ru;+79081833554;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp6.jpg
+Титова Мария Владиславовна;Backend-разработчик;maria_titova;maria_titova@company.ru;+79309551918;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp7.jpg
+Макарова Арина Алексеевна;QA-инженер;arina_makarova;arina_makarova@company.ru;+79869830631;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp8.jpg
+Свиридов Сергей Егорович;Маркетолог;sergey_sviridov;sergey_sidorov@company.ru;+79869830632;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp9.jpg
+Морозова Валерия Данииловна;Дизайнер;valeria_morozova;valeria_morozova@company.ru;+79892658289;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp10.jpg
+Галкина Нина Макаровна;HR;nina_galkina;nina_galkina@company.ru;+79239050533;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp11.jpg
+Андреева Вера Артемьевнаж;HR;vera_andreeva;vera_andreeva@company.ru;+79501333214;$2a$12$fytGO7G3vl3ymJ.lYcmaA.pH1t0t/.px8vJo/JCPyfks9Jv9DtPvy;https://bootcamp-back.indx0.ru:8000/images/pfp12.jpg
