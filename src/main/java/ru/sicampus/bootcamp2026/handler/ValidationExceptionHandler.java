@@ -32,7 +32,7 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
                         org.springframework.validation.FieldError::getField,
                         this::convertToValidationError
                 ));
-        return ResponseEntity.status(422).body(ErrorResponse.builder() // Zaglushka™
+        return ResponseEntity.status(422).body(ErrorResponse.builder() // Zaglushka™ TODO: improve validation errors
                 .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
                 .code(ErrorCode.VALIDATION_ERROR)
                 .error(HttpStatus.UNPROCESSABLE_ENTITY.getReasonPhrase())

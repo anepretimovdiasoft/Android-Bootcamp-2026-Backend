@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.dto;
+package ru.sicampus.bootcamp2026.entity;
 
 public enum InvitationStatus {
     PENDING,

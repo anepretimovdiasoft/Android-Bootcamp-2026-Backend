@@ -1,6 +1,6 @@
 package ru.sicampus.bootcamp2026.dto.response;
 
-import ru.sicampus.bootcamp2026.dto.InvitationStatus;
+import ru.sicampus.bootcamp2026.entity.InvitationStatus;
 
 import java.time.Instant;
 

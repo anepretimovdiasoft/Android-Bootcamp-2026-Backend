@@ -1,34 +1,39 @@
 package ru.sicampus.bootcamp2026.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "invitations")
 public class Invitation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @NonNull
+    @ManyToOne(targetEntity = Meeting.class)
     @JoinColumn(name = "meeting_id", nullable = false)
     private Meeting meeting;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @NonNull
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private int status; // TODO: replace with enum
+    private InvitationStatus status;
 
+    @CreatedDate
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 

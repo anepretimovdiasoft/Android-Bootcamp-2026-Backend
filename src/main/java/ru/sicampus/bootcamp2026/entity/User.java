@@ -5,9 +5,13 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -34,7 +38,7 @@ public class User {
 
     @NonNull
     @Column(name = "password_hash")
-    private String passwordHash; // TODO: make non-nullable
+    private String passwordHash;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)
@@ -44,6 +48,25 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
     private List<Meeting> organizedMeetings;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Invitation> invitations;
+
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Authority> authorities;
+
+    @Override
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }
