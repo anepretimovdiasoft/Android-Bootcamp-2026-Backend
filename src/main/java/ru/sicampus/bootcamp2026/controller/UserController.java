@@ -2,6 +2,8 @@ package ru.sicampus.bootcamp2026.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingResponse;
 import ru.sicampus.bootcamp2026.dto.UserDtos.CreateUserRequest;
@@ -18,6 +20,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService service;
+    private final UserService userService;
 
     @PatchMapping("/{userId}/meetings/{meetingId}/invitation")
     public InvitationDecisionRequest decideInvitation(
@@ -28,13 +31,22 @@ public class UserController {
         return service.decideInvitation(userId, meetingId, req);
     }
 
-    // ✅ один эндпоинт по статусу
     @GetMapping("/{userId}/meetings")
     public List<MeetingResponse> meetingsByStatus(
             @PathVariable long userId,
             @RequestParam String status
     ) {
         return service.listMeetingsByStatus(userId, status);
+    }
+
+    @GetMapping("/login")
+    public UserResponse login(Authentication authentication) {
+        return userService.getByLogin(authentication.getName());
+    }
+    @GetMapping("/getByLogin/{login}")
+    public ResponseEntity<String> getByLogin(@PathVariable String login) {
+        UserResponse user = userService.getByLogin(login);
+        return ResponseEntity.ok("User " + user.login() + " is registered");
     }
 
     @GetMapping
@@ -47,7 +59,7 @@ public class UserController {
         return service.get(id);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public UserResponse create(@Valid @RequestBody CreateUserRequest req) {
         return service.create(req);
     }

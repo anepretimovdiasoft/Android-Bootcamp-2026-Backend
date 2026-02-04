@@ -9,7 +9,8 @@ import ru.sicampus.bootcamp2026.domain.UserMeeting;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.CreateMeetingRequest;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingResponse;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.UpdateMeetingRequest;
-import ru.sicampus.bootcamp2026.error.NotFoundException;
+import ru.sicampus.bootcamp2026.error.MeetingNotFoundException;
+import ru.sicampus.bootcamp2026.error.UserNotFoundException;
 import ru.sicampus.bootcamp2026.repo.MeetingRepository;
 import ru.sicampus.bootcamp2026.repo.UserMeetingRepository;
 import ru.sicampus.bootcamp2026.repo.UserRepository;
@@ -36,7 +37,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public MeetingResponse get(long id) {
         Meeting m = repo.findById(id)
-                .orElseThrow(() -> new NotFoundException("Meeting not found: " + id));
+                .orElseThrow(() -> new MeetingNotFoundException("Meeting not found: " + id));
         return MeetingMapper.toResponse(m);
     }
 
@@ -53,14 +54,14 @@ public class MeetingServiceImpl implements MeetingService {
 
         List<User> users = userRepo.findAllById(req.invitedUserIds());
         if (users.size() != req.invitedUserIds().size()) {
-            throw new IllegalArgumentException("Some users not found");
+            throw new UserNotFoundException("User not found");
         }
 
         for (User u : users) {
             UserMeeting link = new UserMeeting();
             link.setUser(u);
             link.setMeeting(meeting);
-            link.setAccepted("PENDING");
+            link.setStatus("PENDING");
             usMetRepo.save(link);
         }
 
@@ -71,7 +72,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional
     public MeetingResponse update(long id, UpdateMeetingRequest req) {
         Meeting m = repo.findById(id)
-                .orElseThrow(() -> new NotFoundException("Meeting not found: " + id));
+                .orElseThrow(() -> new MeetingNotFoundException("Meeting not found: " + id));
 
         m.setTitle(req.title());
         m.setStartsAt(req.startsAt());
@@ -84,7 +85,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional
     public void delete(long id) {
         Meeting meeting = repo.findById(id)
-                .orElseThrow(() -> new NotFoundException("Meeting not found: " + id));
+                .orElseThrow(() -> new MeetingNotFoundException("Meeting not found: " + id));
 
         usMetRepo.deleteByMeeting(meeting);
         repo.delete(meeting);

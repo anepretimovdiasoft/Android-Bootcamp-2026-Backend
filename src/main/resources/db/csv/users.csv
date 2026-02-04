@@ -1,4 +1,4 @@
-name;role;login
-Alice;USER;Alice123
-Bob;USER;Bob123
-Admin;ADMIN;Admin123
+name;position;login;password
+Alice;Designer;Alice123;$2a$10$AKDFM71JACiSPoIo4vROTOfwFi5WvFYimfrQalxX6ttQFnHmJ5GnO
+Bob;Backend developer;Bob123;$2a$10$AKDFM71JACiSPoIo4vROTOfwFi5WvFYimfrQalxX6ttQFnHmJ5GnO
+Admin;frontend developer;Admin123;$2a$10$AKDFM71JACiSPoIo4vROTOfwFi5WvFYimfrQalxX6ttQFnHmJ5GnO

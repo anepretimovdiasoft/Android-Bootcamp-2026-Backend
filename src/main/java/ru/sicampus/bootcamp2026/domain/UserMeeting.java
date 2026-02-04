@@ -5,7 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "user_meeting")
-@Getter @Setter
+@Data
+
 public class UserMeeting {
 
     @EmbeddedId
@@ -21,6 +22,6 @@ public class UserMeeting {
     @JoinColumn(name = "meeting_id", nullable = false)
     private Meeting meeting;
 
-    @Column(name = "accepted", nullable = false, length = 32)
-    private String accepted;
+    @Column(name = "status", nullable = false, length = 32)
+    private String status;
 }

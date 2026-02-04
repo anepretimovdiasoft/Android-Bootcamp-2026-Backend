@@ -26,14 +26,35 @@
             </column>
 
             <column name="login" type="VARCHAR(100)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
 
-            <column name="role" type="VARCHAR(50)">
+            <column name="position" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
 
         </createTable>
+
+    </changeSet>
+
+    <changeSet id="001-create-users2" author="nikita">
+
+        <preConditions onFail="MARK_RAN">
+
+                <tableExists tableName="users"/>
+                    <not>
+                        <columnExists tableName="users"  columnName="password"/>
+                    </not>
+
+        </preConditions>
+
+        <addColumn  tableName="users">
+
+            <column name="password" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+        </addColumn>
 
     </changeSet>
 

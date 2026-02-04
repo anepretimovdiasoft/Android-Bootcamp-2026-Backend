@@ -18,6 +18,8 @@ public interface UserService {
 
     UserResponse get(long id);
 
+    UserResponse getByLogin(String login);
+
     UserResponse create(CreateUserRequest req);
 
     UserResponse update(long id, UpdateUserRequest req);

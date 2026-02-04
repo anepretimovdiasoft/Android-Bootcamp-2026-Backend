@@ -6,12 +6,11 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "meetings")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Table(name = "meetings")
 public class Meeting {
 
     @Id
