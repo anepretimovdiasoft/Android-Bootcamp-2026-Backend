@@ -5,6 +5,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +79,21 @@ public class EmployeeController {
     })
     ResponseEntity<List<EmployeeDTO>> searchEmployees(@RequestParam(required = false) String search) {
         return ResponseEntity.ok(employeeService.searchEmployees(search));
+    }
+
+    @GetMapping("/all-paginated")
+    @Operation(summary = "Search users or get all users paginated")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+
+    })
+    ResponseEntity<Page<EmployeeDTO>> searchEmployeesPaginated(
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(employeeService.searchEmployeesPaginated(search, pageable));
     }
 
 }

@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.EmployeeDTO;
@@ -87,7 +89,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(search == null) {
             return employeeRepository.findAll().stream().map(EmployeeMapper::convertToDTO).toList();
         }
-        return employeeRepository.findByNameStartsWithIgnoreCase(search).stream().map(EmployeeMapper::convertToDTO).toList();
+        return employeeRepository.findByNameContainsIgnoreCase(search).stream().map(EmployeeMapper::convertToDTO).toList();
+    }
+
+    @Override
+    public Page<EmployeeDTO> searchEmployeesPaginated(String search, Pageable pageable) {
+        if(search == null) {
+            return employeeRepository.findAll(pageable).map(EmployeeMapper::convertToDTO);
+        }
+        return employeeRepository.findByNameContainsIgnoreCase(search, pageable).map(EmployeeMapper::convertToDTO);
     }
 
 }
