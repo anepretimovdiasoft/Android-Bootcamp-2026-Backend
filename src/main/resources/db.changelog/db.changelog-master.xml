@@ -5,7 +5,7 @@
 
     <include file="1.0/2026-01-30--001-job-titles.xml" relativeToChangelogFile="true"/>
     <include file="1.0/2026-01-30--002-departments.xml" relativeToChangelogFile="true"/>
-    <include file="1.0/2026-01-30--003-user-roles.xml" relativeToChangelogFile="true"/>
+    <include file="1.0/2026-01-30--003-authority.xml" relativeToChangelogFile="true"/>
     <include file="1.0/2026-01-30--004-invitation-statuses.xml" relativeToChangelogFile="true"/>
     <include file="1.0/2026-01-30--005-meeting-types.xml" relativeToChangelogFile="true"/>
     <include file="1.0/2026-01-30--006-meeting-statuses.xml" relativeToChangelogFile="true"/>
@@ -13,10 +13,11 @@
     <include file="1.0/2026-01-30--008-users.xml" relativeToChangelogFile="true"/>
     <include file="1.0/2026-01-30--009-meetings.xml" relativeToChangelogFile="true"/>
     <include file="1.0/2026-01-30--010-meeting-participants.xml" relativeToChangelogFile="true"/>
+    <include file="1.0/2026-02-04--011-users-authority.xml" relativeToChangelogFile="true"/>
 
     <include file="data/2026-01-30--001-job-titles-data.xml" relativeToChangelogFile="true"/>
     <include file="data/2026-01-30--002-departments-data.xml" relativeToChangelogFile="true"/>
-    <include file="data/2026-01-30--003-user-roles-data.xml" relativeToChangelogFile="true"/>
+    <include file="data/2026-01-30--003-authority-data.xml" relativeToChangelogFile="true"/>
     <include file="data/2026-01-30--004-invitation-statuses-data.xml" relativeToChangelogFile="true"/>
     <include file="data/2026-01-30--005-meeting-types-data.xml" relativeToChangelogFile="true"/>
     <include file="data/2026-01-30--006-meeting-statuses-data.xml" relativeToChangelogFile="true"/>
@@ -24,4 +25,5 @@
     <include file="data/2026-01-30--008-users-data.xml" relativeToChangelogFile="true"/>
     <include file="data/2026-01-30--009-meetings-data.xml" relativeToChangelogFile="true"/>
     <include file="data/2026-01-30--010-meeting-participants-data.xml" relativeToChangelogFile="true"/>
+    <include file="data/2026-02-04--011-users-authority-data.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

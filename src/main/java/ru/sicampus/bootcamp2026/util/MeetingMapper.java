@@ -1,5 +1,4 @@
 package ru.sicampus.bootcamp2026.util;
-
 import org.springframework.stereotype.Component;
 import ru.sicampus.bootcamp2026.dto.MeetingInfoDTO;
 import ru.sicampus.bootcamp2026.dto.ParticipantDTO;

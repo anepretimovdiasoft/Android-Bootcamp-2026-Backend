@@ -13,7 +13,6 @@
 
             <column name="job_title_id" type="INT"><constraints nullable="false" foreignKeyName="fk_users_job" references="job_titles(id)"/></column>
             <column name="department_id" type="INT"><constraints nullable="false" foreignKeyName="fk_users_dept" references="departments(id)"/></column>
-            <column name="role_id" type="INT"><constraints nullable="false" foreignKeyName="fk_users_role" references="user_roles(id)"/></column>
 
             <column name="age" type="INT"/>
             <column name="contact_info" type="VARCHAR(255)"/>

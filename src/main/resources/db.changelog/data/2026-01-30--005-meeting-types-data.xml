@@ -4,6 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="load-meeting-types" author="igramagadev">
-        <loadData file="db.changelog/data/csv/meeting_types.csv" tableName="meeting_types"/>
+        <loadData file="db.changelog/data/csv/meeting_types.csv" tableName="meeting_types"
+                  separator=";"
+                  quotchar='"'
+                  encoding="UTF-8"/>
     </changeSet>
 </databaseChangeLog>

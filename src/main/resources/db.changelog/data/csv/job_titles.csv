@@ -1,4 +1,4 @@
-id,title_name
-1,Java Developer
-2,Product Manager
-3,QA Engineer
+id;title_name
+1;Java Developer
+2;Product Manager
+3;QA Engineer

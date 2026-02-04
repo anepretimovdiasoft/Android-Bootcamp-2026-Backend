@@ -3,8 +3,8 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet id="load-job-titles" author="igramagadev">
-        <loadData file="db.changelog/data/csv/job_titles.csv" tableName="job_titles"
+    <changeSet id="load-users-authority" author="igramagadev">
+        <loadData file="db.changelog/data/csv/users-authority.csv" tableName="users_authorities"
                   separator=";"
                   quotchar='"'
                   encoding="UTF-8"/>

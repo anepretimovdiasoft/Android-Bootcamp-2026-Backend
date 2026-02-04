@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.exception.handler;
+package ru.sicampus.bootcamp2026.exception;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(String message) {

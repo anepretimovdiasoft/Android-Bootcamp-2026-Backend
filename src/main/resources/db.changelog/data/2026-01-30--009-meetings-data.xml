@@ -4,7 +4,10 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="load-meetings" author="igramagadev">
-        <loadData file="db.changelog/data/csv/meetings.csv" tableName="meetings">
+        <loadData file="db.changelog/data/csv/meetings.csv" tableName="meetings"
+                  separator=";"
+                  quotchar='"'
+                  encoding="UTF-8">
             <column name="calendar_date" type="DATE"/>
             <column name="start_time" type="TIME"/>
             <column name="end_time" type="TIME"/>

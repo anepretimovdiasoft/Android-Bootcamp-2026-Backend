@@ -1,5 +1,4 @@
 package ru.sicampus.bootcamp2026.util;
-
 import org.springframework.stereotype.Component;
 import ru.sicampus.bootcamp2026.dto.UsersDTO;
 import ru.sicampus.bootcamp2026.entity.User;
@@ -8,6 +7,8 @@ import ru.sicampus.bootcamp2026.entity.User;
 public class UserMapper {
 
     public UsersDTO toDTO(User user) {
+        if (user == null) return null;
+
         UsersDTO dto = new UsersDTO();
         dto.setId(user.getId());
         dto.setEmail(user.getEmail());
@@ -21,9 +22,6 @@ public class UserMapper {
         }
         if (user.getDepartment() != null) {
             dto.setDepartment(user.getDepartment().getDeptName());
-        }
-        if (user.getRole() != null) {
-            dto.setRole(user.getRole().getRoleName());
         }
         return dto;
     }

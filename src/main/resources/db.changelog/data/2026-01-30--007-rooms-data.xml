@@ -4,6 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="load-rooms" author="igramagadev">
-        <loadData file="db.changelog/data/csv/rooms.csv" tableName="rooms"/>
+        <loadData file="db.changelog/data/csv/rooms.csv" tableName="rooms"
+                  separator=";"
+                  quotchar='"'
+                  encoding="UTF-8"/>
     </changeSet>
 </databaseChangeLog>

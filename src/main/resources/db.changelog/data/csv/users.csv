@@ -1,2 +1,2 @@
-id,email,password,full_name,job_title_id,department_id,role_id,age,contact_info,avatar_url,is_active,created_at
-1,admin@igramagadev.ru,admin,IgraM,2,2,1,15,+79990000001,img1.png,true,2026-01-30 16:00:00
+id;email;password;full_name;job_title_id;department_id;age;contact_info;avatar_url;is_active;created_at
+1;admin@igramagadev.ru;$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG;IgraM;2;1;15;+79990000001;img1.png;true;2026-01-30 16:00:00
