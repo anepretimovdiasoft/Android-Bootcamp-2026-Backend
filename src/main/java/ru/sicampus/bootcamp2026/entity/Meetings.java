@@ -2,6 +2,7 @@ package ru.sicampus.bootcamp2026.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class Meetings {
 
     // С неронки ↓↓↓↓
     // Связь: одно собрание -> много участников
+    @ToString.Exclude
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
     private List<MeetingParticipants> participants;
 }

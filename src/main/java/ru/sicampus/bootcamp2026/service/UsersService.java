@@ -2,6 +2,7 @@ package ru.sicampus.bootcamp2026.service;
 
 import ru.sicampus.bootcamp2026.dto.MeetingsDTO;
 import ru.sicampus.bootcamp2026.dto.UsersDTO;
+import ru.sicampus.bootcamp2026.dto.UsersRegisterDTO;
 
 import java.util.List;
 
@@ -10,9 +11,11 @@ public interface UsersService {
 
     UsersDTO getUsersById(Long id);
 
-    UsersDTO createUsers(UsersDTO dto);
+    UsersDTO createUsers(UsersRegisterDTO dto);
 
     UsersDTO updateUsers(Long id, UsersDTO dto);
 
     void deleteUsers(Long id);
+
+    UsersDTO getUsersByLogin(String login);
 }

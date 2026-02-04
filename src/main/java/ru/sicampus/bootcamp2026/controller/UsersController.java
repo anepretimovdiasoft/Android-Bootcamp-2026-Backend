@@ -4,8 +4,10 @@ package ru.sicampus.bootcamp2026.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.UsersDTO;
+import ru.sicampus.bootcamp2026.dto.UsersRegisterDTO;
 import ru.sicampus.bootcamp2026.service.UsersService;
 import ru.sicampus.bootcamp2026.service.impl.UsersServiceImpl;
 
@@ -28,8 +30,13 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UsersDTO> createUsers(@RequestBody UsersDTO dto) {
+    public ResponseEntity<UsersDTO> createUsers(@RequestBody UsersRegisterDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.createUsers(dto));
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<UsersDTO> login(Authentication authentication) {
+        return ResponseEntity.ok(usersService.getUsersByLogin(authentication.getName()));
     }
 
     @PutMapping("/{id}")
@@ -41,5 +48,11 @@ public class UsersController {
     public ResponseEntity<Void> deleteUsers(@PathVariable Long id) {
         usersService.deleteUsers(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/login/{login}")
+    public ResponseEntity<String> getByLogin(@PathVariable String login){
+        UsersDTO usersDTO = usersService.getUsersByLogin(login);
+        return ResponseEntity.ok("User" +usersDTO.getLogin() + " is registered");
     }
 }
