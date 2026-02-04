@@ -8,11 +8,6 @@ data class UserResponseDto(
     val createdAt: LocalDateTime
 )
 
-data class UserCreateDto(
-    val email: String,
-    val password: String
-)
-
 data class UserUpdateDto(
     val email: String? = null,
     val password: String? = null

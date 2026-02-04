@@ -8,6 +8,7 @@ import ru.sicampus.bootcamp2026.dto.MeetingUpdateDto
 import ru.sicampus.bootcamp2026.entity.Meeting
 import ru.sicampus.bootcamp2026.repository.MeetingRepository
 import ru.sicampus.bootcamp2026.repository.UserRepository
+import ru.sicampus.bootcamp2026.security.SecurityUtils
 import java.time.LocalDate
 import java.util.*
 
@@ -21,22 +22,41 @@ class MeetingService(
         organizerId: Long? = null,
         date: LocalDate? = null
     ): List<MeetingResponseDto> {
-        return when {
-            organizerId != null && date != null -> {
-                meetingRepository.findByOrganizerId(organizerId)
+        val currentUser = SecurityUtils.getCurrentUser(userRepository)
+        val isAdmin = SecurityUtils.isAdmin(currentUser)
+        
+        organizerId?.let { 
+            SecurityUtils.requireOwnershipOrAdmin(currentUser, it)
+        }
+
+        val effectiveOrganizerId = if (isAdmin) organizerId else (organizerId ?: currentUser.id)
+        
+        val meetings = when {
+            effectiveOrganizerId != null && date != null -> {
+                meetingRepository.findByOrganizerId(effectiveOrganizerId)
                     .filter { it.date == date }
-                    .map { it.toResponseDto() }
             }
-            organizerId != null -> {
-                meetingRepository.findByOrganizerId(organizerId).map { it.toResponseDto() }
+            effectiveOrganizerId != null -> {
+                meetingRepository.findByOrganizerId(effectiveOrganizerId)
             }
             date != null -> {
-                meetingRepository.findByDate(date).map { it.toResponseDto() }
+                if (isAdmin) {
+                    meetingRepository.findByDate(date)
+                } else {
+                    meetingRepository.findByOrganizerId(currentUser.id)
+                        .filter { it.date == date }
+                }
             }
             else -> {
-                meetingRepository.findAll().map { it.toResponseDto() }
+                if (isAdmin) {
+                    meetingRepository.findAll()
+                } else {
+                    meetingRepository.findByOrganizerId(currentUser.id)
+                }
             }
         }
+        
+        return meetings.map { it.toResponseDto() }
     }
 
     fun getMeetingById(id: Long): MeetingResponseDto {
@@ -46,6 +66,9 @@ class MeetingService(
     }
 
     fun createMeeting(dto: MeetingCreateDto): MeetingResponseDto {
+        val currentUser = SecurityUtils.getCurrentUser(userRepository)
+        SecurityUtils.requireOwnershipOrAdmin(currentUser, dto.organizerId)
+        
         val organizer = userRepository.findById(dto.organizerId)
             .orElseThrow { NoSuchElementException("User with id ${dto.organizerId} not found") }
         
@@ -65,8 +88,11 @@ class MeetingService(
     }
 
     fun updateMeeting(id: Long, dto: MeetingUpdateDto): MeetingResponseDto {
+        val currentUser = SecurityUtils.getCurrentUser(userRepository)
         val meeting = meetingRepository.findById(id)
             .orElseThrow { NoSuchElementException("Meeting with id $id not found") }
+        
+        SecurityUtils.requireOwnershipOrAdmin(currentUser, meeting.organizer.id)
         
         dto.title?.let { meeting.title = it }
         dto.description?.let { meeting.description = it }

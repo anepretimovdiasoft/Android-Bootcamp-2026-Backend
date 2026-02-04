@@ -1,9 +1,7 @@
 package ru.sicampus.bootcamp2026.controller
 
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ru.sicampus.bootcamp2026.dto.UserCreateDto
 import ru.sicampus.bootcamp2026.dto.UserResponseDto
 import ru.sicampus.bootcamp2026.dto.UserUpdateDto
 import ru.sicampus.bootcamp2026.service.UserService
@@ -21,12 +19,6 @@ class UserController(
     @GetMapping("/{id}")
     fun getUserById(@PathVariable id: Long): ResponseEntity<UserResponseDto> {
         return ResponseEntity.ok(userService.getUserById(id))
-    }
-
-    @PostMapping
-    fun createUser(@RequestBody dto: UserCreateDto): ResponseEntity<UserResponseDto> {
-        val createdUser = userService.createUser(dto)
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser)
     }
 
     @PutMapping("/{id}")

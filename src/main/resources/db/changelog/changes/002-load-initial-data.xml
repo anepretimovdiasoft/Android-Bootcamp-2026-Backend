@@ -15,6 +15,7 @@
             <column name="id" type="NUMERIC"/>
             <column name="email" type="STRING"/>
             <column name="password" type="STRING"/>
+            <column name="role" type="STRING"/>
             <column name="created_at" type="TIMESTAMP"/>
         </loadData>
     </changeSet>

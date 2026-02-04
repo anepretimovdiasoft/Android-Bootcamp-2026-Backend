@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.service
 
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.sicampus.bootcamp2026.dto.InvitationCreateDto
@@ -10,6 +11,7 @@ import ru.sicampus.bootcamp2026.entity.InvitationStatus
 import ru.sicampus.bootcamp2026.repository.InvitationRepository
 import ru.sicampus.bootcamp2026.repository.MeetingRepository
 import ru.sicampus.bootcamp2026.repository.UserRepository
+import ru.sicampus.bootcamp2026.security.SecurityUtils
 import java.util.*
 
 @Service
@@ -24,60 +26,93 @@ class InvitationService(
         userId: Long? = null,
         status: InvitationStatus? = null
     ): List<InvitationResponseDto> {
-        return when {
-            meetingId != null && userId != null && status != null -> {
+        val currentUser = SecurityUtils.getCurrentUser(userRepository)
+        val isAdmin = SecurityUtils.isAdmin(currentUser)
+        
+        userId?.let { 
+            SecurityUtils.requireOwnershipOrAdmin(currentUser, it)
+        }
+        
+        meetingId?.let {
+            val meeting = meetingRepository.findById(it)
+                .orElseThrow { NoSuchElementException("Meeting with id $it not found") }
+            SecurityUtils.requireOwnershipOrAdmin(currentUser, meeting.organizer.id)
+        }
+        
+        val effectiveUserId = if (isAdmin) userId else (userId ?: currentUser.id)
+        
+        val invitations = when {
+            meetingId != null && effectiveUserId != null && status != null -> {
                 invitationRepository.findByMeetingId(meetingId)
-                    .filter { it.user.id == userId && it.status == status }
-                    .map { it.toResponseDto() }
+                    .filter { it.user.id == effectiveUserId && it.status == status }
             }
-            meetingId != null && userId != null -> {
-                invitationRepository.findByMeetingIdAndUserId(meetingId, userId)
-                    .map { it.toResponseDto() }
+            meetingId != null && effectiveUserId != null -> {
+                invitationRepository.findByMeetingIdAndUserId(meetingId, effectiveUserId)
             }
             meetingId != null && status != null -> {
                 invitationRepository.findByMeetingId(meetingId)
                     .filter { it.status == status }
-                    .map { it.toResponseDto() }
             }
-            userId != null && status != null -> {
-                invitationRepository.findByUserId(userId)
+            effectiveUserId != null && status != null -> {
+                invitationRepository.findByUserId(effectiveUserId)
                     .filter { it.status == status }
-                    .map { it.toResponseDto() }
             }
             meetingId != null -> {
-                invitationRepository.findByMeetingId(meetingId).map { it.toResponseDto() }
+                invitationRepository.findByMeetingId(meetingId)
             }
-            userId != null -> {
-                invitationRepository.findByUserId(userId).map { it.toResponseDto() }
+            effectiveUserId != null -> {
+                invitationRepository.findByUserId(effectiveUserId)
             }
             status != null -> {
-                invitationRepository.findByStatus(status).map { it.toResponseDto() }
+                if (isAdmin) {
+                    invitationRepository.findByStatus(status)
+                } else {
+                    invitationRepository.findByUserId(currentUser.id)
+                        .filter { it.status == status }
+                }
             }
             else -> {
-                invitationRepository.findAll().map { it.toResponseDto() }
+                if (isAdmin) {
+                    invitationRepository.findAll()
+                } else {
+                    invitationRepository.findByUserId(currentUser.id)
+                }
             }
         }
+        
+        return invitations.map { it.toResponseDto() }
     }
 
     fun getInvitationById(id: Long): InvitationResponseDto {
+        val currentUser = SecurityUtils.getCurrentUser(userRepository)
         val invitation = invitationRepository.findById(id)
             .orElseThrow { NoSuchElementException("Invitation with id $id not found") }
+        
+        if (
+            currentUser.role.name != "ADMIN" 
+            && invitation.user.id != currentUser.id 
+            && invitation.meeting.organizer.id != currentUser.id
+        ) {
+            throw AccessDeniedException("Access denied")
+        }
+        
         return invitation.toResponseDto()
     }
 
     fun createInvitation(dto: InvitationCreateDto): InvitationResponseDto {
+        val currentUser = SecurityUtils.getCurrentUser(userRepository)
         val meeting = meetingRepository.findById(dto.meetingId)
             .orElseThrow { NoSuchElementException("Meeting with id ${dto.meetingId} not found") }
+        
+        SecurityUtils.requireOwnershipOrAdmin(currentUser, meeting.organizer.id)
         
         val user = userRepository.findById(dto.userId)
             .orElseThrow { NoSuchElementException("User with id ${dto.userId} not found") }
         
-        // Проверка, что пользователь не является организатором встречи
         if (meeting.organizer.id == dto.userId) {
             throw IllegalArgumentException("Organizer cannot be invited to their own meeting")
         }
         
-        // Проверка, что приглашение еще не существует
         val existingInvitations = invitationRepository.findByMeetingIdAndUserId(dto.meetingId, dto.userId)
         if (existingInvitations.isNotEmpty()) {
             throw IllegalArgumentException("Invitation for user ${dto.userId} to meeting ${dto.meetingId} already exists")
@@ -92,8 +127,11 @@ class InvitationService(
     }
 
     fun updateInvitation(id: Long, dto: InvitationUpdateDto): InvitationResponseDto {
+        val currentUser = SecurityUtils.getCurrentUser(userRepository)
         val invitation = invitationRepository.findById(id)
             .orElseThrow { NoSuchElementException("Invitation with id $id not found") }
+        
+        SecurityUtils.requireOwnershipOrAdmin(currentUser, invitation.user.id)
         
         invitation.status = dto.status
         

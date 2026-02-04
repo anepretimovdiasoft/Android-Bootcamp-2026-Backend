@@ -3,6 +3,11 @@ package ru.sicampus.bootcamp2026.entity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
+enum class UserRole {
+    USER,
+    ADMIN
+}
+
 @Entity
 @Table(name = "users")
 class User(
@@ -15,6 +20,10 @@ class User(
 
     @Column(nullable = false)
     var password: String,
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var role: UserRole = UserRole.USER,
 
     @Column(name = "created_at", nullable = false, updatable = false)
     val createdAt: LocalDateTime = LocalDateTime.now()
