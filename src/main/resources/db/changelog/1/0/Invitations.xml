@@ -12,7 +12,7 @@
             <column name="Booking_id" type="BIGINT">
                 <constraints nullable="true" references="Booking(id)" foreignKeyName="fk_Invitations_Booking"/>
             </column>
-            <column name="Employee_id" type="BIGINT">
+            <column name="Employee_created" type="BIGINT">
                 <constraints nullable="true" references="Employee(id)" foreignKeyName="fk_Invitations_Employee"/>
             </column>
         </createTable>
