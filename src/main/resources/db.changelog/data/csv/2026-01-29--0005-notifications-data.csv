@@ -1,0 +1,2 @@
+id;user_id;meeting_id;type;title;message;is_read
+1;2;1;INVITATION;New Meeting Invitation;You have been invited to Weekly Sync;false

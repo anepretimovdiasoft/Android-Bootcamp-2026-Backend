@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="db.changelog/1.0/2026-01-28--0001-department.xml"/>
+    <include file="db.changelog/1.0/2026-01-28--0002-person.xml"/>
+
+
+    <include file="db.changelog/data/2026-01-28--0001-department-data.xml"/>
+    <include file="db.changelog/data/2026-01-28--0002-person-data.xml"/>
+
+    <include file="db.changelog/2.0/2026-01-29--0001-users.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0002-rooms.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0003-meetings.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0004-invitations.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0005-notifications.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0006-calendar_blocks.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0007-meeting_templates.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0008-company_settings.xml"/>
+
+    <include file="db.changelog/data/2026-01-29--0001-users-data.xml"/>
+    <include file="db.changelog/data/2026-01-29--0002-rooms-data.xml"/>
+    <include file="db.changelog/data/2026-01-29--0003-meetings-data.xml"/>
+    <include file="db.changelog/data/2026-01-29--0004-invitations-data.xml"/>
+    <include file="db.changelog/data/2026-01-29--0005-notifications-data.xml"/>
+    <include file="db.changelog/data/2026-01-29--0006-calendar_blocks-data.xml"/>
+    <include file="db.changelog/data/2026-01-29--0007-meeting_templates-data.xml"/>
+    <include file="db.changelog/data/2026-01-29--0008-company_settings-data.xml"/>
+</databaseChangeLog>

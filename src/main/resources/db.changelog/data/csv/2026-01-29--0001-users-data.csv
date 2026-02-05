@@ -1,0 +1,3 @@
+id;email;password_hash;full_name;position;department;role;work_hours_start;work_hours_end;is_active
+1;admin@example.com;1234;Admin User;Administrator;Management;ADMIN;09:00:00;18:00:00;true
+2;user@example.com;123;Regular User;Developer;IT;USER;09:00:00;18:00:00;true

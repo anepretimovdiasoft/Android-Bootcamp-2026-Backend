@@ -1,0 +1,3 @@
+id;name;default_duration_hours;default_priority;is_company_template
+1;Standard Meeting;1;MEDIUM;true
+2;Daily Standup;15;LOW;true

@@ -1,0 +1,2 @@
+id;user_id;title;start_time;end_time;block_type;is_recurring
+1;2;Lunch;2026-02-01 13:00:00;2026-02-01 14:00:00;BUSY;true

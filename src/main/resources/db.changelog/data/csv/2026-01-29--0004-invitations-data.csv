@@ -1,0 +1,3 @@
+id;meeting_id;user_id;response_status;is_required
+1;1;2;PENDING;true
+2;2;2;ACCEPTED;true

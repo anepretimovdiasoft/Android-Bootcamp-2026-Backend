@@ -1,0 +1,3 @@
+id;name;description;capacity;equipment;is_active
+1;Main Conference Room;Large room with projector;20;Projector,Whiteboard,Video Conf;true
+2;Huddle Room;Small room for quick syncs;4;TV;true

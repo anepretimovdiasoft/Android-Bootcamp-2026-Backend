@@ -1,0 +1,3 @@
+id;setting_key;setting_value;setting_type;category;is_editable
+1;company_name;Example Corp;STRING;GENERAL;true
+2;max_meeting_duration;4;INTEGER;MEETING;true
