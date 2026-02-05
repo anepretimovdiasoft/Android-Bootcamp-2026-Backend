@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="001-create-schema" author="rodion">
+        <sql dbms="postgresql" stripComments="true">
+            CREATE TYPE meeting_status AS ENUM ('scheduled', 'cancelled', 'completed');
+        </sql>
+        <rollback>
+            <sql dbms="postgresql">
+                DROP TYPE IF EXISTS meeting_status;
+            </sql>
+        </rollback>
+
+        <createTable tableName="users" remarks="Таблица пользователей">
+            <column name="id" type="uuid" remarks="Уникальный ID пользователя">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_users"/>
+            </column>
+            <column name="username" type="varchar(50)" remarks="Имя пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)" remarks="Email пользователя">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_email"/>
+            </column>
+            <column name="hashed_password" type="varchar(255)" remarks="Хэш пароля">
+                <constraints nullable="false"/>
+            </column>
+            <column name="avatar_url" type="varchar(2048)" remarks="URL аватара пользователя"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="users" cascadeConstraints="true"/>
+        </rollback>
+
+        <createTable tableName="refresh_tokens" remarks="Таблица refresh токенов">
+            <column name="id" type="uuid" remarks="Уникальный ID токена">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_refresh_tokens"/>
+            </column>
+            <column name="token" type="text" remarks="Refresh токен">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_version" type="bigint" defaultValueNumeric="1" remarks="Версия токена">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="timestamptz" remarks="Время истечения токена">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP" remarks="Время создания токена">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revoked" type="boolean" defaultValueBoolean="false" remarks="Флаг отозванного токена">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="uuid" remarks="ID пользователя">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="refresh_tokens" cascadeConstraints="true"/>
+        </rollback>
+
+        <createTable tableName="meetings" remarks="Таблица встреч">
+            <column name="id" type="uuid" remarks="Уникальный ID встречи">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_meetings"/>
+            </column>
+            <column name="organizer_id" type="uuid" remarks="ID организатора встречи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar" remarks="Название встречи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="body" type="varchar" remarks="Описание встречи"/>
+            <column name="location" type="varchar(2048)" remarks="Местоположение"/>
+            <column name="start_time" type="timestamptz" remarks="Время начала встречи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="timestamptz" remarks="Время окончания встречи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="meeting_status" defaultValue="scheduled" remarks="Статус встречи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP" remarks="Время создания записи"/>
+            <column name="updated_at" type="timestamptz" remarks="Время последнего обновления записи"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="meetings" cascadeConstraints="true"/>
+        </rollback>
+
+        <createTable tableName="meeting_participants" remarks="Таблица участников встреч">
+            <column name="meeting_id" type="uuid" remarks="ID встречи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="uuid" remarks="ID пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="boolean" remarks="Статус участия"/>
+        </createTable>
+
+        <addPrimaryKey tableName="meeting_participants"
+                       columnNames="meeting_id, user_id"
+                       constraintName="pk_meeting_participants"/>
+        <rollback>
+            <dropTable tableName="meeting_participants" cascadeConstraints="true"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

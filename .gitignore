@@ -9,6 +9,12 @@ target/
 *.iml
 *.ipr
 
+# Build artifacts
+*.jar
+*.war
+*.ear
+*.class
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -31,5 +37,24 @@ build/
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
+### OS ###
 .DS_Store
+.PVS-Studio
+
+# Private keys, credentials and env files (do NOT commit private keys)
+/src/main/resources/keys/
+**/keys/
+*.pem
+*.key
+*.p12
+*.jks
+.env
+.env.*
+*.env
+
+# Logs
+logs/
+*.log
+
+# Maven wrapper jar should remain tracked
+!.mvn/wrapper/maven-wrapper.jar

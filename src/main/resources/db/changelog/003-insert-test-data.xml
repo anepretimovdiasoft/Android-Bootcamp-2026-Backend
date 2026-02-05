@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="003-insert-test-data" author="rodion" context="test">
+        <loadData tableName="users"
+                  file="db/data/users.csv"
+                  encoding="UTF-8">
+            <column name="id" type="uuid"/>
+            <column name="username" type="string"/>
+            <column name="email" type="string"/>
+            <column name="hashed_password" type="string"/>
+            <column name="avatar_url" type="string"/>
+        </loadData>
+        <rollback>
+            <delete tableName="users"/>
+        </rollback>
+
+        <loadData tableName="refresh_tokens"
+                  file="db/data/refresh_tokens.csv"
+                  encoding="UTF-8">
+            <column name="id" type="uuid"/>
+            <column name="token" type="string"/>
+            <column name="token_version" type="numeric"/>
+            <column name="expires_at" type="datetime"/>
+            <column name="created_at" type="datetime"/>
+            <column name="revoked" type="boolean"/>
+            <column name="user_id" type="uuid"/>
+        </loadData>
+        <rollback>
+            <delete tableName="refresh_tokens"/>
+        </rollback>
+
+        <loadData tableName="meetings"
+                  file="db/data/meetings.csv"
+                  encoding="UTF-8">
+            <column name="id" type="uuid"/>
+            <column name="organizer_id" type="uuid"/>
+            <column name="title" type="string"/>
+            <column name="body" type="string"/>
+            <column name="location" type="string"/>
+            <column name="start_time" type="datetime"/>
+            <column name="end_time" type="datetime"/>
+            <column name="status" type="string"/>
+            <column name="created_at" type="datetime"/>
+            <column name="updated_at" type="datetime"/>
+        </loadData>
+        <rollback>
+            <delete tableName="meetings"/>
+        </rollback>
+
+        <loadData tableName="meeting_participants"
+                  file="db/data/meeting_participants.csv"
+                  encoding="UTF-8">
+            <column name="meeting_id" type="uuid"/>
+            <column name="user_id" type="uuid"/>
+            <column name="status" type="boolean"/>
+        </loadData>
+        <rollback>
+            <delete tableName="meeting_participants"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

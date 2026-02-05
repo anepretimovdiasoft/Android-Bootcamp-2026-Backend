@@ -1,0 +1,6 @@
+id,username,email,hashed_password,avatar_url
+550e8400-e29b-41d4-a716-446655440000,john_doe,john@example.com,$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy,https://example.com/avatars/john.jpg
+550e8400-e29b-41d4-a716-446655440001,jane_smith,jane@example.com,$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy,https://example.com/avatars/jane.jpg
+550e8400-e29b-41d4-a716-446655440002,bob_johnson,bob@example.com,$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy,https://example.com/avatars/bob.jpg
+550e8400-e29b-41d4-a716-446655440003,alice_williams,alice@example.com,$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy,https://example.com/avatars/alice.jpg
+550e8400-e29b-41d4-a716-446655440004,carl_brown,carl@example.com,$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy,https://example.com/avatars/carl.jpg
