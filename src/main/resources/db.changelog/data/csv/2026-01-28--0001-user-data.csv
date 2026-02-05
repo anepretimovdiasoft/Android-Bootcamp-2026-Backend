@@ -1,6 +1,4 @@
-full_name;email;phone_number;position
-Иванов Иван Иванович;ivanov@example.com;+79161234567;Менеджер проектов
-Петрова Анна Сергеевна;petrova@company.ru;+79261234568;Старший разработчик
-Сидоров Алексей Петрович;alex.sidorov@mail.com;+79031234569;Аналитик данных
-Козлова Мария Владимировна;m.kozlov@firma.org;+79501234570;Дизайнер UX/UI
-Григорьев Дмитрий Олегович;d.grig@business.com;+79991234571;Тестировщик
+id;email;full_name;phone_number;photo_url;position;username;password
+1;admin@example.com;Администратор Системы;+79160000001;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg;Системный администратор;admin;$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
+2;user1@example.com;Иванов Иван Иванович;+79161234567;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg;Менеджер проектов;ivanov;$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
+3;user2@example.com;Петрова Анна Сергеевна;+79261234568;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg;Старший разработчик;petrova;$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a

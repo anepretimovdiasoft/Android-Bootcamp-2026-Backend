@@ -3,11 +3,25 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
     <changeSet id="2026-01-28--0001-user-data" author="Yiman">
-        <loadData tableName="user" file="db.changelog/data/csv/2026-01-28--0001-user-data.csv"
-                  separator=";"
-                  quotchar='"'
-                  encoding="UTF-8"/>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user"/>
+        </preConditions>
+
+        <loadData
+                file="db.changelog/data/csv/2026-01-28--0001-user-data.csv"
+                separator=";"
+                tableName="user">
+            <column name="id" type="NUMERIC"/>
+            <column name="email" type="STRING"/>
+            <column name="full_name" type="STRING"/>
+            <column name="phone_number" type="STRING"/>
+            <column name="photo_url" type="STRING"/>
+            <column name="position" type="STRING"/>
+            <column name="username" type="STRING"/>
+            <column name="password" type="STRING"/>
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>

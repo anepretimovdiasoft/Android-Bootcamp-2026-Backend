@@ -15,16 +15,21 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="full_name" type="VARCHAR(100)">
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="VARCHAR(50)">
+            <column name="phone_number" type="VARCHAR(255)"/>
+            <column name="photo_url" type="VARCHAR(100)"/>
+            <column name="position" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(100)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="phone_number" type="VARCHAR(25)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="position" type="VARCHAR(50)">
+            <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

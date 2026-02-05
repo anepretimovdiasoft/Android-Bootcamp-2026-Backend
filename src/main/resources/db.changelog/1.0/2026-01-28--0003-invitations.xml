@@ -6,6 +6,8 @@
 
     <changeSet id="2026-01-28--0003-invitations" author="Yiman">
         <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user"/>
+            <tableExists tableName="meetings"/>
             <not>
                 <tableExists tableName="invitations"/>
             </not>
@@ -16,15 +18,26 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="meet_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_invitations_meet"
-                             referencedTableName="meet"
-                             referencedColumnNames="id"/>
+                <constraints nullable="false"
+                             foreignKeyName="fk_invitations_meet"
+                             referencedTableName="meetings"
+                             referencedColumnNames="id"
+                             deleteCascade="true"/>
             </column>
             <column name="user_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_invitations_user"
+                <constraints nullable="false"
+                             foreignKeyName="fk_invitations_user"
                              referencedTableName="user"
-                             referencedColumnNames="id"/>
+                             referencedColumnNames="id"
+                             deleteCascade="true"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
+
 </databaseChangeLog>

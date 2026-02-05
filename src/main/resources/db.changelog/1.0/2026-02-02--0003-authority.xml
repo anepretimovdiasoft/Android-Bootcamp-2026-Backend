@@ -4,26 +4,19 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="2026-01-28--0002-meet" author="Yiman">
+    <changeSet id="2026-02-02--0003-authority" author="Yiman">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="meetings"/>
+                <tableExists tableName="authorities"/>
             </not>
         </preConditions>
 
-        <createTable tableName="meetings">
+        <createTable tableName="authorities">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="title" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="description" type="TEXT"/>
-            <column name="meet_date" type="DATE">
-                <constraints nullable="false"/>
-            </column>
-            <column name="meet_time" type="TIME">
-                <constraints nullable="false"/>
+            <column name="authority" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>
