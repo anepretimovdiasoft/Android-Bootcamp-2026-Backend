@@ -1,17 +1,15 @@
 package ru.sicampus.bootcamp2026.service;
 
 import ru.sicampus.bootcamp2026.dto.InvitationDto;
+import ru.sicampus.bootcamp2026.enums.InvitationStatus;
 
 import java.util.List;
 
 public interface InvitationService {
-    List<InvitationDto> getAllInvitation();
+    List<InvitationDto> getMyInvitations(Long currentUserId);
 
-    InvitationDto getInvitationById(Long id);
+    void respondToInvitation(Long invitationId, InvitationStatus status, Long currentUserId);
 
-    InvitationDto createInvitationD(InvitationDto dto);
+    List<InvitationDto> getMeetingInvitations(Long meetingId, Long organizerId);
 
-    InvitationDto updateInvitation(Long id, InvitationDto dto);
-
-    void deleteInvitation(Long id);
 }

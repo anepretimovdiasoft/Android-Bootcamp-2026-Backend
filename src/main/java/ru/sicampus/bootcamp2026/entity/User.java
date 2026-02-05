@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,15 +51,11 @@ public class User {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
-    private List<Meeting> sentInvitations;
+    private List<Meeting> sentInvitations = new ArrayList<>();
 
     @ToString.Exclude
     @OneToMany(mappedBy = "invitee")
-    private List<Invitation> receivedInvitations;
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "organizer")
-    private List<Meeting> organizedMeetings;
+    private List<Invitation> receivedInvitations = new ArrayList<>();
 
     @Override
     public final boolean equals(Object o) {

@@ -15,7 +15,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="position" type="varchar(100)">
-                <constraints nullable="false" unique="false" notNullConstraintName="position_not_null"/>
+                <constraints nullable="false" unique="true" notNullConstraintName="position_not_null"/>
             </column>
         </createTable>
     </changeSet>
