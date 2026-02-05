@@ -14,6 +14,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @EntityGraph(attributePaths = {"authorities"})
     Employee findByUsername(String username);
     boolean existsByUsernameOrEmailOrPhoneNumber(String username, String email, String phoneNumber);
+    boolean existsByEmailOrPhoneNumber(String email, String phoneNumber);
     Page<Employee> findByNameContainsIgnoreCase(String name, Pageable pageable);
     List<Employee> findByNameContainsIgnoreCase(String name);
 }

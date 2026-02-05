@@ -51,6 +51,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO editEmployee(EmployeeEditDTO employeeEditDTO, String username) {
         Employee employee = employeeRepository.findByUsername(username);
+        if(employeeRepository.existsByEmailOrPhoneNumber(employeeEditDTO.getEmail(), employeeEditDTO.getPhoneNumber())) {
+            throw new EmployeeAlreadyExistsException("Employee with the same credentials is already registered");
+        }
         String name = employeeEditDTO.getName();
         String position = employeeEditDTO.getPosition();
         String email = employeeEditDTO.getEmail();
