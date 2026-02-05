@@ -4,14 +4,7 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <include file="db/changelog/1/0/Avatar.xml"/>
-    <include file="db/changelog/1/0/Employee.xml"/>
-    <include file="db/changelog/1/0/Booking.xml"/>
-    <include file="db/changelog/1/0/Contact.xml"/>
-    <include file="db/changelog/1/0/Invitations.xml"/>
-    <include file="db/changelog/1/0/Invited.xml"/>
-    <include file="db/changelog/data/avatar--data.xml"/>
-    <include file="db/changelog/data/employee-data.xml"/>
-    <include file="db/changelog/data/booking-data.xml"/>
-    <include file="db/changelog/data/contact-data.xml"/>
+    <changeSet id="2026-02-03--09" author="Dmitry">
+        <loadData tableName="Avatar" file="db/changelog/data/csv/Avatar.csv" encoding="UTF-8" separator=";" quotchar='"'/>
+    </changeSet>
 </databaseChangeLog>

@@ -21,8 +21,8 @@
             <column name="mail" type="VARCHAR(100)">
                 <constraints nullable="true" unique="true"/>
             </column>
-            <column name="avatar" type="VARCHAR(255)" defaultValue="https://i.pinimg.com/originals/7d/be/d9/7dbed90655c6d7de0f4d01eb01b9cbe1.jpg?nii=t">
-                <constraints nullable="false" unique="false"/>
+            <column name="Avatar_id" type="BIGINT" defaultValue="1" >
+                <constraints nullable="false" unique="false" references="Avatar(id)" foreignKeyName="fk_Avatar_Employee"/>
             </column>
             <column name="age" type="BIGINT" >
                 <constraints nullable="false" unique="false" checkConstraint="age>=18"/>
