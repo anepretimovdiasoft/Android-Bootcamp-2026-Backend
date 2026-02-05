@@ -33,17 +33,17 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public InvitationDTO createInvitation(InvitationCreateDTO invitationCreateDTO, String username) {
         Meeting meeting = meetingRepository.findByIdAndOwner_Username(invitationCreateDTO.getMeetingId(), username);
-        Employee emp = employeeRepository.findById(invitationCreateDTO.getEmployeeId()).orElse(null);
+        Employee emp = employeeRepository.findByUsername(invitationCreateDTO.getEmployeeUsername());
         if(meeting == null) {
             throw new MeetingNotFoundExeception("Meeting not found");
         }
         if(emp == null) {
             throw new EmployeeNotFoundException("Employee not found");
         }
-        if(invitationRepository.existsByMeeting_IdAndEmployee_Id(invitationCreateDTO.getMeetingId(), invitationCreateDTO.getEmployeeId())) {
+        if(invitationRepository.existsByMeeting_IdAndEmployee_Username(invitationCreateDTO.getMeetingId(), invitationCreateDTO.getEmployeeUsername())) {
             throw new InvitationAlreadyExistsException("Invitation already exists");
         }
-        if(invitationRepository.existsByMeeting_StartTimeAndEmployee_IdAndStatus(meeting.getStartTime(), invitationCreateDTO.getEmployeeId(), "ACCEPTED")) {
+        if(invitationRepository.existsByMeeting_StartTimeAndEmployee_UsernameAndStatus(meeting.getStartTime(), invitationCreateDTO.getEmployeeUsername(), "ACCEPTED")) {
             throw new InvalidMeetingDateException("Employee is busy at this time");
         }
 
