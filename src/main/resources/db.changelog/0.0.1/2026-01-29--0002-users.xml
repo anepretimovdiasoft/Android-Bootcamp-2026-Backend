@@ -18,7 +18,7 @@
             <column name="email" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="password" type="VARCHAR(255)">
+            <column name="password" type="VARCHAR(80)">
                 <constraints nullable="false"/>
             </column>
             <column name="first_name" type="VARCHAR(20)">
@@ -27,6 +27,7 @@
             <column name="second_name" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="description" type="VARCHAR(140)"/>
             <column name="position" type="VARCHAR(30)"/>
             <column name="department" type="VARCHAR(30)"/>
             <column name="photo_url" type="VARCHAR(255)" defaultValue="https://catalog-cdn.detmir.st/media/2fe02057f9915e72a378795d32c79ea9.jpeg">

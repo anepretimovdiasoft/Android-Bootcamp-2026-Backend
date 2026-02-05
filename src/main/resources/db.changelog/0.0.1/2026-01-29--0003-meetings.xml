@@ -15,13 +15,13 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
-            <column name="title" type="VARCHAR(100)">
+            <column name="title" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="address" type="VARCHAR(300)">
+            <column name="address" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(500)"/>
+            <column name="description" type="VARCHAR(140)"/>
 
             <column name="organizer_id" type="BIGINT">
                 <constraints
