@@ -1,5 +1,5 @@
-id,email,full_name,avatar_url,password_hash,created_at,updated_at
-1,ivan.petrov@company.ru,Иван Петров,https://example.com/avatars/ivan.png,hash1,2026-01-01T09:00:00,2026-01-01T09:00:00
-2,petrov.ivan@company.ru,Петр Иванов,,hash2,2026-01-01T09:05:00,2026-01-01T09:05:00
-3,sergey.ivanov@company.ru,Сергей Иванов,,hash3,2026-01-01T09:10:00,2026-01-01T09:10:00
-4,ivan.sergeev@company.ru,Иван Сергеев,,hash4,2026-01-01T09:15:00,2026-01-01T09:15:00
+email,full_name,avatar_url,password_hash,created_at,updated_at
+ivan.petrov@company.ru,Иван Петров,https://example.com/avatars/ivan.png,hash1,2026-01-01T09:00:00,2026-01-01T09:00:00
+petrov.ivan@company.ru,Петр Иванов,,hash2,2026-01-01T09:05:00,2026-01-01T09:05:00
+sergey.ivanov@company.ru,Сергей Иванов,,hash3,2026-01-01T09:10:00,2026-01-01T09:10:00
+ivan.sergeev@company.ru,Иван Сергеев,,hash4,2026-01-01T09:15:00,2026-01-01T09:15:00
