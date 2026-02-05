@@ -1,0 +1,3 @@
+name;email;password_hash;department_id
+Алексей Иванов;alex@company.com;123;1
+Елена Петрова;elena@company.com;123;2
