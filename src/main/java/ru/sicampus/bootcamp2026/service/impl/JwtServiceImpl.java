@@ -44,10 +44,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateAccessToken(User user, RefreshToken refreshToken) {
-        Instant now = Instant.now();
-        Instant expiration = now.plusMillis(jwtConfig.getAccessTokenExpirationMs());
-
+    public String generateAccessToken(User user, RefreshToken refreshToken, Instant now, Instant expiration) {
         return Jwts.builder()
                 .setSubject(String.valueOf(user.getId()))
                 .claim("role", user.getRole())

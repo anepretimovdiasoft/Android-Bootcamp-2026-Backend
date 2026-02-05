@@ -1,25 +1,59 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.sicampus.bootcamp2026.config.JwtConfig;
+import ru.sicampus.bootcamp2026.dto.mapper.UserMapper;
 import ru.sicampus.bootcamp2026.dto.request.LoginRequest;
 import ru.sicampus.bootcamp2026.dto.request.RegisterRequest;
 import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
+import ru.sicampus.bootcamp2026.model.RefreshToken;
+import ru.sicampus.bootcamp2026.model.Role;
+import ru.sicampus.bootcamp2026.model.User;
+import ru.sicampus.bootcamp2026.repository.RefreshTokenRepository;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.AuthService;
-
+import java.time.Instant;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    final private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtServiceImpl jwtServiceImpl;
+    private final JwtConfig jwtConfig;
+
 
     @Override
     public AuthResponse register(RegisterRequest request) {
+        User user = userMapper.fromRegisterRequest(request);
+        user.setHashedPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.USER);
+        userRepository.save(user);
 
-        throw new UnsupportedOperationException("Метод register еще не реализован");
+        int tokenVersion = 0;
+        Instant now = Instant.now();
+        Instant refreshExpiration = now.plusMillis(jwtConfig.getRefreshTokenExpirationMs());
+        Instant accessExpiration = now.plusMillis(jwtConfig.getAccessTokenExpirationMs());
+        RefreshToken refreshToken = RefreshToken.builder()
+                .user(user)
+                .tokenVersion(tokenVersion)
+                .token(jwtServiceImpl.generateRefreshToken(user, now, refreshExpiration))
+                .expiresAt(refreshExpiration)
+                .build();
+        refreshTokenRepository.save(refreshToken);
+
+        String accessToken = jwtServiceImpl.generateAccessToken(user, refreshToken, now, accessExpiration);
+        log.info("User registerd with id {}" + user.getId());
+        return userMapper.toAuthResponse(user, accessToken, refreshToken.getToken(), accessExpiration, refreshExpiration);
+
     }
 
     @Override

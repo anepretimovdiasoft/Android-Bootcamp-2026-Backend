@@ -10,6 +10,8 @@ import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
 import ru.sicampus.bootcamp2026.dto.response.UserProfileResponse;
 import ru.sicampus.bootcamp2026.model.User;
 
+import java.time.Instant;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -21,11 +23,11 @@ public interface UserMapper {
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "username", source = "user.username")
     @Mapping(target = "email", source = "user.email")
-    AuthResponse toAuthResponse(User user, String accessToken, String refreshToken, Long expiresIn);
+    AuthResponse toAuthResponse(User user, String accessToken, String refreshToken, Instant accessTokenExpiresAt, Instant refreshTokenExpiresAt);
 
     // Подготовка объекта User до хеширования пароля и сохранения в БД.
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "hashedPassword", source = "password")
+    @Mapping(target = "hashedPassword", ignore = true)
     @Mapping(target = "avatar_url", ignore = true)
     @Mapping(target = "role", ignore = true)
     User fromRegisterRequest(RegisterRequest req);

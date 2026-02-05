@@ -31,7 +31,7 @@ public class Meeting {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY) // У одного пользователя может быть множество встреч
-    @JoinColumn(name = "organizer_id_id")
+    @JoinColumn(name = "organizer_id")
     private User organizer_id;
 
     @NotBlank

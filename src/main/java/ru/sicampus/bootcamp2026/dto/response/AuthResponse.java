@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -12,11 +13,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthResponse {
-
     private UUID userId;
     private String username;
     private String email;
     private String accessToken;
     private String refreshToken;
-    private Long expiresIn;
+    private Instant accessTokenExpiresAt;
+    private Instant refreshTokenExpiresAt;
 }

@@ -34,7 +34,7 @@ public class RefreshToken {
     private String token;
 
     @Column(name= "token_version", nullable = false)
-    private long tokenVersion = 1;
+    private long tokenVersion;
 
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;
