@@ -2,8 +2,6 @@ package ru.sicampus.bootcamp2026.exception;
 
 import lombok.Getter;
 
-import java.util.Map;
-
 @Getter
 public class UserExistsException extends BaseException {
     private final String email;

@@ -4,12 +4,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.request.UserCreateDTO;
 import ru.sicampus.bootcamp2026.dto.request.UserUpdateDTO;
 import ru.sicampus.bootcamp2026.dto.response.UserResponseDTO;
+import ru.sicampus.bootcamp2026.entity.User;
 import ru.sicampus.bootcamp2026.exception.UserExistsException;
 import ru.sicampus.bootcamp2026.exception.UserNotFoundException;
+import ru.sicampus.bootcamp2026.mapper.UserMapper;
 import ru.sicampus.bootcamp2026.service.UserService;
 
 import java.util.List;
@@ -23,6 +27,12 @@ public class UserController {
     @GetMapping
     public List<UserResponseDTO> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> getCurrentUser(@AuthenticationPrincipal User user) {
+        // user уже загружен Spring Security
+        return ResponseEntity.ok(UserMapper.convertToDto(user));
     }
 
     @GetMapping("/{id}")

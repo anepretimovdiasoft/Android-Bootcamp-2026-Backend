@@ -38,8 +38,11 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/api/user/register").permitAll()
-                                .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers("/api/v1/user/register").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/user/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/invitation/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )

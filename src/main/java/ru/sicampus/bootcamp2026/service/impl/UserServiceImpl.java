@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.request.UserCreateDTO;
 import ru.sicampus.bootcamp2026.dto.response.UserResponseDTO;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
+    private final PasswordEncoder encoder;
 
     @Override
     public List<UserResponseDTO> getAllUsers() {
@@ -35,6 +37,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponseDTO getUserByEmail(String email) throws UserNotFoundException {
+        return repository.findByEmail(email)
+                .map(UserMapper::convertToDto)
+                .orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    @Override
     public UserResponseDTO createUser(UserCreateDTO dto) throws UserExistsException {
         var user = repository.findByEmail(dto.getEmail());
         if (user.isPresent()) {
@@ -44,7 +53,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.convertToDto(repository.save(new User(
                 dto.getEmail(),
                 dto.getFullName(),
-                dto.getPassword()
+                encoder.encode(dto.getPassword())
         )));
     }
 

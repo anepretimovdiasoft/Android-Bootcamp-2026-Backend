@@ -9,7 +9,7 @@ public class UserNotFoundException extends BaseException {
     private final Long userId;
     private final String email;
 
-    public UserNotFoundException(Long userId) {
+    public UserNotFoundException(long userId) {
         super(
                 ErrorCode.USER_NOT_FOUND,
                 String.format("User with id=%d not found", userId),

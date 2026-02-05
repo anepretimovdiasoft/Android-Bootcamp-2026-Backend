@@ -1,14 +1,19 @@
 package ru.sicampus.bootcamp2026.dto.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import ru.sicampus.bootcamp2026.entity.InvitationStatus;
 
 import java.time.Instant;
 
-public class InvitationDTO {
+@AllArgsConstructor
+@Data
+public class InvitationResponseDTO {
     private long id;
-    private MeetingDTO meeting;
-    private UserResponseDTO user;
     private InvitationStatus status;
+
     private Instant createdAt;
     private Instant respondedAt;
+
+    private MeetingResponseDTO meeting;
 }
