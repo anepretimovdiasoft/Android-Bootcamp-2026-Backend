@@ -34,7 +34,7 @@
                              referencedColumnNames="id"/>
             </column>
 
-            <column name="status" type="BOOLEAN">
+            <column name="status" type="VARCHAR(10)">
                 <constraints nullable="true" unique="false" />
             </column>
         </createTable>
