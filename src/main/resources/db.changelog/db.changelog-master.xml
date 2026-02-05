@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+    <include file="db.changelog/1.0/2026-01-28--0001-positions.xml"/>
+    <include file="db.changelog/1.0/2026-28-01--0002-users.xml"/>
+    <include file="db.changelog/1.0/2026-28-01--0003-meetings.xml"/>
+    <include file="db.changelog/1.0/2026-28-01--0004-invitations.xml"/>
+
+    <include file="db.changelog/1.1/2026-01-02--0001-invitations.xml"/>
+    <include file="db.changelog/1.1/2026-01-02--0002-users.xml"/>
+    <include file="db.changelog/1.1/2026-01-02--0003-meetings.xml"/>
+
+    <include file="db.changelog/data/2026-01-28--0001-positions-data.xml"/>
+    <include file="db.changelog/data/2026-28-01--0002-users-data.xml"/>
+    <include file="db.changelog/data/2026-28-01--0003-meetings-data.xml"/>
+    <include file="db.changelog/data/2026-28-01--0004-invitations-data.xml"/>
+
+</databaseChangeLog>

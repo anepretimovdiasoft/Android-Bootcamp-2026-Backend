@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+<changeSet id="2026-28-01--0003-meetings" author="alikhodievskii">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <tableExists tableName="meetings"/>
+        </not>
+    </preConditions>
+    <createTable tableName="meetings">
+        <column name="id" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="organizer_id" type="bigint">
+            <constraints nullable="false" notNullConstraintName="organizer_id_not_null"
+                         foreignKeyName="fk_users_meetings"
+                         referencedTableName="users"
+                         referencedColumnNames="id"
+            />
+        </column>
+        <column name="title" type="varchar(100)">
+            <constraints nullable="false" notNullConstraintName="title_not_null"/>
+        </column>
+        <column name="start_at" type="datetime">
+            <constraints nullable="false" notNullConstraintName="meeting_start_time_not_null"/>
+        </column>
+        <column name="end_at" type="datetime">
+            <constraints nullable="false" notNullConstraintName="meeting_end_time_not_null"/>
+        </column>
+        <column name="type" type="varchar">
+            <constraints nullable="false" notNullConstraintName="meeting_type_not_null"/>
+        </column>
+        <column name="description" type="text">
+            <constraints nullable="true"/>
+        </column>
+        <column name="location" type="varchar">
+            <constraints nullable="true"/>
+        </column>
+    </createTable>
+</changeSet>
+</databaseChangeLog>
