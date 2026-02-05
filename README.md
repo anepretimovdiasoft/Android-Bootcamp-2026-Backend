@@ -114,3 +114,37 @@ UI обновляется с новыми данными
   * Реализовать получение приглашения
   * Обеспечить возможность принять или отклонить приглашение
 
+## Схема БД
+
+Table meetings {
+  id integer [primary key]
+  date date
+  start_time time
+  end_time time
+  organizer integer [not null]
+  participants integer[]
+  responses_to_invitations bool[]
+}
+
+Table users {
+  id integer [primary key]
+  username varchar
+  role varchar
+  avatar_link text
+  email varchar
+}
+
+Table invitations {
+  id integer [primary key]
+  user_id integer
+  meeting_id integer
+  response bool
+}
+
+Ref organizer: meetings.organizer < users.id
+
+Ref user_invites: invitations.user_id < users.id
+
+Ref meet_invites: invitations.meeting_id < meetings.id
+
+![img.png](./img.png)

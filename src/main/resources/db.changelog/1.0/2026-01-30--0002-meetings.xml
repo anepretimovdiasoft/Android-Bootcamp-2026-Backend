@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-01-30--0002-meetings" author="abelov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="meetings"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="meetings">
+
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="start_time" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="end_time" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="organizer" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_users_meetings"
+                             referencedTableName="users"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="participants" type="INT ARRAY">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="responses_to_invitations" type="BOOL ARRAY">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

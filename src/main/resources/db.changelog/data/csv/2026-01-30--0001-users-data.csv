@@ -1,0 +1,6 @@
+username;role;avatar_link;email
+ivan petrov;user;/avatars/ivan.jpg;ivan.petrov@example.com
+anna sidorova;user;/avatars/anna.jpg;anna.sidorova@example.com
+alex volkov;admin;/avatars/alex.jpg;alex.volkov@example.com
+mariya ivanova;user;/avatars/mariya.jpg;mariya.ivanova@example.com
+sergey kuznetsov;user;null;sergey.kuznetsov@example.com
