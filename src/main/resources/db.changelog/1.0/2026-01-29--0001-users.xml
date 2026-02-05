@@ -18,9 +18,46 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="avatar" type="VARCHAR(150)">
+            <column name="avatar_url" type="VARCHAR(150)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="password" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="username" type="VARCHAR(150)">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>
+
+<!--    <changeSet id="2026-02-03&#45;&#45;0002-username.xml" author="apavlov">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="users"/>-->
+<!--            <not>-->
+<!--                <columnExists tableName="users" columnName="username"/>-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <addColumn tableName="users">-->
+<!--            <column name="username" type="BIGINT">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+<!--    </changeSet>-->
+
+<!--    <changeSet id="2026-02-03&#45;&#45;0003-password.xml" author="apavlov">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableExists tableName="users"/>-->
+<!--            <not>-->
+<!--                <columnExists tableName="users" columnName="password"/>-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <addColumn tableName="users">-->
+<!--            <column name="password" type="BIGINT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+<!--    </changeSet>-->
+
 </databaseChangeLog>

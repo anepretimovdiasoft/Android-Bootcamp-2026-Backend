@@ -12,8 +12,13 @@
     <include file="db.changelog/1.0/2026-01-29--0001-users.xml"/>
     <include file="db.changelog/1.0/2026-01-29--0002-meetings.xml"/>
     <include file="db.changelog/1.0/2026-01-29--0003-invitations.xml"/>
+    <include file="db.changelog/1.0/2026-02-03--0004-authority.xml"/>
+    <include file="db.changelog/1.0/2026-02-03--0005-users-authorities.xml"/>
+
 
     <include file="db.changelog/data/2026-01-29--0001-users-data.xml"/>
     <include file="db.changelog/data/2026-01-29--0002-meetings-data.xml"/>
     <include file="db.changelog/data/2026-01-29--0003-invitations-data.xml"/>
+    <include file="db.changelog/data/2026-02-03--0004-authority-data.xml"/>
+    <include file="db.changelog/data/2026-02-03--0005-users-authorities-data.xml"/>
 </databaseChangeLog>

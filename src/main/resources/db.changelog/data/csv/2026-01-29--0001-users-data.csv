@@ -1,4 +1,5 @@
-name;avatar
-Иванов Иванович;dog.png
-Пётр Петрович;cat.png
-Александр Александрович;alexandr.png
+name;username;password;avatar_url
+Иван Иванов;iivanov;$2a$12$WoTLwXRj1EZcAX.e1K875.jXouTjasmWil.EsrFN2uyGPXMzdslLe;dog.png
+Пётр Петров;ppetrov;$2a$12$B.heMyd1iUW175dr7Roeg.WXa1k6Bog9/1tLz2r.p0/sxnGpZD0qq;cat.png
+Александр Александрович;anepretimov;$2a$12$z7hL3lCYznAVSUjozRjRBugXHPgFbSgG4lJh4gsYQoteCCEWSiPw2;alexandr.png
+Test Testovich;test;$2a$12$chn3tLHpuN5T8QeTATPbt.X74a0kkjUay3XIXqID1MoYpI6a9v.56;test.png
