@@ -1,11 +1,11 @@
-id,email,first_name,last_name,position,department,avatar_url
-1,ivan.petrov@company.ru,Иван,Петров,Senior Backend разработчик,Отдел разработки,https://i.example.com/150?img=1
-2,maria.ivanova@company.ru,Мария,Иванова,Руководитель проектов,Управление проектами,https://i.example.com/150?img=5
-3,alexey.smirnov@company.ru,Алексей,Смирнов,Бизнес-аналитик,Отдел аналитики,https://i.example.com/150?img=12
-4,elena.kozlova@company.ru,Елена,Козлова,UI/UX дизайнер,Дизайн-студия,https://i.example.com/150?img=10
-5,dmitry.morozov@company.ru,Дмитрий,Морозов,QA инженер,Отдел тестирования,https://i.example.com/150?img=33
-6,anna.volkova@company.ru,Анна,Волкова,Frontend разработчик,Отдел разработки,https://i.example.com/150?img=20
-7,sergey.novikov@company.ru,Сергей,Новиков,DevOps инженер,Инфраструктура,https://i.example.com/150?img=15
-8,olga.sokolova@company.ru,Ольга,Соколова,Product Owner,Управление продуктом,https://i.example.com/150?img=23
-9,pavel.lebedev@company.ru,Павел,Лебедев,Android разработчик,Отдел разработки,https://i.example.com/150?img=28
-10,natalia.popova@company.ru,Наталья,Попова,Scrum Master,Управление проектами,https://i.example.com/150?img=18
+email,first_name,last_name,position,department,avatar_url,password_hash
+ivan.petrov@company.ru,Иван,Петров,Senior Backend разработчик,Отдел разработки,https://i.example.com/150?img=1,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+maria.ivanova@company.ru,Мария,Иванова,Руководитель проектов,Управление проектами,https://i.example.com/150?img=5,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+alexey.smirnov@company.ru,Алексей,Смирнов,Бизнес-аналитик,Отдел аналитики,https://i.example.com/150?img=12,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+elena.kozlova@company.ru,Елена,Козлова,UI/UX дизайнер,Дизайн-студия,https://i.example.com/150?img=10,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+dmitry.morozov@company.ru,Дмитрий,Морозов,QA инженер,Отдел тестирования,https://i.example.com/150?img=33,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+anna.volkova@company.ru,Анна,Волкова,Frontend разработчик,Отдел разработки,https://i.example.com/150?img=20,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+sergey.novikov@company.ru,Сергей,Новиков,DevOps инженер,Инфраструктура,https://i.example.com/150?img=15,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+olga.sokolova@company.ru,Ольга,Соколова,Product Owner,Управление продуктом,https://i.example.com/150?img=23,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+pavel.lebedev@company.ru,Павел,Лебедев,Android разработчик,Отдел разработки,https://i.example.com/150?img=28,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW
+natalia.popova@company.ru,Наталья,Попова,Scrum Master,Управление проектами,https://i.example.com/150?img=18,$2a$12$.Vd6Pl0BoOdhAhc/qULDreIPYoqUmQCO6RH9j9mcwGX5QHE3LdmqW

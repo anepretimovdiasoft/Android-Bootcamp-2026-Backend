@@ -19,4 +19,10 @@ public class GlobalExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse("BAD REQUEST", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(ResourceAlreadyExists.class)
+    public ResponseEntity<ExceptionResponse> handleAlreadyExists(BadRequestException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse("ALREADY EXISTS", e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
+    }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 public class Meeting {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
