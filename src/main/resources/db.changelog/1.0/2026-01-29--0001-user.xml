@@ -24,7 +24,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="pfp_url" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true"/>
             </column>
             <column name="created_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
