@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-meetings" author="igramagadev">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="meetings"/></not></preConditions>
+        <createTable tableName="meetings">
+            <column name="id" type="INT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="organizer_id" type="INT"><constraints nullable="false" foreignKeyName="fk_meetings_org" references="users(id)"/></column>
+            <column name="topic" type="VARCHAR(255)"><constraints nullable="false"/></column>
+            <column name="description" type="TEXT"/>
+            <column name="calendar_date" type="DATE"><constraints nullable="false"/></column>
+            <column name="start_time" type="TIME"><constraints nullable="false"/></column>
+            <column name="end_time" type="TIME"><constraints nullable="false"/></column>
+
+            <column name="room_id" type="INT"><constraints foreignKeyName="fk_meetings_room" references="rooms(id)"/></column>
+            <column name="type_id" type="INT"><constraints nullable="false" foreignKeyName="fk_meetings_type" references="meeting_types(id)"/></column>
+            <column name="status_id" type="INT" defaultValueNumeric="1"><constraints nullable="false" foreignKeyName="fk_meetings_status" references="meeting_statuses(id)"/></column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

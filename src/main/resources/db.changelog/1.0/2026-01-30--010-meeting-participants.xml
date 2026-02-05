@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-meeting-participants" author="igramagadev">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="meeting_participants"/></not></preConditions>
+        <createTable tableName="meeting_participants">
+            <column name="id" type="INT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="meeting_id" type="INT"><constraints nullable="false" foreignKeyName="fk_part_meeting" references="meetings(id)" deleteCascade="true"/></column>
+            <column name="user_id" type="INT"><constraints nullable="false" foreignKeyName="fk_part_user" references="users(id)"/></column>
+            <column name="invitation_status_id" type="INT" defaultValueNumeric="1"><constraints nullable="false" foreignKeyName="fk_part_status" references="invitation_statuses(id)"/></column>
+            <column name="is_required" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+        <addUniqueConstraint tableName="meeting_participants" columnNames="meeting_id, user_id" constraintName="uq_meeting_user"/>
+    </changeSet>
+</databaseChangeLog>
