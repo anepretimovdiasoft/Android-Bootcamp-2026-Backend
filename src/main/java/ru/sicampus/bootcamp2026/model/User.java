@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +49,10 @@ public class User {
     @Column(name = "avatar_url")
     private String avatar_url;
 
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -59,7 +62,7 @@ public class User {
     private List<MeetingParticipant> meetingParticipants = new ArrayList<>();
 
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "user_id",
             cascade = CascadeType.ALL, // Удаление всех токенов вместе с пользователем
             orphanRemoval = true,// Удаление токена из коллекции -> удаление из бд
             fetch = FetchType.LAZY

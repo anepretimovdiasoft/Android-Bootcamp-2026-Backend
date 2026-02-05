@@ -41,7 +41,7 @@ public class Meeting {
 
     @Size(max = 2048)
     @Column(name = "body", nullable = true)
-    private String body;
+    private String description;
 
     @Column(name = "location", nullable = true)
     private String location;

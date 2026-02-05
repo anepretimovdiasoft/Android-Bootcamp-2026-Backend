@@ -56,4 +56,9 @@ public class AuthServiceImpl implements AuthService {
         */
         throw new UnsupportedOperationException("Метод getCurrentUserId еще не реализован");
     }
+
+    @Override
+    public void resetPassword(UUID userId) {
+
+    }
 }
