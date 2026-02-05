@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-01-indices
+      author: assistant
+      changes:
+        - createIndex:
+            tableName: meetings
+            indexName: ix_meetings_organizer_date_hour
+            columns:
+              - column: { name: organizer_id }
+              - column: { name: meeting_date }
+              - column: { name: start_hour }
+
+        - createIndex:
+            tableName: meetings
+            indexName: ix_meetings_date_hour
+            columns:
+              - column: { name: meeting_date }
+              - column: { name: start_hour }
+
+        - createIndex:
+            tableName: meetings
+            indexName: ix_meetings_room_date_hour
+            columns:
+              - column: { name: room_id }
+              - column: { name: meeting_date }
+              - column: { name: start_hour }
+
+        - createIndex:
+            tableName: meeting_participants
+            indexName: ix_mp_user_date_hour
+            columns:
+              - column: { name: user_id }
+              - column: { name: meeting_date }
+              - column: { name: start_hour }
+
+        - createIndex:
+            tableName: meeting_participants
+            indexName: ix_mp_meeting_status
+            columns:
+              - column: { name: meeting_id }
+              - column: { name: status }
+
+        - createIndex:
+            tableName: meeting_participants
+            indexName: ix_mp_user_status
+            columns:
+              - column: { name: user_id }
+              - column: { name: status }
+
+  - changeSet:
+      id: 002-02-checks
+      author: assistant
+      changes:
+        - sql:
+            splitStatements: true
+            endDelimiter: ";"
+            sql: |
+              ALTER TABLE meetings
+                ADD CONSTRAINT ck_meetings_start_hour
+                CHECK (start_hour BETWEEN 0 AND 23);
+
+              ALTER TABLE meetings
+                ADD CONSTRAINT ck_meetings_duration_hours
+                CHECK (duration_hours BETWEEN 1 AND 24);
+
+              ALTER TABLE meetings
+                ADD CONSTRAINT ck_meetings_status
+                CHECK (status IN ('SCHEDULED','CANCELLED'));
+
+              ALTER TABLE meeting_participants
+                ADD CONSTRAINT ck_mp_role
+                CHECK (role IN ('ORGANIZER','ATTENDEE'));
+
+              ALTER TABLE meeting_participants
+                ADD CONSTRAINT ck_mp_status
+                CHECK (status IN ('PENDING','ACCEPTED','DECLINED'));
+
+  - changeSet:
+      id: 002-03-partial-unique
+      author: assistant
+      changes:
+        - sql:
+            splitStatements: true
+            endDelimiter: ";"
+            sql: |
+              CREATE UNIQUE INDEX ux_room_slot
+                ON meetings(room_id, meeting_date, start_hour)
+                WHERE status = 'SCHEDULED' AND room_id IS NOT NULL;
+
+              CREATE UNIQUE INDEX ux_user_slot_accepted
+                ON meeting_participants(user_id, meeting_date, start_hour)
+                WHERE status = 'ACCEPTED';

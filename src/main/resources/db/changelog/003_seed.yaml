@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-01-seed-roles
+      author: assistant
+      changes:
+        - loadData:
+            tableName: roles
+            file: db/changelog/data/roles.csv
+            separator: ","
+            columns:
+              - column: { name: id, type: UUID }
+              - column: { name: slug, type: STRING }
+              - column: { name: name, type: STRING }
+
+  - changeSet:
+      id: 003-02-seed-users
+      author: assistant
+      changes:
+        - loadData:
+            tableName: users
+            file: db/changelog/data/users.csv
+            separator: ","
+            columns:
+              - column: { name: id, type: UUID }
+              - column: { name: login, type: STRING }
+              - column: { name: name, type: STRING }
+              - column: { name: password_hash, type: STRING }
+              - column: { name: telegram_nick, type: STRING }
+
+  - changeSet:
+      id: 003-03-seed-user-roles
+      author: assistant
+      changes:
+        - loadData:
+            tableName: user_roles
+            file: db/changelog/data/user_roles.csv
+            separator: ","
+            columns:
+              - column: { name: user_id, type: UUID }
+              - column: { name: role_id, type: UUID }
+
+  - changeSet:
+      id: 003-04-seed-rooms
+      author: assistant
+      changes:
+        - loadData:
+            tableName: rooms
+            file: db/changelog/data/rooms.csv
+            separator: ","
+            columns:
+              - column: { name: id, type: UUID }
+              - column: { name: name, type: STRING }
+              - column: { name: capacity, type: NUMERIC }

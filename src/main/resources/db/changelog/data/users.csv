@@ -1,0 +1,4 @@
+id,login,name,password_hash,telegram_nick
+0aad0148-b2a2-4779-a923-15669d40f82d,admin,Admin,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,admin_tg
+e7df491c-7492-4c16-b1a3-bc27353ee7a5,oatis1996,Oatis,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,oatis_tg
+6dbd7ad8-a222-4fc3-a8e4-87e4a0d35bca,ivan,Ivan,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,ivan_p

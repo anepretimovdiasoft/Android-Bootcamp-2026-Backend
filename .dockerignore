@@ -1,0 +1,82 @@
+# flyctl launch added from .gitignore
+**/HELP.md
+**/target
+**/.mvn/wrapper/maven-wrapper.jar
+!**/**/src/main/**/target
+!**/**/src/test/**/target
+
+### STS ###
+**/.apt_generated
+**/.classpath
+**/.factorypath
+**/.project
+**/.settings
+**/.springBeans
+**/.sts4-cache
+
+### IntelliJ IDEA ###
+**/.idea
+**/*.iws
+**/*.iml
+**/*.ipr
+
+### NetBeans ###
+nbproject/private
+nbbuild
+dist
+nbdist
+.nb-gradle
+**/build
+!**/**/src/main/**/build
+!**/**/src/test/**/build
+
+### VS Code ###
+**/.vscode
+
+### Mac OS ###
+**/.DS_Store
+
+# Custom
+**/python_example
+www.liquibase.org
+**/*.json
+!**/openapi.json
+
+# flyctl launch added from .idea/.gitignore
+# Default ignored files
+.idea/shelf
+.idea/workspace.xml
+# Ignored default folder with query files
+.idea/queries
+# Datasource local storage ignored files
+.idea/dataSources
+.idea/dataSources.local.xml
+# Editor-based HTTP Client requests
+.idea/httpRequests
+
+# flyctl launch added from python_example/frontend/.gitignore
+# Logs
+python_example/frontend/**/logs
+python_example/frontend/**/*.log
+python_example/frontend/**/npm-debug.log*
+python_example/frontend/**/yarn-debug.log*
+python_example/frontend/**/yarn-error.log*
+python_example/frontend/**/pnpm-debug.log*
+python_example/frontend/**/lerna-debug.log*
+
+python_example/frontend/**/node_modules
+python_example/frontend/**/dist
+python_example/frontend/**/dist-ssr
+python_example/frontend/**/*.local
+
+# Editor directories and files
+python_example/frontend/**/.vscode/*
+!python_example/frontend/**/.vscode/extensions.json
+python_example/frontend/**/.idea
+python_example/frontend/**/.DS_Store
+python_example/frontend/**/*.suo
+python_example/frontend/**/*.ntvs*
+python_example/frontend/**/*.njsproj
+python_example/frontend/**/*.sln
+python_example/frontend/**/*.sw?
+fly.toml

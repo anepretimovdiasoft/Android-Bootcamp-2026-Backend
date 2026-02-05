@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-add-bio
+      author: assistant
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: bio
+                  type: varchar(256)
+                  constraints:
+                    nullable: true

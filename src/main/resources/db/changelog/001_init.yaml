@@ -1,0 +1,334 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-extensions-pgcrypto
+      author: assistant
+      changes:
+        - sql:
+            sql: "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+
+  # users
+  - changeSet:
+      id: 010-create-users
+      author: assistant
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: login
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: password_hash
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: telegram_nick
+                  type: varchar(64)
+
+              - column:
+                  name: avatar_bytes
+                  type: bytea
+
+              - column:
+                  name: avatar_content_type
+                  type: varchar(64)
+
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+
+  # roles
+  - changeSet:
+      id: 015-create-roles
+      author: assistant
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: slug
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: name
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 016-create-user-roles
+      author: assistant
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: user_roles
+            columnNames: user_id, role_id
+            constraintName: pk_user_roles
+
+        - addForeignKeyConstraint:
+            baseTableName: user_roles
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_user_roles_user
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: user_roles
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            constraintName: fk_user_roles_role
+            onDelete: CASCADE
+
+  # rooms
+  - changeSet:
+      id: 020-create-rooms
+      author: assistant
+      changes:
+        - createTable:
+            tableName: rooms
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: capacity
+                  type: int
+                  constraints:
+                    nullable: false
+
+  # meetings
+  - changeSet:
+      id: 030-create-meetings
+      author: assistant
+      changes:
+        - createTable:
+            tableName: meetings
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: organizer_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: title
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: description
+                  type: text
+
+              - column:
+                  name: meeting_date
+                  type: date
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: start_hour
+                  type: smallint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: duration_hours
+                  type: smallint
+                  defaultValueNumeric: 1
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: room_id
+                  type: uuid
+
+              - column:
+                  name: status
+                  type: varchar(64)
+                  defaultValue: SCHEDULED
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: meetings
+            baseColumnNames: organizer_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_meetings_organizer
+
+        - addForeignKeyConstraint:
+            baseTableName: meetings
+            baseColumnNames: room_id
+            referencedTableName: rooms
+            referencedColumnNames: id
+            constraintName: fk_meetings_room
+            onDelete: SET NULL
+
+  # meeting_participants
+  - changeSet:
+      id: 040-create-meeting-participants
+      author: assistant
+      changes:
+        - createTable:
+            tableName: meeting_participants
+            columns:
+              - column:
+                  name: meeting_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: meeting_date
+                  type: date
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: start_hour
+                  type: smallint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: role
+                  type: varchar(64)
+                  defaultValue: ATTENDEE
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: varchar(64)
+                  defaultValue: PENDING
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: responded_at
+                  type: timestamp with time zone
+
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: meeting_participants
+            columnNames: meeting_id, user_id
+            constraintName: pk_meeting_participants
+
+        - addForeignKeyConstraint:
+            baseTableName: meeting_participants
+            baseColumnNames: meeting_id
+            referencedTableName: meetings
+            referencedColumnNames: id
+            constraintName: fk_mp_meeting
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: meeting_participants
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_mp_user
+            onDelete: CASCADE

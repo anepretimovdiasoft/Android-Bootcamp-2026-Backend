@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      file: 001_init.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: 002_indices.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: 003_seed.yaml
+      relativeToChangelogFile: true
