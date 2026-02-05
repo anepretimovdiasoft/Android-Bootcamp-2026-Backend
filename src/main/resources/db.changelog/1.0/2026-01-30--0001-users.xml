@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-01-30--0001-users" author="aefremenko">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="surname" type="VARCHAR(100)"/>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="patronymic" type="VARCHAR(100)"/>
+            <column name="department" type="VARCHAR(255)"/>
+            <column name="photo_url" type="VARCHAR(255)"/>
+            <column name="messenger_link" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="2026-02-03--0001-username" author="aefremenko">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="users"/>
+            <not>
+                <columnExists tableName="users" columnName="username"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="users">
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2026-02-03--0001-password" author="aefremenko">
+        <preConditions>
+            <tableExists tableName="users"/>
+            <not>
+                <columnExists tableName="users" columnName="password"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="users">
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2026-02-05--0001-surname-index" author="aefremenko">
+        <preConditions>
+            <columnExists tableName="users" columnName="surname"/>
+            <not>
+                <indexExists tableName="users" columnNames="surname"/>
+            </not>
+        </preConditions>
+
+        <createIndex tableName="users" indexName="idx_users_surname">
+            <column name="surname"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-02-05--0001-name-index" author="aefremenko">
+        <preConditions>
+            <columnExists tableName="users" columnName="name"/>
+            <not>
+                <indexExists tableName="users" columnNames="name"/>
+            </not>
+        </preConditions>
+
+        <createIndex tableName="users" indexName="idx_users_name">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-02-05--0001--patronymic-index" author="aefremenko">
+        <preConditions>
+            <columnExists tableName="users" columnName="patronymic"/>
+            <not>
+                <indexExists tableName="users" columnNames="patronymic"/>
+            </not>
+        </preConditions>
+
+        <createIndex tableName="users" indexName="idx_users_patronymic">
+            <column name="patronymic"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
