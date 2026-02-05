@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 @Entity
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="Booking")

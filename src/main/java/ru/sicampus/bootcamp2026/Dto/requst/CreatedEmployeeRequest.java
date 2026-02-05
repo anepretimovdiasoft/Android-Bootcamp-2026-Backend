@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class createdEmployeeRequest {
+public class CreatedEmployeeRequest {
     @NotNull(message = "")
     @NotBlank(message = "")
     private String name;
@@ -20,18 +20,21 @@ public class createdEmployeeRequest {
     @NotNull(message = "")
     @Email(message = "")
     private String mail;
-    @NotBlank(message = "")
-    private String avatar;
+    private long avatar;
     @NotNull(message = "")
-    @Positive
-    @Min(18)
+    @Positive(message = "")
+    @Min(value = 18,message = "")
     private int age;
+    @NotBlank
+    @NotNull
+    @Size(min=8,max = 20)
+    private String password;
 
     public String getMail() {
         return mail;
     }
 
-    public Object getName() {
+    public String getName() {
         return name;
     }
 
@@ -41,5 +44,21 @@ public class createdEmployeeRequest {
 
     public String getFather_name() {
         return father_name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public long getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(long avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

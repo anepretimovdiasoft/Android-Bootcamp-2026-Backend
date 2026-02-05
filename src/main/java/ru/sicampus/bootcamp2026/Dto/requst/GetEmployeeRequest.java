@@ -1,0 +1,18 @@
+package ru.sicampus.bootcamp2026.Dto.requst;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class GetEmployeeRequest {
+    @NotBlank(message = "")
+    @NotNull(message = "")
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+}

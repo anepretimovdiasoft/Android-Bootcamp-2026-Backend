@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name="invited")
 public class Invited {
     @Id

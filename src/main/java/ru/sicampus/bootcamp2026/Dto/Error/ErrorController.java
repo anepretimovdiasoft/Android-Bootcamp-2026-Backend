@@ -16,7 +16,6 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, Object> errorResponse(MethodArgumentNotValidException e){
         Map<String,Object> response=new LinkedHashMap<>();
-        response.put("status",400);
         response.put("errors",e.getBindingResult().getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage)));
         return response;
     }

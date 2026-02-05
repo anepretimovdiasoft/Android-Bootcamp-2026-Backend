@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="Contact")
@@ -20,4 +19,8 @@ public class Contact {
     @JoinColumn(name = "Employee_User")
     private Employee employee;
     private  String name;
+
+    public String getName() {
+        return name;
+    }
 }

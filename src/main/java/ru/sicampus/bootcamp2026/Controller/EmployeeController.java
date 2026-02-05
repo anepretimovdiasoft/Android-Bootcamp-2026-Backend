@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sicampus.bootcamp2026.Dto.requst.createdEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.CreatedEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.GetEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.response.GetEmployeeResponse;
 import ru.sicampus.bootcamp2026.Entity.Employee;
+import ru.sicampus.bootcamp2026.Excepations.EmployeeFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
 import ru.sicampus.bootcamp2026.Service.EmployeeService;
 
@@ -19,14 +22,10 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
     @GetMapping("/Employee")
-    public ResponseEntity<?> getEmployee(@RequestBody Map<String,String> body){
+    public ResponseEntity<?> getEmployee(@Valid @RequestBody GetEmployeeRequest dto){
         try{
-            String name=body.get("name");
-            Employee employee=employeeService.getEmployee(name);
-            return ResponseEntity.ok(employee);
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }catch (EmployeeNotFound e){
+            return ResponseEntity.ok(employeeService.getEmployee(dto));
+        }catch(EmployeeNotFound e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -35,16 +34,19 @@ public class EmployeeController {
     @GetMapping("/Employees")
     public ResponseEntity<?> getEmployees(){
         try{
-            List<Employee> result=employeeService.getEmployees();
+            List<GetEmployeeResponse> result=employeeService.getEmployees();
             return ResponseEntity.ok(result);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
     @PostMapping("/createdEm")
-    public void createdEmployee(@Valid @RequestBody createdEmployeeRequest dto) {
+    public ResponseEntity<?> createdEmployee(@Valid @RequestBody CreatedEmployeeRequest dto) {
         try {
-        } catch (EmployeeNotFound e) {
+            employeeService.createdEmployee(dto);
+        } catch (EmployeeFound e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
+        return ResponseEntity.ok().build();
     }
 }
