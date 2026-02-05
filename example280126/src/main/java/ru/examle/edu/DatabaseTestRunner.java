@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.examle.edu.enity.Department;
-import ru.examle.edu.enity.Person;
+import ru.examle.edu.entity.Department;
+import ru.examle.edu.entity.Person;
 import ru.examle.edu.repository.*;
 
 import java.util.List;

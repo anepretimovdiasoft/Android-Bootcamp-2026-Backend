@@ -1,6 +1,6 @@
 package ru.examle.edu.repository;
 
-import ru.examle.edu.enity.Meeting;
+import ru.examle.edu.entity.Meeting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

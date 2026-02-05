@@ -1,6 +1,6 @@
 package ru.examle.edu.repository;
 
-import ru.examle.edu.enity.Invitation;
+import ru.examle.edu.entity.Invitation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

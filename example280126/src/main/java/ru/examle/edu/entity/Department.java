@@ -1,4 +1,4 @@
-package ru.examle.edu.enity;
+package ru.examle.edu.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

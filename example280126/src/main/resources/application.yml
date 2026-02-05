@@ -14,16 +14,30 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+        format_sql: true
+        jdbc:
+          batch_size: 20
+    show-sql: false
+    open-in-view: false
 
   liquibase:
     enabled: true
     change-log: classpath:db.changelog/db.changelog-master.xml
-  logging:
-    level:
-      ru.examle.edu: DEBUG
-      org.springframework.web: DEBUG
-      org.hibernate.SQL: DEBUG
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+  mvc:
+    format:
+      date: yyyy-MM-dd
+      time: HH:mm
+
 server:
   port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+logging:
+  level:
+    ru.examle.edu: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

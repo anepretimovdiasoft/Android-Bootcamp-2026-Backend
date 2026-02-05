@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "Meeting Planner API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Departments",
+      "item": [
+        {
+          "name": "Get All Departments",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/departments"
+          }
+        },
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8080/api/departments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Департамент разработки\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Department by ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/departments/1"
+          }
+        },
+        {
+          "name": "Update Department",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:8080/api/departments/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Department Name\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Department",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/departments/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Persons",
+      "item": [
+        {
+          "name": "Get All Persons",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/persons"
+          }
+        },
+        {
+          "name": "Create Person",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8080/api/persons",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"departmentId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Person by ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/persons/1"
+          }
+        },
+        {
+          "name": "Update Person",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:8080/api/persons/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Smith\",\n  \"email\": \"john.smith@example.com\",\n  \"password\": \"newpassword123\",\n  \"departmentId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Person",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/persons/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Meetings",
+      "item": [
+        {
+          "name": "Get All Meetings",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/meetings"
+          }
+        },
+        {
+          "name": "Create Meeting",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8080/api/meetings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Team Meeting\",\n  \"description\": \"Weekly team sync\",\n  \"organizerId\": 1,\n  \"meetingDate\": \"2026-02-15\",\n  \"startTime\": \"10:00\",\n  \"endTime\": \"11:00\",\n  \"status\": \"PLANNED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Meeting by ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/meetings/1"
+          }
+        },
+        {
+          "name": "Update Meeting",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:8080/api/meetings/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Team Meeting\",\n  \"description\": \"Updated weekly sync\",\n  \"organizerId\": 2,\n  \"meetingDate\": \"2026-02-16\",\n  \"startTime\": \"14:00\",\n  \"endTime\": \"15:00\",\n  \"status\": \"PLANNED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Meeting",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/meetings/1"
+          }
+        },
+        {
+          "name": "Get Meetings by Organizer",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/meetings/organizer/1"
+          }
+        },
+        {
+          "name": "Get Meetings by Date",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/meetings/date/2026-02-10"
+          }
+        },
+        {
+          "name": "Get Meetings for Person",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/meetings/person/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invitations",
+      "item": [
+        {
+          "name": "Get All Invitations",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/invitations"
+          }
+        },
+        {
+          "name": "Create Invitation",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8080/api/invitations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meetingId\": 1,\n  \"personId\": 2,\n  \"status\": \"PENDING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Invitation by ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/invitations/1"
+          }
+        },
+        {
+          "name": "Update Invitation Status",
+          "request": {
+            "method": "PATCH",
+            "url": "http://localhost:8080/api/invitations/1/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACCEPTED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Invitation",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/invitations/1"
+          }
+        },
+        {
+          "name": "Get Invitations by Person",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/invitations/person/1"
+          }
+        },
+        {
+          "name": "Get Invitations by Meeting",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/invitations/meeting/1"
+          }
+        }
+      ]
+    }
+  ]
+}
