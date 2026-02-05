@@ -1,0 +1,148 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-seed-users
+      author: t1ler
+      validCheckSum:
+        - 9:86947bf2bda9bf8e313ec273b40914b1
+      changes:
+        - loadData:
+            file: db/data/users.csv
+            relativeToChangelogFile: false
+            separator: ","
+            quotchar: '"'
+            tableName: users
+            nullValue: ""
+            columns:
+              - column:
+                  name: id
+                  type: NUMERIC
+              - column:
+                  name: email
+                  type: STRING
+              - column:
+                  name: password_hash
+                  type: STRING
+              - column:
+                  name: full_name
+                  type: STRING
+              - column:
+                  name: department
+                  type: STRING
+              - column:
+                  name: position
+                  type: STRING
+              - column:
+                  name: created_at
+                  type: STRING
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: SELECT setval('users_id_seq', (SELECT COALESCE(MAX(id), 0) FROM users));
+
+  - changeSet:
+      id: 013-seed-person-authorities
+      author: t1ler
+      changes:
+        - loadData:
+            file: db/data/person_authorities.csv
+            relativeToChangelogFile: false
+            separator: ","
+            quotchar: '"'
+            tableName: person_authorities
+            nullValue: ""
+            columns:
+              - column:
+                  name: person_id
+                  type: NUMERIC
+              - column:
+                  name: authority_id
+                  type: NUMERIC
+
+  - changeSet:
+      id: 014-update-seed-user-passwords
+      author: t1ler
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: |
+              UPDATE users
+              SET password_hash = '$2y$10$qcADhL7eW7V4kFKBWE.mqOoqpB0TlYU3c/0.p6JgF23Mn1XeCMEbq'
+              WHERE email IN (
+                'kira_yoshikage@example.com',
+                'mafia@example.com',
+                'skebob@example.com'
+              );
+
+  - changeSet:
+      id: 011-seed-meetings
+      author: t1ler
+      changes:
+        - loadData:
+            file: db/data/meetings.csv
+            relativeToChangelogFile: false
+            separator: ","
+            quotchar: '"'
+            tableName: meetings
+            nullValue: ""
+            columns:
+              - column:
+                  name: id
+                  type: NUMERIC
+              - column:
+                  name: organizer_id
+                  type: NUMERIC
+              - column:
+                  name: title
+                  type: STRING
+              - column:
+                  name: description
+                  type: STRING
+              - column:
+                  name: start_at
+                  type: STRING
+              - column:
+                  name: end_at
+                  type: STRING
+              - column:
+                  name: created_at
+                  type: STRING
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: SELECT setval('meetings_id_seq', (SELECT COALESCE(MAX(id), 0) FROM meetings));
+
+  - changeSet:
+      id: 012-seed-invitations
+      author: t1ler
+      changes:
+        - loadData:
+            file: db/data/invitations.csv
+            relativeToChangelogFile: false
+            separator: ","
+            quotchar: '"'
+            tableName: invitations
+            nullValue: "NULL"
+            columns:
+              - column:
+                  name: id
+                  type: NUMERIC
+              - column:
+                  name: meeting_id
+                  type: NUMERIC
+              - column:
+                  name: invitee_id
+                  type: NUMERIC
+              - column:
+                  name: status
+                  type: STRING
+              - column:
+                  name: responded_at
+                  type: STRING
+              - column:
+                  name: created_at
+                  type: STRING
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: SELECT setval('invitations_id_seq', (SELECT COALESCE(MAX(id), 0) FROM invitations));

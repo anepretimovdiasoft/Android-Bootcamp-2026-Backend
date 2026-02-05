@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001-init-schema.yaml
+  - include:
+      file: db/changelog/003-security-schema.yaml
+  - include:
+      file: db/changelog/004-security-roles.xml
+  - include:
+      file: db/changelog/002-seed-data.yaml

@@ -1,0 +1,4 @@
+id,email,password_hash,full_name,department,position,created_at
+1,kira_yoshikage@example.com,$2y$10$qcADhL7eW7V4kFKBWE.mqOoqpB0TlYU3c/0.p6JgF23Mn1XeCMEbq,Кира Йошикаге,джоджо,стэндюзер,2026-01-10T09:00:00+00:00
+2,mafia@example.com,$2y$10$qcADhL7eW7V4kFKBWE.mqOoqpB0TlYU3c/0.p6JgF23Mn1XeCMEbq,Зубенко Михаил Петрович,Отдел сваги и просмотра тиктоков,52,2026-01-11T10:15:00+00:00
+3,skebob@example.com,$2y$10$qcADhL7eW7V4kFKBWE.mqOoqpB0TlYU3c/0.p6JgF23Mn1XeCMEbq,Скебоб,Скебоб,Скебоб,2026-01-12T11:30:00+00:00
