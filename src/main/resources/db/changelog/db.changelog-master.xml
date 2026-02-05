@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="db/changelog/v1/001-create-users.xml"/>
+    <include file="db/changelog/v1/002-create-meetings.xml"/>
+    <include file="db/changelog/v1/003-create-user-meeting.xml"/>
+    <include file="db/changelog/v1/004-create-authorities.xml"/>
+    <include file="/db/changelog/v1/005-create-user-authority.xml"/>
+
+
+
+    <include file="db/changelog/data/010-users-data.xml"/>
+    <include file="db/changelog/data/011-meetings-data.xml"/>
+    <include file="db/changelog/data/012-user-meeting-data.xml"/>
+    <include file="db/changelog/data/013-authorities-data.xml"/>
+    <include file="db/changelog/data/014-user-authoritiy-data.xml"/>
+
+
+</databaseChangeLog>

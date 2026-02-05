@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="003-create-user-meeting" author="nikita">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_meeting"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="user_meeting">
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="meeting_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="user_meeting"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_user_meeting_user"
+        />
+
+        <addForeignKeyConstraint
+                baseTableName="user_meeting"
+                baseColumnNames="meeting_id"
+                referencedTableName="meetings"
+                referencedColumnNames="id"
+                constraintName="fk_user_meeting_meeting"/>
+
+    </changeSet>
+
+</databaseChangeLog>

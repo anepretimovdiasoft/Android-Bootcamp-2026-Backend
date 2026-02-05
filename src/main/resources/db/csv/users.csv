@@ -1,0 +1,4 @@
+name;position;login;password
+Alice;Designer;Alice123;$2a$10$AKDFM71JACiSPoIo4vROTOfwFi5WvFYimfrQalxX6ttQFnHmJ5GnO
+Bob;Backend developer;Bob123;$2a$10$AKDFM71JACiSPoIo4vROTOfwFi5WvFYimfrQalxX6ttQFnHmJ5GnO
+Admin;frontend developer;Admin123;$2a$10$AKDFM71JACiSPoIo4vROTOfwFi5WvFYimfrQalxX6ttQFnHmJ5GnO
