@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="005-create-user-authorities-table" author="tatyanin">
+        <preConditions>
+            <not>
+                <tableExists tableName="user_authorities"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_authorities">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey
+                tableName="user_authorities"
+                columnNames="user_id, authority_id"
+                constraintName="pk_user_authorities"/>
+
+        <addForeignKeyConstraint
+                baseTableName="user_authorities"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_user_authorities_user"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint
+                baseTableName="user_authorities"
+                baseColumnNames="authority_id"
+                referencedTableName="authorities"
+                referencedColumnNames="id"
+                constraintName="fk_user_authorities_authority"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="003-create-meeting-participants-table" author="tatyanin">
+        <createTable tableName="meeting_participants">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="meeting_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="WAITING">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="meeting_participants"
+                baseColumnNames="meeting_id"
+                referencedTableName="meetings"
+                referencedColumnNames="id"
+                constraintName="fk_participants_meeting"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                baseTableName="meeting_participants"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_participants_user"
+                onDelete="CASCADE"/>
+
+    </changeSet>
+
+</databaseChangeLog>

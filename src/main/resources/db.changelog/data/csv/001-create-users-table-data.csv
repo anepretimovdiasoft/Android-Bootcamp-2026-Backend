@@ -1,0 +1,4 @@
+name;email;password;registration_date;username;enabled
+Татьянин Владислав;vladik@gmail.com;example_pass;2026-01-30;tatyanin;true
+Иван Иванов;ivan@gmail.com;example_pass2;2026-01-28;ivanov;true
+Олег Олегович;oleg@gmail.com;example_pass3;2025-03-23;olegggg;true

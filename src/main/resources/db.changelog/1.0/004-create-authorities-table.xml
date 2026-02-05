@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="004-create-authorities-table" author="tatyanin">
+        <preConditions>
+            <not>
+                <tableExists tableName="authorities"/>
+            </not>
+        </preConditions>
+        <createTable tableName="authorities">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_authorities"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="uk_authorities_name"/>
+            </column>
+        </createTable>
+
+        <insert tableName="authorities">
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+
+        <insert tableName="authorities">
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
