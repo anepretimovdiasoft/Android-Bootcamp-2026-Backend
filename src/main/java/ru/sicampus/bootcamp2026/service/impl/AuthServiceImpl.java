@@ -2,9 +2,10 @@ package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sicampus.bootcamp2026.dto.request.AuthRequest;
+import ru.sicampus.bootcamp2026.dto.request.LoginRequest;
 import ru.sicampus.bootcamp2026.dto.request.RegisterRequest;
 import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
+import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.AuthService;
 
 import java.util.UUID;
@@ -13,20 +14,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    /*
-        TODO: Внедрить репозиторий позже
-    */
+    final private UserRepository userRepository;
 
     @Override
     public AuthResponse register(RegisterRequest request) {
-        /*
-            TODO: Реализовать регистрацию пользователя
-        */
+
         throw new UnsupportedOperationException("Метод register еще не реализован");
     }
 
     @Override
-    public AuthResponse authenticate(AuthRequest request) {
+    public AuthResponse authenticate(LoginRequest request) {
         /*
             TODO: Реализовать аутентификацию пользователя
         */

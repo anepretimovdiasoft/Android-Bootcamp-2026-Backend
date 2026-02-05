@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sicampus.bootcamp2026.dto.request.AuthRequest;
+import ru.sicampus.bootcamp2026.dto.request.LoginRequest;
 import ru.sicampus.bootcamp2026.dto.request.RegisterRequest;
 import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
 
@@ -33,7 +33,7 @@ public class AuthController {
      * Авторизация пользователя
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         /*
             TODO: Реализовать аутентификацию пользователя
         */
