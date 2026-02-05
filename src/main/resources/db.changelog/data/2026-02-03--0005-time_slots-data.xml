@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-02-03--0005-time_slots-data.xml" author="winfeo">
+        <loadData tableName="time_slots" file="db.changelog/data/csv/2026-02-03--0005-time_slots.csv"
+                  separator=";"
+                  quotchar='"'
+                  encoding="UTF-8">
+            <column name="date_id" type="BIGINT"/>
+            <column name="start_time" type="TIME"/>
+            <column name="end_time" type="TIME"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

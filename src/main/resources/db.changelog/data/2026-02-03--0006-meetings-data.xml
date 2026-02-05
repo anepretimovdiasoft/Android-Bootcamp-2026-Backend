@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-02-03--0006-meetings-data.xml" author="winfeo">
+        <loadData tableName="meetings" file="db.changelog/data/csv/2026-02-03--0006-meetings.csv"
+                  separator=";"
+                  quotchar='"'
+                  encoding="UTF-8">
+            <column name="organizer_id" type="BIGINT"/>
+            <column name="time_slot_id" type="BIGINT"/>
+            <column name="title" type="VARCHAR(100)"/>
+            <column name="description" type="TEXT"/>
+        </loadData>
+    </changeSet>
+
+
+
+</databaseChangeLog>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-01-30--0007-invited_participants" author="winfeo">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="invited_participants"/>
+            </not>
+        </preConditions>
+        <createTable tableName="invited_participants">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="participant_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_invited_participants_users"
+                             referencedTableName="users"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="meeting_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_invited_participants_meetings"
+                             referencedTableName="meetings"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="status_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_invited_participants_participants_status"
+                             referencedTableName="participants_status"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>
