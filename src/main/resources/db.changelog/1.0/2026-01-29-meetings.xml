@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-01-29-meetings" author="tambrasovskiy">
+        <createTable tableName="meetings">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)"/>
+            <column name="started_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="end_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organizer_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_meetings_owner"
+                             referencedTableName="users"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
