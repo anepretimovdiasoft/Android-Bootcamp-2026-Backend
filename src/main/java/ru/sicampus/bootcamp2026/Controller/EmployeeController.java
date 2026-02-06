@@ -43,7 +43,10 @@ public class EmployeeController {
     @GetMapping("/auth")
     public ResponseEntity<?> AuthorizedEmployee(@Valid @RequestBody GetAuthorizedEmployeeRequest dto){
         try{
-
+            String s= employeeService.AuthorizedEmployee(dto);
+            return ResponseEntity.ok(s);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
     @PostMapping("/createdEm")

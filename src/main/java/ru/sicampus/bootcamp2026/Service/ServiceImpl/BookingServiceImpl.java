@@ -8,7 +8,9 @@ import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByDayResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByMonthResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByWeekResponse;
 import ru.sicampus.bootcamp2026.Entity.Booking;
+import ru.sicampus.bootcamp2026.Entity.Employee;
 import ru.sicampus.bootcamp2026.Repository.BookingRepository;
+import ru.sicampus.bootcamp2026.Repository.EmployeeRepository;
 import ru.sicampus.bootcamp2026.Service.BookingService;
 import ru.sicampus.bootcamp2026.Service.TokenAuthService;
 
@@ -22,10 +24,13 @@ public class BookingServiceImpl implements BookingService {
     private BookingRepository bookingRepository;
     @Autowired
     private TokenAuthService tokenAuthService;
+    @Autowired
+    private EmployeeRepository employeeRepository;
     public BookingByDayResponse getBookingByDay() {
         String token = SecurityContextHolder.getContext().getAuthentication().getName();
         String mail = tokenAuthService.getLogin(token);
-        List<Booking> bookings = bookingRepository.findByEmployee(mail);
+        Employee employee=employeeRepository.findByMail(mail).orElseThrow();
+        List<Booking> bookings = bookingRepository.findByEmployee(employee);
         LocalDate date=LocalDate.now();
         List<Booking> bookingList = bookings.stream().filter(b -> b.getStart().toLocalDate() == date).toList();
         BookingByDayResponse bookingByDayResponse = new BookingByDayResponse();
@@ -35,7 +40,8 @@ public class BookingServiceImpl implements BookingService {
     public BookingByMonthResponse getBookingByMonth(){
         String token=SecurityContextHolder.getContext().getAuthentication().getName();
         String mail=tokenAuthService.getLogin(token);
-        List<Booking> bookings=bookingRepository.findByEmployee(mail);
+        Employee employee=employeeRepository.findByMail(mail).orElseThrow();
+        List<Booking> bookings=bookingRepository.findByEmployee(employee);
         LocalDate date=LocalDate.now();
         List<Map<String,Object>> bookingList= new ArrayList<>((Collection) bookings.stream().filter(
                 b->b.getStart().toLocalDate().getMonth()==date.getMonth())
@@ -54,7 +60,8 @@ public class BookingServiceImpl implements BookingService {
     public BookingByWeekResponse getBookingByWeek(){
         String token=SecurityContextHolder.getContext().getAuthentication().getName();
         String mail=tokenAuthService.getLogin(token);
-        List<Booking> bookings=bookingRepository.findByEmployee(mail);
+        Employee employee=employeeRepository.findByMail(mail).orElseThrow();
+        List<Booking> bookings=bookingRepository.findByEmployee(employee);
         LocalDate date=LocalDate.now();
         LocalDate dateFinal=date.plusDays(7);
         List<List<Map<String,Object>>> booking =new ArrayList<>();
