@@ -9,7 +9,7 @@ import java.util.Date;
 @Service
 public class TokenAuthService {
 
-    private final String SECRET = "secret_key_123";
+    private final String SECRET = "my-super-secret-key-for-jwt-256-bit-long!!!";
     public String createToken(String login) {
         return Jwts.builder()
                 .setSubject(login)

@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface AvatarRepository extends JpaRepository<Avatar,Long> {
     Avatar findById(long id);
+    Optional<Avatar> findByName(String name);
 }

@@ -16,13 +16,10 @@ import ru.sicampus.bootcamp2026.Service.TokenAuthService;
 import java.util.List;
 
 @Component
-public class JWTIMplFilter  extends OncePerRequestFilter {
+public class JWTIMplFilter extends OncePerRequestFilter {
 
-    private final TokenAuthService tokenAuthService;
-
-    public JWTIMplFilter(TokenAuthService tokenAuthService) {
-        this.tokenAuthService = tokenAuthService;
-    }
+    @Autowired
+    private TokenAuthService tokenAuthService;
 
     @Override
     protected void doFilterInternal(
@@ -30,7 +27,11 @@ public class JWTIMplFilter  extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException, java.io.IOException {
-
+        String path = request.getServletPath();
+        if (path.equals("/login") || path.equals("/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -48,6 +49,7 @@ public class JWTIMplFilter  extends OncePerRequestFilter {
                         null,
                         List.of()
                 );
+
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
         filterChain.doFilter(request, response);

@@ -35,8 +35,6 @@ public class Employee {
     private List<Contact> contacts=new ArrayList<>();
     @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Invited> inviteds=new ArrayList<>();
-    public Employee(String name, String lastName, String fatherName, String mail, Avatar avatar, int age,String password) {
-    }
     
     public String getName() {
         return name;
@@ -64,5 +62,29 @@ public class Employee {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLast_name(String lastName) {
+        this.last_name = lastName;
+    }
+
+    public void setFather_name(String fatherName) {
+        this.father_name = fatherName;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

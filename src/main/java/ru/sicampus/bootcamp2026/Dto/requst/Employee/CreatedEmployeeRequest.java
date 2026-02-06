@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.Dto.requst;
+package ru.sicampus.bootcamp2026.Dto.requst.Employee;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.Dto.response;
+package ru.sicampus.bootcamp2026.Dto.response.Employee;
 
 public class CreatedEmployeeResponse {
     private final String token;

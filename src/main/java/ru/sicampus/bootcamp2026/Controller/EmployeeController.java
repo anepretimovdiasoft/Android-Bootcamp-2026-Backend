@@ -5,19 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sicampus.bootcamp2026.Dto.requst.CreatedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.GetEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.response.GetEmployeeResponse;
-import ru.sicampus.bootcamp2026.Entity.Employee;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
 import ru.sicampus.bootcamp2026.Service.EmployeeService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/Employee")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -40,13 +40,24 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+    @GetMapping("/auth")
+    public ResponseEntity<?> AuthorizedEmployee(@Valid @RequestBody GetAuthorizedEmployeeRequest dto){
+        try{
+
+        }
+    }
     @PostMapping("/createdEm")
     public ResponseEntity<?> createdEmployee(@Valid @RequestBody CreatedEmployeeRequest dto) {
         try {
-            employeeService.createdEmployee(dto);
+            String token=employeeService.createdEmployee(dto).getToken();
+            return ResponseEntity.ok(token);
         } catch (EmployeeFound e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/updateEmployee")
+    public ResponseEntity<?> updateEmployee(@Valid @RequestBody GetEmployeeUpdateRequest dto){
+            String token=employeeService.updateEmployee(dto).getToken();
+            return ResponseEntity.ok(token);
     }
 }

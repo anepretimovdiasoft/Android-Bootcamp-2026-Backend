@@ -1,16 +1,14 @@
 package ru.sicampus.bootcamp2026.Service.ServiceImpl;
 
-import org.apache.catalina.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.sicampus.bootcamp2026.Dto.requst.CreatedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.GetAuthorizedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.GetEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.GetEmployeeUpdateRequest;
-import ru.sicampus.bootcamp2026.Dto.response.CreatedEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.UpdateEmployeeResponse;
 import ru.sicampus.bootcamp2026.Entity.Avatar;
 import ru.sicampus.bootcamp2026.Entity.Contact;
 import ru.sicampus.bootcamp2026.Entity.Employee;
@@ -67,7 +65,13 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new EmployeeFound("");
         }
         Avatar avatar=avatarRepository.findById(dto.getAvatar());
-        Employee employee=new Employee(dto.getName(),dto.getLast_name(),dto.getFather_name(),dto.getMail(),avatar,dto.getAge(),dto.getPassword());
+        Employee employee=new Employee();
+        employee.setName(dto.getName());
+        employee.setLast_name(dto.getLast_name());
+        employee.setFather_name(dto.getFather_name());
+        employee.setMail(dto.getMail());
+        employee.setAvatar(avatar);
+        employee.setPassword(dto.getPassword());
         employeeRepository.save(employee);
         String token=tokenAuthService.createToken(dto.getMail());
         return new CreatedEmployeeResponse(token);
@@ -83,7 +87,34 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
     @Override
-    public void updateEmployee(GetEmployeeUpdateRequest dto) {
-
+    public UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto) {
+        Employee employee=new Employee();
+        if(dto.getMail()!=null){
+            if(employeeRepository.findByMail(dto.getMail()).isEmpty()){
+                employee.setMail(dto.getMail());
+            }
+        }
+        if(dto.getName()!=null){
+            employee.setName(dto.getName());
+        }
+        if(dto.getLast_name()!=null){
+            employee.setLast_name(dto.getLast_name());
+        }
+        if(dto.getFather_name()!=null){
+            employee.setFather_name(dto.getFather_name());
+        }
+        if(dto.getPassword()!=null){
+            employee.setPassword(dto.getPassword());
+        }
+        if(dto.getAvatar()!=null){
+            Avatar avatar=avatarRepository.findByName(dto.getAvatar()).orElseThrow();
+            if(avatarRepository.findByName(dto.getAvatar()).isPresent()) {
+                employee.setAvatar(avatar);
+            }
+        }
+        employeeRepository.save(employee);
+        String token=tokenAuthService.createToken(dto.getMail());
+        return new UpdateEmployeeResponse(token);
     }
+
 }

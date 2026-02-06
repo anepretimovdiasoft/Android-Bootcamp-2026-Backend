@@ -28,4 +28,20 @@ public class Booking {
     private Employee employee;
     @OneToMany(mappedBy = "booking",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private ArrayList<Invitations> invitations=new ArrayList<>();
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public Object getEmployee() {
+        return employee;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
 }

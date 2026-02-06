@@ -1,9 +1,9 @@
-package ru.sicampus.bootcamp2026.Dto.response;
+package ru.sicampus.bootcamp2026.Dto.response.Employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import ru.sicampus.bootcamp2026.Entity.Contact;
+
 import java.util.List;
 
 @Data

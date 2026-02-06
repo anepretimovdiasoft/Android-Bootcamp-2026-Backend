@@ -1,14 +1,13 @@
 package ru.sicampus.bootcamp2026.Service;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.sicampus.bootcamp2026.Dto.requst.CreatedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.GetAuthorizedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.GetEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.GetEmployeeUpdateRequest;
-import ru.sicampus.bootcamp2026.Dto.response.CreatedEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.UpdateEmployeeResponse;
 
 import java.util.List;
 
@@ -18,5 +17,5 @@ public interface EmployeeService {
     List<GetEmployeeResponse> getEmployees();
      CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto);
     String AuthorizedEmployee(GetAuthorizedEmployeeRequest dto);
-    void updateEmployee(GetEmployeeUpdateRequest dto);
+    UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto);
 }

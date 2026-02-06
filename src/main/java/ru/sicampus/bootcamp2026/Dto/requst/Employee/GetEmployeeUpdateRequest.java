@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.Dto.requst;
+package ru.sicampus.bootcamp2026.Dto.requst.Employee;
 
 import jakarta.validation.constraints.*;
 
@@ -17,8 +17,30 @@ public class GetEmployeeUpdateRequest {
     @Min(value = 18)
     @Positive
     private int age;
+    @NotBlank
+    private String avatar;
 
     public String getMail() {
         return mail;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public String getFather_name() {
+        return father_name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 }
