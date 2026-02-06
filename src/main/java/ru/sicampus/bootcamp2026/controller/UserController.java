@@ -3,6 +3,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +68,16 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<UsersDTO> login(Authentication authentication) {
         return ResponseEntity.ok(userService.getUserByEmail(authentication.getName()));
+    }
+
+    @Operation(summary = "Получить всех пользователей",
+            description = "Позволяет постранично загружать пользователей")
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<UsersDTO>> getAllUsersPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(userService.getAllUsers(pageable));
     }
 }
