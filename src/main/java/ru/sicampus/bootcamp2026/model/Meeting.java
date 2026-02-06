@@ -18,9 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Переопределяет e&hc только для полей с аннотацией @EqualsAndHashCode.Include
-@Table(name = "meetings") /*
-       TODO: добавить индексы
-*/
+@Table(name = "meetings")
 public class Meeting {
 
     @UuidGenerator(style = UuidGenerator.Style.TIME)

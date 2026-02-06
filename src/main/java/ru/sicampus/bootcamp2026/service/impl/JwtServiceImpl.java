@@ -26,8 +26,8 @@ public class JwtServiceImpl implements JwtService {
 
     void init(){
         this.jwtParser = Jwts.parserBuilder()
-                .setSigningKey(jwtUtil.getPublicKey())//установка ключа для проверки на соответствие
-                .build();//создаем экземпляр парсера
+                .setSigningKey(jwtUtil.getPublicKey()) // Установка ключа для проверки на соответствие
+                .build(); // Создаем экземпляр парсера
     }
 
     @Override
@@ -39,7 +39,7 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public Claims extractAllClaims(String token) {
         return jwtParser
-                .parseClaimsJws(token)//сверяет при помощи публичного ключа подпись токена и извлекает его payload (Claims)
+                .parseClaimsJws(token) // Серяет при помощи публичного ключа подпись токена и извлекает его payload (Claims)
                 .getBody();
     }
 

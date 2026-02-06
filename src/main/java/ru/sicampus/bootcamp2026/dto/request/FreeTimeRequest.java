@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.dto.request;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +17,6 @@ import java.util.UUID;
 public class FreeTimeRequest {
 
     @NotNull(message = "Хотя бы один участник обязателен")
-    private List<UUID> userId;
+    @Size(min = 1, message = "Должен быть хотя бы один участник")
+    private List<UUID> userIds;
 }

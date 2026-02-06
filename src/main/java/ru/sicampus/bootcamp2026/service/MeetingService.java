@@ -2,6 +2,7 @@ package ru.sicampus.bootcamp2026.service;
 
 import org.springframework.stereotype.Repository;
 import ru.sicampus.bootcamp2026.dto.request.CreateMeetingRequest;
+import ru.sicampus.bootcamp2026.dto.response.FreeTimeResponse;
 import ru.sicampus.bootcamp2026.dto.response.MeetingResponse;
 import ru.sicampus.bootcamp2026.model.MeetingStatus;
 
@@ -41,5 +42,8 @@ public interface MeetingService {
      */
     List<MeetingResponse> getMeetingsByStatus(UUID userId, MeetingStatus status);
 
-
+    /**
+     * Поиск свободных временных слотов для встречи
+     */
+    List<FreeTimeResponse.FreeTimeSlot> findFreeTimeSlots(List<UUID> userIds, int durationMinutes);
 }

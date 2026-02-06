@@ -2,7 +2,9 @@ package ru.sicampus.bootcamp2026.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.request.CreateMeetingRequest;
 import ru.sicampus.bootcamp2026.dto.request.FreeTimeRequest;
@@ -19,20 +21,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MeetingController {
 
-    /*
-        TODO: Внедрить сервис(ы) позже
-    */
     private final MeetingService meetingService;
 
     /**
      * Получение всех встреч текущего пользователя
      */
     @GetMapping
-    public ResponseEntity<List<MeetingResponse>> getUserMeetings() {
-        /*
-            TODO: Получить текущего пользователя и вернуть его встречи
-        */
-        throw new UnsupportedOperationException("Метод getUserMeetings еще не реализован");
+    public ResponseEntity<List<MeetingResponse>> getUserMeetings(
+            @AuthenticationPrincipal User currentUser
+    ) {
+        List<MeetingResponse> meetings = meetingService.getUserMeetings(currentUser.getId());
+        return ResponseEntity.ok(meetings);
     }
 
     /**
@@ -40,47 +39,68 @@ public class MeetingController {
      */
     @GetMapping("/{meetingId}")
     public ResponseEntity<MeetingResponse> getMeetingById(@PathVariable UUID meetingId) {
-        return ResponseEntity.ok(meetingService.getMeetingById(meetingId));
+        MeetingResponse meeting = meetingService.getMeetingById(meetingId);
+        return ResponseEntity.ok(meeting);
     }
 
     /**
      * Создание новой встречи
      */
     @PostMapping
-    public ResponseEntity<MeetingResponse> createMeeting(@Valid @RequestBody CreateMeetingRequest request) {
-        /*
-            TODO: Получить текущего пользователя и создать встречу
-        */
-        throw new UnsupportedOperationException("Метод createMeeting еще не реализован");
+    public ResponseEntity<MeetingResponse> createMeeting(
+            @Valid @RequestBody CreateMeetingRequest request,
+            @AuthenticationPrincipal User currentUser
+    ) {
+        MeetingResponse meeting = meetingService.createMeeting(
+                currentUser.getId(),
+                request
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(meeting);
     }
 
     /**
      * Отмена встречи
      */
     @PutMapping("/{meetingId}/cancel")
-    public ResponseEntity<MeetingResponse> cancelMeeting(@PathVariable UUID meetingId) {
-        /*
-            TODO: Получить текущего пользователя и отменить встречу
-        */
-        throw new UnsupportedOperationException("Метод cancelMeeting еще не реализован");
+    public ResponseEntity<MeetingResponse> cancelMeeting(
+            @PathVariable UUID meetingId,
+            @AuthenticationPrincipal User currentUser
+    ) {
+        MeetingResponse meeting = meetingService.cancelMeeting(
+                currentUser.getId(),
+                meetingId
+        );
+        return ResponseEntity.ok(meeting);
     }
 
     /**
      * Удаление встречи (только для организатора)
      */
     @DeleteMapping("/{meetingId}")
-    public ResponseEntity<Void> deleteMeeting(@PathVariable UUID meetingId) {
-        /*
-            TODO: Получить текущего пользователя и удалить встречу
-        */
-        throw new UnsupportedOperationException("Метод deleteMeeting еще не реализован");
+    public ResponseEntity<Void> deleteMeeting(
+            @PathVariable UUID meetingId,
+            @AuthenticationPrincipal User currentUser
+    ) {
+        meetingService.deleteMeeting(currentUser.getId(), meetingId);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/freeTime")
-    public ResponseEntity<FreeTimeResponse> getFreeTime(List<FreeTimeRequest> requests) {
-        /*
-            TODO: Получить интервалы когда пользователи свободны (String, String)
-        */
-        throw new UnsupportedOperationException("Метод getFreeTime еще не реализован");
+    /**
+     * Получение свободного времени для пользователей
+     */
+    @PostMapping("/freeTime")
+    public ResponseEntity<FreeTimeResponse> getFreeTime(
+            @Valid @RequestBody FreeTimeRequest request
+    ) {
+        List<FreeTimeResponse.FreeTimeSlot> slots = meetingService.findFreeTimeSlots(
+                request.getUserIds(),
+                60
+        );
+
+        FreeTimeResponse response = FreeTimeResponse.builder()
+                .startEndTime(slots)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 }

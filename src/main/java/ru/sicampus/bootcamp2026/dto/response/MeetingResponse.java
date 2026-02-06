@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.sicampus.bootcamp2026.model.Meeting;
 import ru.sicampus.bootcamp2026.model.MeetingStatus;
-import ru.sicampus.bootcamp2026.model.ParticipantStatus;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class MeetingResponse {
 
     private UUID id;
+    private UUID organizerId;
+    private String organizerUsername;
     private String title;
     private String description;
     private String location;
@@ -25,26 +28,26 @@ public class MeetingResponse {
     private Instant endTime;
     private MeetingStatus status;
     private Instant createdAt;
-    private OrganizerInfo organizer;
-    private List<ParticipantInfo> participants;
+    private Instant updatedAt;
+    private List<ParticipantResponse> participants;
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class OrganizerInfo {
-        private UUID id;
-        private String username;
-        private String email;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ParticipantInfo {
-        private UUID id;
-        private String username;
+    public static MeetingResponse fromMeeting(Meeting meeting) {
+        return MeetingResponse.builder()
+                .id(meeting.getId())
+                .organizerId(meeting.getOrganizer_id().getId())
+                .organizerUsername(meeting.getOrganizer_id().getUsername())
+                .title(meeting.getTitle())
+                .description(meeting.getDescription())
+                .location(meeting.getLocation())
+                .startTime(meeting.getStartTime())
+                .endTime(meeting.getEndTime())
+                .status(meeting.getMeetingStatus())
+                .createdAt(meeting.getCreatedAt())
+                .updatedAt(meeting.getUpdatedAt())
+                .participants(meeting.getMeetingParticipants().stream()
+                        .map(ParticipantResponse::fromParticipant)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
 }

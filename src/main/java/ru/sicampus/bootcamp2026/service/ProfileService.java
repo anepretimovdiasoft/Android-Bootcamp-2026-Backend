@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.service;
 
 import org.springframework.stereotype.Repository;
+import ru.sicampus.bootcamp2026.dto.request.UpdateAvatarRequest;
 import ru.sicampus.bootcamp2026.dto.request.UserProfileRequest;
 import ru.sicampus.bootcamp2026.dto.response.UserProfileResponse;
 
@@ -18,6 +19,11 @@ public interface ProfileService {
      * Обновление профиля пользователя
      */
     UserProfileResponse updateProfile(UUID userId, UserProfileRequest request);
+
+    /**
+     * Обновление аватара пользователя
+     */
+    UserProfileResponse updateAvatar(UUID userId, UpdateAvatarRequest request);
 
     /**
      * Получение публичного профиля пользователя
