@@ -21,8 +21,8 @@ public class ParticipantResponse {
 
     public static ParticipantResponse fromParticipant(MeetingParticipant participant) {
         return ParticipantResponse.builder()
-                .userId(participant.getUserId().getId())
-                .username(participant.getUserId().getUsername())
+                .userId(participant.getUser().getId())
+                .username(participant.getUser().getUsername())
                 .status(participant.getStatus())
                 .build();
     }

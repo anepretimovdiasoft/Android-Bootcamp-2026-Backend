@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+
+    <!--
+        fix ошибки Postgres: "column role contains null values" при миграции.
+    -->
+    <changeSet id="004-add-user-role" author="team">
+        <addColumn tableName="users">
+            <column name="role" type="varchar(255)"/>
+        </addColumn>
+
+        <update tableName="users">
+            <column name="role" value="USER"/>
+            <where>role IS NULL</where>
+        </update>
+
+        <addNotNullConstraint tableName="users" columnName="role" columnDataType="varchar(255)"/>
+
+        <rollback>
+            <dropColumn tableName="users" columnName="role"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
+

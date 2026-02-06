@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!--
+      в БД колонка meeting_participants.status была boolean,
+      а в JPA-модели используется enum ParticipantStatus с хранением строкой.
+    -->
+    <changeSet id="005-fix-meeting-participants-status" author="copilot">
+
+        <!--  Добавляем временную колонку строкового типа -->
+        <addColumn tableName="meeting_participants">
+            <column name="status_tmp" type="varchar(255)"/>
+        </addColumn>
+
+        <!-- Мигрируем данные boolean -> enum-string.
+             true  -> CONFIRMED
+             false -> DECLINED
+             null  -> PENDING
+        -->
+        <sql dbms="postgresql">
+            UPDATE meeting_participants
+            SET status_tmp = CASE
+                WHEN status IS TRUE THEN 'CONFIRMED'
+                WHEN status IS FALSE THEN 'DECLINED'
+                ELSE 'PENDING'
+            END;
+        </sql>
+
+        <!--Делаем status_tmp обязательной -->
+        <addNotNullConstraint tableName="meeting_participants"
+                              columnName="status_tmp"
+                              columnDataType="varchar(255)"/>
+
+        <!-- Удаляем старую колонку и переименовываем tmp -> status -->
+        <dropColumn tableName="meeting_participants" columnName="status"/>
+        <renameColumn tableName="meeting_participants"
+                      oldColumnName="status_tmp"
+                      newColumnName="status"
+                      columnDataType="varchar(255)"/>
+
+        <rollback>
+            <!-- Упрощенный rollback: возвращаем boolean-колонку и заполняем по значению строки -->
+            <addColumn tableName="meeting_participants">
+                <column name="status_tmp" type="boolean"/>
+            </addColumn>
+            <sql dbms="postgresql">
+                UPDATE meeting_participants
+                SET status_tmp = CASE
+                    WHEN status = 'CONFIRMED' THEN TRUE
+                    WHEN status = 'DECLINED' THEN FALSE
+                    ELSE NULL
+                END;
+            </sql>
+            <dropColumn tableName="meeting_participants" columnName="status"/>
+            <renameColumn tableName="meeting_participants"
+                          oldColumnName="status_tmp"
+                          newColumnName="status"
+                          columnDataType="boolean"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
+

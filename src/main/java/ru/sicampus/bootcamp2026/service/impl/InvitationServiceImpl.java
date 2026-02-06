@@ -39,7 +39,7 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public InvitationResponse getInvitationById(UUID userId, UUID meetingId) {
         MeetingParticipant participant = meetingParticipantRepository
-                .findByMeetingIdIdAndUserIdId(meetingId, userId)
+                .findByMeeting_IdAndUser_Id(meetingId, userId)
                 .orElseThrow(() -> new InvitationNotFoundException(
                         "Приглашение на встречу не найдено"));
 
@@ -54,7 +54,7 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public InvitationResponse respondToInvitation(UUID userId, UUID meetingId, ParticipantStatus status) {
         MeetingParticipant participant = meetingParticipantRepository
-                .findByMeetingIdIdAndUserIdId(meetingId, userId)
+                .findByMeeting_IdAndUser_Id(meetingId, userId)
                 .orElseThrow(() -> new InvitationNotFoundException(
                         "Приглашение не найдено"));
 
@@ -78,7 +78,7 @@ public class InvitationServiceImpl implements InvitationService {
         }
 
         MeetingParticipant participant = meetingParticipantRepository // Отмена приглашения
-                .findByMeetingIdIdAndUserIdId(meetingId, participantId)
+                .findByMeeting_IdAndUser_Id(meetingId, participantId)
                 .orElseThrow(() -> new InvitationNotFoundException("Участник не найден"));
 
         meetingParticipantRepository.delete(participant);
@@ -88,7 +88,7 @@ public class InvitationServiceImpl implements InvitationService {
      * Маппинг сущности MeetingParticipant в InvitationResponse
      */
     private InvitationResponse mapToResponse(MeetingParticipant participant) {
-        Meeting meeting = participant.getMeetingId();
+        Meeting meeting = participant.getMeeting();
         User organizer = meeting.getOrganizer_id();
 
         return InvitationResponse.builder()
@@ -101,7 +101,7 @@ public class InvitationServiceImpl implements InvitationService {
                 .meetingEndTime(meeting.getEndTime())
                 .organizerUsername(organizer.getUsername())
                 .status(participant.getStatus())
-                .createdAt(participant.getMeetingId().getCreatedAt())
+                .createdAt(meeting.getCreatedAt())
                 .build();
     }
 }

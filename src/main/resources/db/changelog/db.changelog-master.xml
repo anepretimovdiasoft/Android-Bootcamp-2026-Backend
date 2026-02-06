@@ -8,5 +8,8 @@
     <include file="db/changelog/001-create-schema.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/002-create-foreign-keys.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/003-insert-test-data.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/004-add-user-role.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/005-fix-meeting-participants-status.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/006-normalize-meeting-participants-status-values.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

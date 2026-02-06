@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!--
+      Нормализация данных после первичной миграции статуса.
+      Если в таблице встречаются значения, отличные от enum ParticipantStatus
+      (PENDING/CONFIRMED/DECLINED), приводим их к допустимым.
+        ACCEPTED -> CONFIRMED
+        (всё прочее неизвестное) -> PENDING
+    -->
+    <changeSet id="006-normalize-meeting-participants-status-values" author="copilot">
+        <sql dbms="postgresql">
+            UPDATE meeting_participants
+            SET status = CASE
+                WHEN status = 'ACCEPTED' THEN 'CONFIRMED'
+                WHEN status IN ('PENDING','CONFIRMED','DECLINED') THEN status
+                ELSE 'PENDING'
+            END;
+        </sql>
+        <rollback>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
+

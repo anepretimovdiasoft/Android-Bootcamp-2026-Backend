@@ -32,7 +32,15 @@ public class SecurityConfig {
                 // Для API с JWT сессии на сервере не нужны
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Swagger / OpenAPI (springdoc)
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/health/**").permitAll()
                         .requestMatchers("/api/v1/meetings/**").authenticated()
                         .requestMatchers("/api/v1/invitations/**").authenticated()
                         .requestMatchers("/api/v1/profile/**").authenticated()

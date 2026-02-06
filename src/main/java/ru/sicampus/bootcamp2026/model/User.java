@@ -60,9 +60,9 @@ public class User {
     private List<MeetingParticipant> meetingParticipants = new ArrayList<>();
 
     @OneToMany(
-            mappedBy = "user_id",
+            mappedBy = "user",
             cascade = CascadeType.ALL, // Удаление всех токенов вместе с пользователем
-            orphanRemoval = true,// Удаление токена из коллекции -> удаление из бд
+            orphanRemoval = true, // Удаление токена из коллекции -> удаление из БД
             fetch = FetchType.LAZY
     )
     private List<RefreshToken> refreshTokens = new ArrayList<>();

@@ -21,10 +21,10 @@ public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
     @Query(
             value = "SELECT DISTINCT m FROM Meeting m " +
                     "JOIN m.meetingParticipants mp " +
-                    "WHERE mp.userId.id = :userId AND m.meetingStatus = :status",
+                    "WHERE mp.user.id = :userId AND m.meetingStatus = :status",
             countQuery = "SELECT COUNT(DISTINCT m.id) FROM Meeting m " +
                     "JOIN m.meetingParticipants mp " +
-                    "WHERE mp.userId.id = :userId AND m.meetingStatus = :status"
+                    "WHERE mp.user.id = :userId AND m.meetingStatus = :status"
     )
     Page<Meeting> findByUserIdAndStatus(
             @Param("userId") UUID userId,
@@ -38,10 +38,10 @@ public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
     @Query(
             value = "SELECT DISTINCT m FROM Meeting m " +
                     "LEFT JOIN m.meetingParticipants mp " +
-                    "WHERE m.organizer_id.id = :userId OR mp.userId.id = :userId",
+                    "WHERE m.organizer_id.id = :userId OR mp.user.id = :userId",
             countQuery = "SELECT COUNT(DISTINCT m.id) FROM Meeting m " +
                     "LEFT JOIN m.meetingParticipants mp " +
-                    "WHERE m.organizer_id.id = :userId OR mp.userId.id = :userId"
+                    "WHERE m.organizer_id.id = :userId OR mp.user.id = :userId"
     )
     Page<Meeting> findAllByUserId(@Param("userId") UUID userId, Pageable pageable);
 
@@ -50,7 +50,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
      */
     @Query("SELECT COUNT(m) > 0 FROM Meeting m " +
             "JOIN m.meetingParticipants mp " +
-            "WHERE mp.userId.id = :userId " +
+            "WHERE mp.user.id = :userId " +
             "AND m.meetingStatus = ru.sicampus.bootcamp2026.model.MeetingStatus.SCHEDULED " +
             "AND m.endTime > :startTime " +
             "AND m.startTime < :endTime")

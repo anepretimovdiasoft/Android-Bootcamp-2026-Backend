@@ -18,13 +18,13 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
     /**
      * Получение участника встречи по ID встречи и пользователя
      */
-    Optional<MeetingParticipant> findByMeetingIdIdAndUserIdId(UUID meetingId, UUID userId);
+    Optional<MeetingParticipant> findByMeeting_IdAndUser_Id(UUID meetingId, UUID userId);
 
     /**
      * Получение всех приглашений пользователя со статусом PENDING
      */
     @Query("SELECT mp FROM MeetingParticipant mp " +
-            "WHERE mp.userId.id = :userId AND mp.status = :status")
+            "WHERE mp.user.id = :userId AND mp.status = :status")
     List<MeetingParticipant> findByUserIdAndStatus(
             @Param("userId") UUID userId,
             @Param("status") ParticipantStatus status);
@@ -32,5 +32,5 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
     /**
      * Удаление всех участников встречи
      */
-    void deleteByMeetingIdId(UUID meetingId);
+    void deleteByMeeting_Id(UUID meetingId);
 }

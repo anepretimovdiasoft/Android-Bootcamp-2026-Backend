@@ -71,8 +71,8 @@ public class MeetingServiceImpl implements MeetingService {
         meeting = meetingRepository.save(meeting);
 
         MeetingParticipant organizerParticipant = new MeetingParticipant();
-        organizerParticipant.setMeetingId(meeting);
-        organizerParticipant.setUserId(organizer);
+        organizerParticipant.setMeeting(meeting);
+        organizerParticipant.setUser(organizer);
         organizerParticipant.setStatus(ParticipantStatus.CONFIRMED);
         meetingParticipantRepository.save(organizerParticipant);
 
@@ -95,8 +95,8 @@ public class MeetingServiceImpl implements MeetingService {
                                 "Участник с ID " + participantId + " не найден"));
 
                 MeetingParticipant participantEntity = new MeetingParticipant();
-                participantEntity.setMeetingId(meeting);
-                participantEntity.setUserId(participant);
+                participantEntity.setMeeting(meeting);
+                participantEntity.setUser(participant);
                 participantEntity.setStatus(ParticipantStatus.PENDING);
                 meetingParticipantRepository.save(participantEntity);
             }
@@ -144,7 +144,7 @@ public class MeetingServiceImpl implements MeetingService {
             throw new SecurityException("Только организатор может удалить встречу");
         }
 
-        meetingParticipantRepository.deleteByMeetingIdId(meetingId);
+        meetingParticipantRepository.deleteByMeeting_Id(meetingId);
 
         meetingRepository.delete(meeting);
     }
@@ -190,7 +190,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         return confirmedMeetings.stream()
                 .map(mp -> {
-                    Meeting meeting = mp.getMeetingId();
+                    Meeting meeting = mp.getMeeting();
                     if (meeting.getStartTime().isBefore(end) && meeting.getEndTime().isAfter(start)) {
                         return new TimeSlot(meeting.getStartTime(), meeting.getEndTime());
                     }
@@ -267,3 +267,4 @@ public class MeetingServiceImpl implements MeetingService {
         private final Instant end;
     }
 }
+
