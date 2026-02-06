@@ -16,6 +16,6 @@ public interface EmployeeService {
     GetEmployeeResponse getEmployee(GetEmployeeRequest dto);
     List<GetEmployeeResponse> getEmployees();
      CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto);
-    String AuthorizedEmployee(GetAuthorizedEmployeeRequest dto);
+     Boolean AuthorizedEmployee(GetAuthorizedEmployeeRequest dto);
     UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto);
 }

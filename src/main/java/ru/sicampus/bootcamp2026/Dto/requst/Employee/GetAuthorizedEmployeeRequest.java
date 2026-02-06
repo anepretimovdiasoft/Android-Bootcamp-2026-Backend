@@ -15,11 +15,18 @@ public class GetAuthorizedEmployeeRequest {
     @Size(min =8)
     private String password;
 
+    public GetAuthorizedEmployeeRequest(String token) {
+    }
+
     public String getMail() {
         return mail;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    public String getEmail() {
+        return mail;
     }
 }

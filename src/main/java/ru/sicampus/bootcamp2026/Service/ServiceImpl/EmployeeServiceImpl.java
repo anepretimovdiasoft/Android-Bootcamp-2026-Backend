@@ -77,13 +77,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new CreatedEmployeeResponse(token);
     }
     @Override
-    public String AuthorizedEmployee(GetAuthorizedEmployeeRequest dto){
+    public Boolean AuthorizedEmployee(GetAuthorizedEmployeeRequest dto){
         Employee employee=employeeRepository.findByMail(dto.getMail()).orElseThrow(()->new EmployeeNotFound(""));
         if(employee.getPassword().equals(dto.getPassword())) {
             throw new EmployeeNotFound("");
         }
         else{
-           return "добро пожаловать";
+           return true;
         }
     }
     @Override

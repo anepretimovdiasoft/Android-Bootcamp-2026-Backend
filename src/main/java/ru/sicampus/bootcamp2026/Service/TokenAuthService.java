@@ -10,16 +10,16 @@ import java.util.Date;
 public class TokenAuthService {
 
     private final String SECRET = "my-super-secret-key-for-jwt-256-bit-long!!!";
+
     public String createToken(String login) {
         return Jwts.builder()
                 .setSubject(login)
                 .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + 3600000)
-                )
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(Keys.hmacShaKeyFor(SECRET.getBytes()))
                 .compact();
     }
+
     public boolean TokenAuthService(String token) {
         try {
             Jwts.parserBuilder()
@@ -31,6 +31,7 @@ public class TokenAuthService {
             return false;
         }
     }
+
     public String getLogin(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET.getBytes())

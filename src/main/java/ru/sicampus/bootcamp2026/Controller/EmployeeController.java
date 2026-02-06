@@ -4,15 +4,19 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Entity.Employee;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
 import ru.sicampus.bootcamp2026.Service.EmployeeService;
+import ru.sicampus.bootcamp2026.Service.TokenAuthService;
 
 import java.util.List;
 
@@ -21,6 +25,9 @@ import java.util.List;
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private TokenAuthService tokenAuthService;
+
     @GetMapping("/Employee")
     public ResponseEntity<?> getEmployee(@Valid @RequestBody GetEmployeeRequest dto){
         try{
@@ -40,22 +47,26 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @GetMapping("/auth")
+    @PostMapping("/auth")
     public ResponseEntity<?> AuthorizedEmployee(@Valid @RequestBody GetAuthorizedEmployeeRequest dto){
-        try{
-            String s= employeeService.AuthorizedEmployee(dto);
-            return ResponseEntity.ok(s);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        boolean valid = employeeService.AuthorizedEmployee(dto);
+        if (!valid) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+        String token = tokenAuthService.createToken(dto.getEmail());
+        return ResponseEntity.ok(new GetAuthorizedEmployeeRequest(token));
     }
+
     @PostMapping("/createdEm")
-    public ResponseEntity<?> createdEmployee(@Valid @RequestBody CreatedEmployeeRequest dto) {
+    public ResponseEntity<CreatedEmployeeResponse> register(
+            @Valid @RequestBody CreatedEmployeeRequest dto) {
+
         try {
-            String token=employeeService.createdEmployee(dto).getToken();
-            return ResponseEntity.ok(token);
+            CreatedEmployeeResponse employee = employeeService.createdEmployee(dto);
+            String token = tokenAuthService.createToken(employee.getToken());
+            return ResponseEntity.ok(new CreatedEmployeeResponse(token));
         } catch (EmployeeFound e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
     @PutMapping("/updateEmployee")
