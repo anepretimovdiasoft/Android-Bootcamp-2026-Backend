@@ -3,6 +3,8 @@ package ru.sicampus.bootcamp2026.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.request.CreateMeetingRequest;
 import ru.sicampus.bootcamp2026.dto.response.FreeTimeResponse;
@@ -112,12 +114,9 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<MeetingResponse> getUserMeetings(UUID userId) {
-        List<Meeting> meetings = meetingRepository.findAllByUserId(userId);
-
-        return meetings.stream()
-                .map(MeetingResponse::fromMeeting)
-                .collect(Collectors.toList());
+    public Page<MeetingResponse> getUserMeetings(UUID userId, Pageable pageable) {
+        return meetingRepository.findAllByUserId(userId, pageable)
+                .map(MeetingResponse::fromMeeting);
     }
 
     @Override
@@ -151,12 +150,9 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<MeetingResponse> getMeetingsByStatus(UUID userId, MeetingStatus status) {
-        List<Meeting> meetings = meetingRepository.findByUserIdAndStatus(userId, status);
-
-        return meetings.stream()
-                .map(MeetingResponse::fromMeeting)
-                .collect(Collectors.toList());
+    public Page<MeetingResponse> getMeetingsByStatus(UUID userId, MeetingStatus status, Pageable pageable) {
+        return meetingRepository.findByUserIdAndStatus(userId, status, pageable)
+                .map(MeetingResponse::fromMeeting);
     }
 
     @Override

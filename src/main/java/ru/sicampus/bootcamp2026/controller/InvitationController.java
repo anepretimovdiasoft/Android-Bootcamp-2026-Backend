@@ -7,7 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.request.InvitationActionRequest;
 import ru.sicampus.bootcamp2026.dto.response.InvitationResponse;
-import ru.sicampus.bootcamp2026.model.User;
+import ru.sicampus.bootcamp2026.model.CustomUserDetails;
 import ru.sicampus.bootcamp2026.service.InvitationService;
 
 import java.util.List;
@@ -25,10 +25,10 @@ public class InvitationController {
      */
     @GetMapping
     public ResponseEntity<List<InvitationResponse>> getInvitations(
-            @AuthenticationPrincipal User currentUser
+            @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
         List<InvitationResponse> invitations =
-                invitationService.getUserInvitations(currentUser.getId());
+                invitationService.getUserInvitations(currentUser.user().getId());
         return ResponseEntity.ok(invitations);
     }
 
@@ -38,10 +38,10 @@ public class InvitationController {
     @GetMapping("/{meetingId}")
     public ResponseEntity<InvitationResponse> getInvitationDetails(
             @PathVariable UUID meetingId,
-            @AuthenticationPrincipal User currentUser
+            @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
         InvitationResponse invitation = invitationService.getInvitationById(
-                currentUser.getId(),
+                currentUser.user().getId(),
                 meetingId
         );
         return ResponseEntity.ok(invitation);
@@ -54,10 +54,10 @@ public class InvitationController {
     public ResponseEntity<InvitationResponse> respondToInvitation(
             @PathVariable UUID meetingId,
             @Valid @RequestBody InvitationActionRequest request,
-            @AuthenticationPrincipal User currentUser
+            @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
         InvitationResponse response = invitationService.respondToInvitation(
-                currentUser.getId(),
+                currentUser.user().getId(),
                 meetingId,
                 request.getStatus()
         );

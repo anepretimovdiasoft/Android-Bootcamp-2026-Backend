@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.request.UpdateAvatarRequest;
 import ru.sicampus.bootcamp2026.dto.request.UserProfileRequest;
@@ -10,9 +12,7 @@ import ru.sicampus.bootcamp2026.model.User;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.ProfileService;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,10 +66,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<UserProfileResponse> getAllUsers(UUID currentUserId) {
-        return userRepository.findAll().stream()
-                .filter(user -> !user.getId().equals(currentUserId)) // Исключаем текущего пользователя
-                .map(UserProfileResponse::fromUser)
-                .collect(Collectors.toList());
+    public Page<UserProfileResponse> getAllUsers(UUID currentUserId, Pageable pageable) {
+        return userRepository.findAllExceptCurrentUser(currentUserId, pageable)
+                .map(UserProfileResponse::fromUser);
     }
 }

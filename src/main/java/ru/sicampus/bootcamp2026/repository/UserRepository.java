@@ -1,12 +1,13 @@
 package ru.sicampus.bootcamp2026.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.sicampus.bootcamp2026.model.User;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,8 +30,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByUsername(String username);
 
     /**
-     * Получение всех пользователей, кроме текущего, при выборе участников
+     * Получение всех пользователей, кроме текущего (для выбора участников) — с пагинацией.
      */
     @Query("SELECT u FROM User u WHERE u.id != :currentUserId")
-    List<User> findAllExceptCurrentUser(@Param("currentUserId") UUID currentUserId);
+    Page<User> findAllExceptCurrentUser(@Param("currentUserId") UUID currentUserId, Pageable pageable);
 }
