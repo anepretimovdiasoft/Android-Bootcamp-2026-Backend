@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import io.jsonwebtoken.*;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,8 @@ public class JwtServiceImpl implements JwtService {
 
     private final JwtUtil jwtUtil;
     private JwtParser jwtParser;
-    private final JwtService jwtService;
-    private final JwtConfig jwtConfig;
 
+    @PostConstruct
     void init(){
         this.jwtParser = Jwts.parserBuilder()
                 .setSigningKey(jwtUtil.getPublicKey()) // Установка ключа для проверки на соответствие
