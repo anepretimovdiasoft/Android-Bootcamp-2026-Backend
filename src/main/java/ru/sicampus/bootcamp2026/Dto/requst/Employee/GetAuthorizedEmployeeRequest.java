@@ -12,7 +12,7 @@ public class GetAuthorizedEmployeeRequest {
     private String mail;
     @NotNull
     @NotBlank
-    @Size(min =8)
+    @Size(min =3)
     private String password;
 
     public GetAuthorizedEmployeeRequest(String token) {
