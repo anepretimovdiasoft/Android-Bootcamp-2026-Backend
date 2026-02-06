@@ -80,10 +80,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Boolean AuthorizedEmployee(GetAuthorizedEmployeeRequest dto){
         Employee employee=employeeRepository.findByMail(dto.getMail()).orElseThrow(()->new EmployeeNotFound(""));
         if(employee.getPassword().equals(dto.getPassword())) {
-            throw new EmployeeNotFound("");
+            return true;
         }
         else{
-           return true;
+            throw new EmployeeNotFound("");
         }
     }
     @Override

@@ -10,6 +10,7 @@ import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.AuthorizedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
 import ru.sicampus.bootcamp2026.Entity.Employee;
@@ -54,7 +55,7 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         String token = tokenAuthService.createToken(dto.getEmail());
-        return ResponseEntity.ok(new GetAuthorizedEmployeeRequest(token));
+        return ResponseEntity.ok(new AuthorizedEmployeeResponse(token));
     }
 
     @PostMapping("/createdEm")
