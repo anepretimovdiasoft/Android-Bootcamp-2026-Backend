@@ -17,9 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Переопределяет e&hc только для полей с аннотацией @EqualsAndHashCode.Include
-@Table(name = "users") /*
-       TODO: добавить индексы
-*/
+@Table(name = "users")
 public class User {
 
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -47,7 +45,7 @@ public class User {
 
     @Size(max = 2048)
     @Column(name = "avatar_url")
-    private String avatar_url;
+    private String avatarUrl;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)

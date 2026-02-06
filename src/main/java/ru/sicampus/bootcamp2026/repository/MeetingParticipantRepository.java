@@ -16,11 +16,6 @@ import java.util.UUID;
 public interface MeetingParticipantRepository extends JpaRepository<MeetingParticipant, MeetingParticipantId> {
 
     /**
-     * Получение всех участников встречи
-     */
-    List<MeetingParticipant> findByMeetingIdId(UUID meetingId);
-
-    /**
      * Получение участника встречи по ID встречи и пользователя
      */
     Optional<MeetingParticipant> findByMeetingIdIdAndUserIdId(UUID meetingId, UUID userId);
@@ -33,11 +28,6 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
     List<MeetingParticipant> findByUserIdAndStatus(
             @Param("userId") UUID userId,
             @Param("status") ParticipantStatus status);
-
-    /**
-     * Получение всех приглашений пользователя
-     */
-    List<MeetingParticipant> findByUserIdId(UUID userId);
 
     /**
      * Удаление всех участников встречи

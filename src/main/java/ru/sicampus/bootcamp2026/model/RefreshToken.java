@@ -15,9 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "refresh_tokens") /*
-        TODO: добавить индексы
-*/
+@Table(name = "refresh_tokens")
 public class RefreshToken {
 
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -25,7 +23,7 @@ public class RefreshToken {
     @Id
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)// У одного пользователя может быть множество токенов (пк, телефон, ноутбук)
+    @ManyToOne(fetch = FetchType.LAZY) // У одного пользователя может быть множество токенов (пк, телефон, ноутбук)
     @JoinColumn(name = "user_id")
     private User user;
 

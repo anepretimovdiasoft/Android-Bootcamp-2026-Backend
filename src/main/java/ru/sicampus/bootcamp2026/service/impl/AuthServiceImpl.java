@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.config.JwtConfig;
-import ru.sicampus.bootcamp2026.dto.mapper.UserMapper;
 import ru.sicampus.bootcamp2026.dto.request.LoginRequest;
 import ru.sicampus.bootcamp2026.dto.request.RegisterRequest;
 import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
@@ -25,7 +24,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtServiceImpl;
     private final JwtConfig jwtConfig;
@@ -33,27 +31,39 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest request) {
-        User user = userMapper.fromRegisterRequest(request);
-        user.setHashedPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.USER);
+        User user = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .hashedPassword(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .build();
+
         userRepository.save(user);
 
         int tokenVersion = 0;
         Instant now = Instant.now();
         Instant refreshExpiration = now.plusMillis(jwtConfig.getRefreshTokenExpirationMs());
         Instant accessExpiration = now.plusMillis(jwtConfig.getAccessTokenExpirationMs());
+
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
                 .tokenVersion(tokenVersion)
                 .token(jwtServiceImpl.generateRefreshToken(user, now, refreshExpiration))
                 .expiresAt(refreshExpiration)
                 .build();
+
         refreshTokenRepository.save(refreshToken);
 
         String accessToken = jwtServiceImpl.generateAccessToken(user, refreshToken, now, accessExpiration);
         log.info("User registerd with id {}" + user.getId());
-        return userMapper.toAuthResponse(user, accessToken, refreshToken.getToken(), accessExpiration, refreshExpiration);
 
+        return AuthResponse.fromUserAndTokens(
+                user,
+                accessToken,
+                refreshToken.getToken(),
+                accessExpiration,
+                refreshExpiration
+        );
     }
 
     @Override

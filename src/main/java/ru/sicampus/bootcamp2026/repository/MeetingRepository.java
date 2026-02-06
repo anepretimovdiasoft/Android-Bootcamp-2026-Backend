@@ -15,11 +15,6 @@ import java.util.UUID;
 public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
 
     /**
-     * Получение всех встреч пользователя, как организатора
-     */
-    List<Meeting> findByOrganizerIdId(UUID organizerId);
-
-    /**
      * Получение всех встреч пользователя в определённом статусе
      */
     @Query("SELECT DISTINCT m FROM Meeting m " +
