@@ -42,14 +42,14 @@ public class User implements UserDetails {
     @JoinTable(
             name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id") // <-- ВАЖНО: реальное имя из БД
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
     )    private Set<Authority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (authorities == null) return Collections.emptySet();
         return authorities.stream()
-                .map(a -> new SimpleGrantedAuthority(a.getAuthority())) // "ROLE_USER"
+                .map(a -> new SimpleGrantedAuthority(a.getAuthority()))
                 .collect(Collectors.toSet());
     }
 
