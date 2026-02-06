@@ -8,7 +8,33 @@ services:
       - "8080:8080"
     networks:
       - main_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: indexzero
+      POSTGRES_PASSWORD: gkl370WVUPMgLhK
+      POSTGRES_DB: application_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5430:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U indexzero -d application_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - main_network
 
 networks:
   main_network:
     external: true
+volumes:
+    postgres_data:
