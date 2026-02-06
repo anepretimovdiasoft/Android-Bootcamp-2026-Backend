@@ -16,7 +16,6 @@ public class GetEmployeeResponse {
     private String father_name;
     private String avatar;
     private List<String> contacts;
-
     public GetEmployeeResponse(String name, String lastName, String fatherName, String mail, List<String> contacts,String avatar) {
         this.name=name;
         this.last_name=lastName;
@@ -25,4 +24,5 @@ public class GetEmployeeResponse {
         this.contacts=contacts;
         this.avatar=avatar;
     }
+
 }

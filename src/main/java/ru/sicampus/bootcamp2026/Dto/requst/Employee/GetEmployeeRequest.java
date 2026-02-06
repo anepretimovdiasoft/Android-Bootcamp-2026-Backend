@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @Builder
 public class GetEmployeeRequest {
-    @NotBlank(message = "")
-    @NotNull(message = "")
+    @NotBlank(message = "df")
+    @NotNull(message = "fgh")
     private String name;
 
     public String getName() {

@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class BookingByMonthResponse {
     private List<Map<String,Object>> bookingList;
-
     public void setBookings(List<Map<String,Object>> bookings) {
         this.bookingList = bookings;
     }

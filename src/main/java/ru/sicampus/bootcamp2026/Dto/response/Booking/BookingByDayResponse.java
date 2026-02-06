@@ -6,7 +6,6 @@ import java.util.List;
 
 public class BookingByDayResponse {
     private List<Booking> bookings;
-
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
     }

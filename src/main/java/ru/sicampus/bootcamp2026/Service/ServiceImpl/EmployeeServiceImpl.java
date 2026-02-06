@@ -8,6 +8,7 @@ import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeesResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.UpdateEmployeeResponse;
 import ru.sicampus.bootcamp2026.Entity.Avatar;
 import ru.sicampus.bootcamp2026.Entity.Contact;
@@ -35,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private TokenAuthService tokenAuthService;
     @Override
     public GetEmployeeResponse getEmployee(GetEmployeeRequest dto){
-        Employee employee=employeeRepository.findByName(dto.getName()).orElseThrow(()->new EmployeeNotFound(""));
+        Employee employee=employeeRepository.findByName(dto.getName()).orElseThrow(()->new EmployeeNotFound("er"));
         List<Contact> contact=contactRepository.findByEmployeeId(employee.getId());
         List<String> contacts = contact.stream()
                 .map(Contact::getName)
@@ -45,18 +46,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         return getEmployeeResponse;
     }
     @Override
-    public List<GetEmployeeResponse> getEmployees(){
-        List<Employee> employee=employeeRepository.findAll();
-        List<GetEmployeeResponse> getEmployeeResponses=new ArrayList<>();
-        for(Employee employee1:employee){
-            List<Contact> contact=contactRepository.findByEmployeeId(employee1.getId());
+    public List<GetEmployeeResponse> getEmployees() {
+        List<Employee> employee = employeeRepository.findAll();
+        List<GetEmployeeResponse> getEmployeeResponses = new ArrayList<>();
+        GetEmployeeResponse getEmployeeResponse;
+        for (Employee employee1 : employee) {
+            List<Contact> contact = contactRepository.findByEmployeeId(employee1.getId());
             List<String> contacts = contact.stream()
                     .map(Contact::getName)
                     .toList();
-            String avatar=employee1.getAvatar().getName();
-            GetEmployeeResponse getEmployeeResponse=new GetEmployeeResponse(employee1.getName(),employee1.getLast_name(), employee1.getFather_name(), employee1.getMail(),contacts,avatar);
+            String avatar = employee1.getAvatar().getName();
+            getEmployeeResponse = new GetEmployeeResponse(employee1.getName(), employee1.getLast_name(), employee1.getFather_name(), employee1.getMail(), contacts, avatar);
             getEmployeeResponses.add(getEmployeeResponse);
         }
+        GetEmployeesResponse getEmployeesResponse = new GetEmployeesResponse();
+        getEmployeesResponse.setEmployees(getEmployeeResponses);
         return getEmployeeResponses;
     }
     @Override

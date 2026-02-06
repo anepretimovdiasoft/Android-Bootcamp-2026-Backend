@@ -28,8 +28,7 @@ public class BookingServiceImpl implements BookingService {
     private EmployeeRepository employeeRepository;
     public BookingByDayResponse getBookingByDay() {
         String token = SecurityContextHolder.getContext().getAuthentication().getName();
-        String mail = tokenAuthService.getLogin(token);
-        Employee employee=employeeRepository.findByMail(mail).orElseThrow();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow();
         List<Booking> bookings = bookingRepository.findByEmployee(employee);
         LocalDate date=LocalDate.now();
         List<Booking> bookingList = bookings.stream().filter(b -> b.getStart().toLocalDate() == date).toList();
@@ -39,8 +38,7 @@ public class BookingServiceImpl implements BookingService {
     }
     public BookingByMonthResponse getBookingByMonth(){
         String token=SecurityContextHolder.getContext().getAuthentication().getName();
-        String mail=tokenAuthService.getLogin(token);
-        Employee employee=employeeRepository.findByMail(mail).orElseThrow();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow();
         List<Booking> bookings=bookingRepository.findByEmployee(employee);
         LocalDate date=LocalDate.now();
         List<Map<String,Object>> bookingList= new ArrayList<>((Collection) bookings.stream().filter(
@@ -59,8 +57,7 @@ public class BookingServiceImpl implements BookingService {
     }
     public BookingByWeekResponse getBookingByWeek(){
         String token=SecurityContextHolder.getContext().getAuthentication().getName();
-        String mail=tokenAuthService.getLogin(token);
-        Employee employee=employeeRepository.findByMail(mail).orElseThrow();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow();
         List<Booking> bookings=bookingRepository.findByEmployee(employee);
         LocalDate date=LocalDate.now();
         LocalDate dateFinal=date.plusDays(7);

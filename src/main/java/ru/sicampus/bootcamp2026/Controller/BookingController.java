@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByDayResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByMonthResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByWeekResponse;
 import ru.sicampus.bootcamp2026.Service.BookingService;
 
 @RestController
@@ -34,6 +35,11 @@ public class BookingController {
         }catch(IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+    @GetMapping("/BookingByWeek")
+    public  ResponseEntity<?> getBookingByWeek(){
+            BookingByWeekResponse bookingByWeekResponse= bookingService.getBookingByWeek();
+            return ResponseEntity.ok(bookingByWeekResponse);
     }
 
 }

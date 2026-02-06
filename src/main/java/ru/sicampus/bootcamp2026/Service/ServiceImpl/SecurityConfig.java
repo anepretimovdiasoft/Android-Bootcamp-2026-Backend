@@ -25,7 +25,7 @@ public class SecurityConfig {
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/Employee/createdEm","/api/Employee/auth","/api/Employee/**","/api/Booking/**").permitAll()
+                        .requestMatchers("/api/Employee/**","/api/Booking/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtIMplFilter, UsernamePasswordAuthenticationFilter.class);
