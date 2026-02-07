@@ -29,7 +29,7 @@ public class MeetingController {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
-
+            @ApiResponse(responseCode = "409", description = "You already have a meeting at this time"),
     })
     ResponseEntity<MeetingDTO> createMeeting(@RequestBody @Valid MeetingCreateDTO meetingCreateDTO, Authentication authentication) {
         return ResponseEntity.ok(meetingService.createMeeting(meetingCreateDTO, authentication.getName()));

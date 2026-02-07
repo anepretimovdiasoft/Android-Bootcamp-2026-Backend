@@ -38,7 +38,6 @@ public class MeetingServiceImpl implements MeetingService {
         if(!MeetingValidator.validateStartEnd(meetingCreateDTO.getStartTime(), meetingCreateDTO.getEndTime())) {
             throw new InvalidMeetingDateException("Invalid start or end time");
         }
-
         if(meetingRepository.existsByOwner_UsernameAndStartTime(username, meetingCreateDTO.getStartTime())) {
             throw new InvalidMeetingDateException("You already have a meeting at this time");
         }

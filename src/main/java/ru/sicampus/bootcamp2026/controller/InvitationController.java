@@ -29,6 +29,8 @@ public class InvitationController {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid Data"),
+            @ApiResponse(responseCode = "404", description = "Invitation not found"),
+            @ApiResponse(responseCode = "409", description = "Invitation not owned by user /  Employee is busy at this time")
     })
     ResponseEntity<InvitationDTO> answerInvitation(@RequestBody @Valid InvitationAnswerDTO invitationAnswerDTO, Authentication authentication) {
         return ResponseEntity.ok(invitationService.answerInvitation(invitationAnswerDTO, authentication.getName()));
@@ -40,6 +42,8 @@ public class InvitationController {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid Data"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "409", description = "Meeting not owned by user / Invitation already exists / Employee is busy at this time")
     })
     ResponseEntity<InvitationDTO> createInvitation(@RequestBody @Valid InvitationCreateDTO invitationCreateDTO, Authentication authentication) {
         return ResponseEntity.ok(invitationService.createInvitation(invitationCreateDTO, authentication.getName()));

@@ -29,6 +29,7 @@ public class EmployeeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "409", description = "Employee with such username, email or phone number already exists")
 
     })
     ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody @Valid EmployeeRegisterDTO employeeRegisterDTO) {
@@ -52,6 +53,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "409", description = "Employee with such email or phone number already exists")
 
     })
     public ResponseEntity<EmployeeDTO> patchVoid(@RequestBody @Valid EmployeeEditDTO employeeEditDTO, Authentication authentication) {

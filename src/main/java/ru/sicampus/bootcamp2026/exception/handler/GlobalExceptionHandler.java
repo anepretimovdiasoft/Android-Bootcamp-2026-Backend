@@ -41,6 +41,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvitationNotOwnedException(InvitationNotOwnedException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(MeetingNotOwnedException.class)
+    public ResponseEntity<String> handleMeetingNotOwnedException(MeetingNotOwnedException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(

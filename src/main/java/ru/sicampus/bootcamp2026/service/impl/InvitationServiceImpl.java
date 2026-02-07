@@ -35,7 +35,7 @@ public class InvitationServiceImpl implements InvitationService {
         Meeting meeting = meetingRepository.findByIdAndOwner_Username(invitationCreateDTO.getMeetingId(), username);
         Employee emp = employeeRepository.findByUsername(invitationCreateDTO.getEmployeeUsername());
         if(meeting == null) {
-            throw new MeetingNotFoundExeception("Meeting not found");
+            throw new MeetingNotOwnedException("Meeting does not exist or is not owned by you");
         }
         if(emp == null) {
             throw new EmployeeNotFoundException("Employee not found");
