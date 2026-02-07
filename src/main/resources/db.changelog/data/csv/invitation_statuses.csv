@@ -1,4 +1,4 @@
 id;status_name
-1;Ожидается
-2;Принято
-3;Отклонено
+1;PENDING
+2;ACCEPTED
+3;REJECTED

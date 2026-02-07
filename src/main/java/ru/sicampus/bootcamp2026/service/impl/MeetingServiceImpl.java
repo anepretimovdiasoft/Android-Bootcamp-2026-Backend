@@ -1,5 +1,7 @@
 package ru.sicampus.bootcamp2026.service.impl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.dto.*;
@@ -64,6 +66,19 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    public Page<InvitationDTO> getInvitations(Long userId, Pageable pageable) {
+        return participantRepository.findByUserIdAndInvitationStatus_StatusName(userId, "PENDING", pageable)
+                .map(p -> {
+                    InvitationDTO dto = new InvitationDTO();
+                    dto.setInvitationId(p.getMeeting().getId().toString());
+                    dto.setTopic(p.getMeeting().getTopic());
+                    dto.setDateTime(LocalDateTime.of(p.getMeeting().getCalendarDate(), p.getMeeting().getStartTime()));
+                    dto.setOrganizerName(p.getMeeting().getOrganizer().getFullName());
+
+                    return dto;
+                });
+    }
+    @Override
     public List<InvitationDTO> getInvitations(Long userId) {
         return participantRepository.findByUserIdAndInvitationStatus_StatusName(userId, "PENDING").stream()
                 .map(p -> {
@@ -72,6 +87,7 @@ public class MeetingServiceImpl implements MeetingService {
                     dto.setTopic(p.getMeeting().getTopic());
                     dto.setDateTime(LocalDateTime.of(p.getMeeting().getCalendarDate(), p.getMeeting().getStartTime()));
                     dto.setOrganizerName(p.getMeeting().getOrganizer().getFullName());
+
                     return dto;
                 }).collect(Collectors.toList());
     }

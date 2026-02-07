@@ -4,12 +4,17 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="load-meeting-participants" author="igramagadev">
-        <loadData file="db.changelog/data/csv/meeting_participants.csv" tableName="meeting_participants"
+        <loadData file="db.changelog/data/csv/meeting_participants.csv"
+                  tableName="meeting_participants"
                   separator=";"
                   quotchar='"'
                   encoding="UTF-8">
-            <column name="is_required" type="BOOLEAN"/>
-            <column name="updated_at" type="TIMESTAMP"/>
+            <column name="id" header="id" type="NUMERIC"/>
+            <column name="meeting_id" header="meeting_id" type="NUMERIC"/>
+            <column name="user_id" header="user_id" type="NUMERIC"/>
+            <column name="status_id" header="status_id" type="NUMERIC"/>
+
+            <column name="updated_at" header="updated_at" type="TIMESTAMP"/>
         </loadData>
     </changeSet>
 </databaseChangeLog>
