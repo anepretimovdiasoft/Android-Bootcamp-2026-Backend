@@ -8,10 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sicampus.bootcamp2026.dto.InvitationAnswerDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationCreateDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationMeetingDTO;
+import ru.sicampus.bootcamp2026.dto.*;
 import ru.sicampus.bootcamp2026.service.InvitationService;
 
 import java.util.List;
@@ -57,5 +54,10 @@ public class InvitationController {
     })
     ResponseEntity<List<InvitationMeetingDTO>> getActiveInvitations(Authentication authentication) {
         return ResponseEntity.ok(invitationService.getActiveInvitations(authentication.getName()));
+    }
+
+    @PostMapping("/batch")
+    ResponseEntity<List<InvitationDTO>> createInvitationsBatch(@RequestBody @Valid InvitationCreateBatchDTO dto, Authentication authentication) {
+        return ResponseEntity.ok(invitationService.createInvitationsBatch(dto, authentication.getName()));
     }
 }
