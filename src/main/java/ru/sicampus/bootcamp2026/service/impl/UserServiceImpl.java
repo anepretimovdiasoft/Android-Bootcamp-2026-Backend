@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.UserDto;
 import ru.sicampus.bootcamp2026.entity.Position;
 import ru.sicampus.bootcamp2026.entity.User;
-import ru.sicampus.bootcamp2026.exception.position.PositionNotFoundException;
+import ru.sicampus.bootcamp2026.exception.user.PositionNotFoundException;
 import ru.sicampus.bootcamp2026.exception.user.UserAlreadyExist;
 import ru.sicampus.bootcamp2026.exception.user.UserNotFoundException;
 import ru.sicampus.bootcamp2026.repository.PositionRepository;
@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByLogin(dto.getLogin())){
             throw new UserAlreadyExist("User with this login already exists");
         }
-
         User user = createUserFromDto(new User(), dto);
         return UserMapper.toDto(userRepository.save(user));
     }

@@ -1,3 +1,3 @@
-meeting_id;user_id;status;organizer_id
-1;2;pending;1
-2;1;accepted;1
+meeting_id;user_id;status
+1;2;pending
+2;1;accepted

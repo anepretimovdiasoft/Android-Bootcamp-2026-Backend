@@ -26,7 +26,7 @@ public class InvitationServiceImpl implements InvitationService {
 
     @Override
     public List<InvitationDto> getMyInvitations(Long currentUserId) {
-        checkUser(currentUserId);
+        validateUserExists(currentUserId);
 
         return invitationRepository.findByInviteeId(currentUserId).stream()
                 .filter(invitation -> invitation.getStatus().equals(InvitationStatus.PENDING))
@@ -54,7 +54,7 @@ public class InvitationServiceImpl implements InvitationService {
 
     @Override
     public List<InvitationDto> getMeetingInvitations(Long meetingId, Long organizerId) {
-        checkUser(organizerId);
+        validateUserExists(organizerId);
 
         return invitationRepository.findByMeetingId(meetingId)
                 .stream()
@@ -62,7 +62,7 @@ public class InvitationServiceImpl implements InvitationService {
                 .toList();
     }
 
-    private void checkUser(Long id){
+    private void validateUserExists(Long id){
         if (!userRepository.existsById(id)){
             throw new UserNotFoundException("User not found");
         }

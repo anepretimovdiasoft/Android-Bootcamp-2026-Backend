@@ -1,7 +1,15 @@
 package ru.sicampus.bootcamp2026.exception.invitation;
 
-public class InvitationNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import ru.sicampus.bootcamp2026.exception.ClientException;
+
+public class InvitationNotFoundException extends ClientException {
     public InvitationNotFoundException(String message) {
         super(message);
+    }
+
+    @Override
+    public HttpStatus getHttpStatus() {
+        return HttpStatus.NOT_FOUND;
     }
 }

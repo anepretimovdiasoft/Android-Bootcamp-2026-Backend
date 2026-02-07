@@ -3,12 +3,11 @@ package ru.sicampus.bootcamp2026.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingDto;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/meetings")
 public class MeetingController {
