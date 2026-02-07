@@ -1,6 +1,9 @@
 package ru.sicampus.bootcamp2026.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +48,14 @@ public class UsersController {
     public ResponseEntity<String> getUserByUsername(@PathVariable String username) {
         UsersDTO dto = usersService.getUserByUsername(username);
         return ResponseEntity.ok().body("User " + dto.getUsername() + " is registered");
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<UsersDTO>> getAllUsersPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(usersService.getAllUsersPaginated(pageable));
     }
 }

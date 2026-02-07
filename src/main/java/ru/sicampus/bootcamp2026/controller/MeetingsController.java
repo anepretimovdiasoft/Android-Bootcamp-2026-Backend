@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingsDTO;
@@ -34,5 +35,10 @@ public class MeetingsController {
     public ResponseEntity<Void> deleteMeeting(@PathVariable long id) {
         meetingsService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<MeetingsDTO>> getAllMeetingsPaginate(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(meetingsService.getAllPaginated(page, size));
     }
 }

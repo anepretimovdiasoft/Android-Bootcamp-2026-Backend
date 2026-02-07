@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.UserRegisterDTO;
@@ -73,5 +75,10 @@ public class UsersServiceImpl implements UsersService {
 //        List<Invitations> userInvitations = invitationsRepository.findAllByInvitedUserId(user);
 //        invitationsRepository.deleteAll(userInvitations);
         usersRepository.delete(user);
+    }
+
+    @Override
+    public Page<UsersDTO> getAllUsersPaginated(Pageable pageable) {
+        return usersRepository.findAll(pageable).map(UsersMapper::convertToDTO);
     }
 }

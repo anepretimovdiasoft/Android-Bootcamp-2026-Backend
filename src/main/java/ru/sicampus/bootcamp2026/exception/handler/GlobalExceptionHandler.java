@@ -26,6 +26,6 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(UsernameIsAlreadyTakenException.class)
     public ResponseEntity<String> handleUsernameIsAlreadyTakenException(UsernameIsAlreadyTakenException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.IM_USED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 }

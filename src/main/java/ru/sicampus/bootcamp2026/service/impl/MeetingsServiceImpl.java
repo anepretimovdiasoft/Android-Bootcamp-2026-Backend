@@ -2,6 +2,9 @@ package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.MeetingsDTO;
 import ru.sicampus.bootcamp2026.dto.UsersDTO;
@@ -49,5 +52,11 @@ public class MeetingsServiceImpl implements MeetingsService {
     public void deleteUser(long id) {
         Meetings meeting = meetingsRepository.findById(id).orElseThrow(()->new MeetingNotFoundException("Meeting not found"));
         meetingsRepository.delete(meeting);
+    }
+
+    @Override
+    public Page<MeetingsDTO> getAllPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return meetingsRepository.findAll(pageable).map(MeetingsMapper::convertToDTO);
     }
 }

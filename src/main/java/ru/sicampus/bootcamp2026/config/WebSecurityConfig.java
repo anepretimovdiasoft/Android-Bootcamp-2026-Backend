@@ -31,10 +31,17 @@ public class WebSecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console").permitAll()
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/users/username/{username}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyAuthority("ROLE_USER")
+                        .requestMatchers("/api/users/paginated").hasAnyAuthority(
+                                "ROLE_USER",
+                                "ROLE_ADMIN"
+                        )
+                        .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyAuthority(
+                                "ROLE_USER",
+                                "ROLE_ADMIN"
+                        )
+                        .requestMatchers("/h2-console").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/users/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/meetings/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/invitations/**").hasAuthority("ROLE_ADMIN")
