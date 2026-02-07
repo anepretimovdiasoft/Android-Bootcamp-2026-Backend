@@ -4,10 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import ru.sicampus.bootcamp2026.web.dto.user.UserMiniDto;
-import ru.sicampus.bootcamp2026.web.dto.user.UserMiniInvitationDto;
+import ru.sicampus.bootcamp2026.web.dto.invitation.UserMiniInvitationDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -31,15 +32,15 @@ public class MeetingDto {
     private LocalDate date;
 
     @Schema(description = "Время начала встречи", example = "19:00:00")
-    private LocalDateTime timeStart;
+    private LocalTime timeStart;
 
     @Schema(description = "Время конца встречи", example = "21:00:00")
-    private LocalDateTime timeEnd;
+    private LocalTime timeEnd;
 
     // Организатор
     private UserMiniDto organizer;
 
-    // Приглашенные пользователи (первые 10) (со статусом приглашения)
+    // Приглашенные пользователи (первые 20) (со статусом приглашения)
     private List<UserMiniInvitationDto> users;
 
     @Schema(description = "Время создания встречи", example = "2026-02-01 19:09:40.160401")

@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.sicampus.bootcamp2026.exceptions.AccessDeniedException;
 import ru.sicampus.bootcamp2026.exceptions.ExceptionBody;
 import ru.sicampus.bootcamp2026.exceptions.ResourceConflictException;
 import ru.sicampus.bootcamp2026.exceptions.ResourceNotFoundException;
@@ -53,6 +54,12 @@ public class ControllerAdvice {
 
     // ========================== Custom Exception ==========================
 
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionBody handleAccessDenied(AccessDeniedException e) {
+        return new ExceptionBody(e.getMessage());
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionBody handleResourceNotFound(ResourceNotFoundException e) {
@@ -62,7 +69,6 @@ public class ControllerAdvice {
     @ExceptionHandler(ResourceConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ExceptionBody handleResourceConflict(ResourceConflictException e) {
-        // Обработка системных ошибок аутентификации
         return new ExceptionBody(e.getMessage());
     }
 }
