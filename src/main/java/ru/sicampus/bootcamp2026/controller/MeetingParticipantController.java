@@ -1,9 +1,13 @@
 package ru.sicampus.bootcamp2026.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingParticipantDTO;
+import ru.sicampus.bootcamp2026.dto.UserDTO;
 import ru.sicampus.bootcamp2026.service.MeetingParticipantService;
 
 import java.util.List;
@@ -48,5 +52,15 @@ public class MeetingParticipantController {
             @PathVariable Long meetingId,
             @PathVariable Long userId) {
         participantService.removeParticipant(meetingId, userId);
+    }
+
+    @GetMapping("/paginated")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<MeetingParticipantDTO> getAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        Pageable pageable = PageRequest.of(page, size);
+        return participantService.getAllMeetingsParticipantPaginated(pageable);
     }
 }

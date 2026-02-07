@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
 import ru.sicampus.bootcamp2026.entity.Meeting;
@@ -9,6 +11,7 @@ import ru.sicampus.bootcamp2026.exception.ResourceNotFoundException;
 import ru.sicampus.bootcamp2026.repository.MeetingRepository;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.MeetingService;
+import ru.sicampus.bootcamp2026.util.MeetingMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,6 +88,12 @@ public class MeetingServiceImpl implements MeetingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Meeting not found with id: " + id));
         meetingRepository.delete(meeting);
     }
+
+    @Override
+    public Page<MeetingDTO> getAllMeetingsPaginated(Pageable pageable) {
+        return meetingRepository.findAll(pageable).map(MeetingMapper::toDto);
+    }
+
 
     private MeetingDTO convertToDto(Meeting meeting) {
         Long organizerId = meeting.getOrganizer() != null ? meeting.getOrganizer().getId() : null;

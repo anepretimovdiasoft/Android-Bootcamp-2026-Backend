@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.MeetingParticipantDTO;
 import ru.sicampus.bootcamp2026.entity.Meeting;
@@ -11,6 +13,8 @@ import ru.sicampus.bootcamp2026.repository.MeetingParticipantRepository;
 import ru.sicampus.bootcamp2026.repository.MeetingRepository;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.MeetingParticipantService;
+import ru.sicampus.bootcamp2026.util.MeetingMapper;
+import ru.sicampus.bootcamp2026.util.MeetingParticipantMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,6 +85,11 @@ public class MeetingParticipantServiceImpl implements MeetingParticipantService 
                         "Participant not found for meeting " + meetingId + " and user " + userId));
 
         participantRepository.delete(participant);
+    }
+
+    @Override
+    public Page<MeetingParticipantDTO> getAllMeetingsParticipantPaginated(Pageable pageable) {
+        return participantRepository.findAll(pageable).map(MeetingParticipantMapper::toDto);
     }
 
     private MeetingParticipantDTO convertToDto(MeetingParticipant participant) {

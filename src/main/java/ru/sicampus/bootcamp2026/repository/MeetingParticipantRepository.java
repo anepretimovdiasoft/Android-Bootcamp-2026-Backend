@@ -1,5 +1,7 @@
 package ru.sicampus.bootcamp2026.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.sicampus.bootcamp2026.entity.MeetingParticipant;
 
@@ -11,4 +13,7 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
     List<MeetingParticipant> findByUserId(Long userId);
     Optional<MeetingParticipant> findByMeetingIdAndUserId(Long meetingId, Long userId);
     boolean existsByMeetingIdAndUserId(Long meetingId, Long userId);
+
+    @Override
+    Page<MeetingParticipant> findAll(Pageable pageable);
 }

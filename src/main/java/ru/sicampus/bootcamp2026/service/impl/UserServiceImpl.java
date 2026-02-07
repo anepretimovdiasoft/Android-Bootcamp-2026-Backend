@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.UserDTO;
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
         // Хешируем пароль перед сохранением
         User user = userMapper.toEntity(dto);
-        user.setPassword(passwordEncoder.encode(dto.getPassword())); // Важно!
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
@@ -72,7 +74,7 @@ public class UserServiceImpl implements UserService {
         if (dto.getName() != null) user.setName(dto.getName());
         if (dto.getEmail() != null) user.setEmail(dto.getEmail());
         if (dto.getUsername() != null) user.setUsername(dto.getUsername());
-        if (dto.getPassword() != null) user.setPassword(dto.getPassword());
+        if (dto.getPassword() != null) user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         User updated = userRepository.save(user);
         return toDTO(updated);
@@ -86,6 +88,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Page<UserDTO> getAllUserPaginated(Pageable pageable) {
+        return userRepository.findAll(pageable).map(UserMapper::toDto);
     }
 
     private UserDTO toDTO(User user) {
