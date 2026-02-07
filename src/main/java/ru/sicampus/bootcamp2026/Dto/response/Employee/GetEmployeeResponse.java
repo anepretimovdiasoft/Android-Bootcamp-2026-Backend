@@ -3,26 +3,19 @@ package ru.sicampus.bootcamp2026.Dto.response.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class GetEmployeeResponse {
-    private String mail;
-    private  String name;
-    private String last_name;
-    private String father_name;
-    private String avatar;
-    private List<String> contacts;
-    public GetEmployeeResponse(String name, String lastName, String fatherName, String mail, List<String> contacts,String avatar) {
-        this.name=name;
-        this.last_name=lastName;
-        this.father_name=fatherName;
-        this.mail=mail;
-        this.contacts=contacts;
-        this.avatar=avatar;
-    }
+    private List<Map<String,Object>> employees;
 
+    public void setEmployees(List<Map<String, Object>> employees) {
+        this.employees = employees;
+    }
 }

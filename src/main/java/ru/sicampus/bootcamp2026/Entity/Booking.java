@@ -33,7 +33,7 @@ public class Booking {
         return start;
     }
 
-    public Object getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
@@ -43,5 +43,9 @@ public class Booking {
 
     public LocalDateTime getEnd() {
         return end;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

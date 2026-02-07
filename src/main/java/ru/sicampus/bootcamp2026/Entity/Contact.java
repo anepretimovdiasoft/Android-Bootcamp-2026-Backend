@@ -19,7 +19,7 @@ public class Contact {
     @JoinColumn(name = "Employee_User")
     private Employee employee;
     private  String name;
-
+    private  String contact;
     public String getName() {
         return name;
     }

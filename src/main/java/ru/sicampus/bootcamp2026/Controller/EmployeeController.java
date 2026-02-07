@@ -13,6 +13,7 @@ import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.AuthorizedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeesResponse;
 import ru.sicampus.bootcamp2026.Entity.Employee;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
@@ -42,7 +43,7 @@ public class EmployeeController {
     @GetMapping("/Employees")
     public ResponseEntity<?> getEmployees(){
         try{
-            List<GetEmployeeResponse> result=employeeService.getEmployees();
+            GetEmployeesResponse result=employeeService.getEmployees();
             return ResponseEntity.ok(result);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

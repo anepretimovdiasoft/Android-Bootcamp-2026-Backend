@@ -21,8 +21,8 @@ import ru.sicampus.bootcamp2026.Repository.EmployeeRepository;
 import ru.sicampus.bootcamp2026.Service.EmployeeService;
 import ru.sicampus.bootcamp2026.Service.TokenAuthService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -36,32 +36,43 @@ public class EmployeeServiceImpl implements EmployeeService {
     private TokenAuthService tokenAuthService;
     @Override
     public GetEmployeeResponse getEmployee(GetEmployeeRequest dto){
-        Employee employee=employeeRepository.findByName(dto.getName()).orElseThrow(()->new EmployeeNotFound("er"));
-        List<Contact> contact=contactRepository.findByEmployeeId(employee.getId());
-        List<String> contacts = contact.stream()
-                .map(Contact::getName)
-                .toList();
-        String avatar=employee.getAvatar().getName();
-        GetEmployeeResponse getEmployeeResponse= new GetEmployeeResponse(employee.getName(),employee.getLast_name(),employee.getFather_name(),employee.getMail(),contacts,avatar);
+        List<Employee>employee=employeeRepository.findByName(dto.getName());
+        List<Map<String,Object>> employees=new ArrayList<>((Collection) employee.stream()
+                .filter(e-> e.getLast_name()==dto.getLast_name()& e.getFather_name()==dto.getFather_name())
+                .collect(Collectors.toMap(e->e.getMail(),e->{
+                    Map<String,Object> emp=new LinkedHashMap<>();
+                    emp.put("name",e.getName());
+                    emp.put("last_name",e.getLast_name());
+                    emp.put("father_nme",e.getFather_name());
+                    emp.put("age",e.getAge());
+                    emp.put("avatar",e.getAvatar().getName());
+                    emp.put("contact",contactRepository.findByEmployeeId(e.getId()));
+                    return emp;
+                        }
+                )));
+        GetEmployeeResponse getEmployeeResponse=new GetEmployeeResponse();
+        getEmployeeResponse.setEmployees(employees);
         return getEmployeeResponse;
     }
     @Override
-    public List<GetEmployeeResponse> getEmployees() {
+    public GetEmployeesResponse getEmployees() {
         List<Employee> employee = employeeRepository.findAll();
-        List<GetEmployeeResponse> getEmployeeResponses = new ArrayList<>();
-        GetEmployeeResponse getEmployeeResponse;
-        for (Employee employee1 : employee) {
-            List<Contact> contact = contactRepository.findByEmployeeId(employee1.getId());
-            List<String> contacts = contact.stream()
-                    .map(Contact::getName)
-                    .toList();
-            String avatar = employee1.getAvatar().getName();
-            getEmployeeResponse = new GetEmployeeResponse(employee1.getName(), employee1.getLast_name(), employee1.getFather_name(), employee1.getMail(), contacts, avatar);
-            getEmployeeResponses.add(getEmployeeResponse);
-        }
+        List<Map<String,Object>> employeeList= new ArrayList<>((Collection)employee.stream()
+                .collect(Collectors.
+                        toMap(e->e.getMail(), e->{
+                            Map<String,Object> emp=new LinkedHashMap<>();
+                            emp.put("name",e.getName());
+                            emp.put("last_name",e.getLast_name());
+                            emp.put("father_nme",e.getFather_name());
+                            emp.put("age",e.getAge());
+                            emp.put("avatar",e.getAvatar().getName());
+                            emp.put("contact",contactRepository.findByEmployeeId(e.getId()));
+                            return emp;
+                        }
+                )));
         GetEmployeesResponse getEmployeesResponse = new GetEmployeesResponse();
-        getEmployeesResponse.setEmployees(getEmployeeResponses);
-        return getEmployeeResponses;
+        getEmployeesResponse.setEmployees(employeeList);
+        return getEmployeesResponse;
     }
     @Override
     public CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto){

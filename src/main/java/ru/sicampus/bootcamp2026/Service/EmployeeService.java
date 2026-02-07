@@ -7,6 +7,7 @@ import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeesResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.UpdateEmployeeResponse;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 @Service
 public interface EmployeeService {
     GetEmployeeResponse getEmployee(GetEmployeeRequest dto);
-    List<GetEmployeeResponse> getEmployees();
+    GetEmployeesResponse getEmployees();
      CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto);
      Boolean AuthorizedEmployee(GetAuthorizedEmployeeRequest dto);
     UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto);

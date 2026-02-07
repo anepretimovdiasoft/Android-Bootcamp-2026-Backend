@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 @NoArgsConstructor
 public class BookingByWeekResponse {
-    private List<List<Map<String, Object>>> bookings;
+    private Map<String, List<Map<String, Object>>> bookings;
 
-    public void setBookings(List<List<Map<String, Object>>> bookings) {
+    public BookingByWeekResponse(Map<String, List<Map<String, Object>>> bookings) {
         this.bookings = bookings;
     }
 
-    public List<List<Map<String, Object>>> getBookings() {
+    public Map<String, List<Map<String, Object>>> getBookings() {
         return bookings;
     }
 }

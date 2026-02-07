@@ -16,6 +16,23 @@ public class GetBookingUpdateRequest {
     private LocalDateTime end_time;
     @NotBlank
     private String name;
+    @NotBlank
+    @NotNull
+    @JsonFormat(pattern = "yyyy:MM:dd HH:mm")
+    private  LocalDateTime start;
+    @NotBlank
+    @NotNull
+    @JsonFormat(pattern = "yyyy:MM:dd HH:mm")
+    private  LocalDateTime end;
+    public String getName() {
+        return name;
+    }
 
+    public LocalDateTime getStart() {
+        return start;
+    }
 
+    public LocalDateTime getEnd() {
+        return end;
+    }
 }
