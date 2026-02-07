@@ -3,7 +3,7 @@ services:
     image: postgres:16
     container_name: postgres
     environment:
-      POSTGRES_USER: applicationuser
+      POSTGRES_USER: indexzero
       POSTGRES_PASSWORD: gkl370WVUPMgLhK
       POSTGRES_DB: application_db
       PGDATA: /var/lib/postgresql/data/pgdata
