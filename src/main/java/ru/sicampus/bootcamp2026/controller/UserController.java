@@ -3,8 +3,10 @@ package ru.sicampus.bootcamp2026.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.UserDto;
+import ru.sicampus.bootcamp2026.dto.UserRegisterDto;
 import ru.sicampus.bootcamp2026.service.UserService;
 
 @RestController
@@ -14,24 +16,28 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/v1/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
-
     @PostMapping("/v1/register")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@RequestBody UserRegisterDto userDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDto));
     }
-    @PutMapping("/v1/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
-                                              @RequestBody UserDto userDto){
-        return ResponseEntity.ok(userService.updateUser(id, userDto));
+
+    @GetMapping("/vi/login")
+    public ResponseEntity<UserDto> login(Authentication authentication){
+        return ResponseEntity.ok(userService.getUserByLogin(authentication.getName()));
     }
 
-    @DeleteMapping("/v1/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        userService.deleteUser(id);
+    @PutMapping("/v1/me")
+    public ResponseEntity<UserDto> updateUser(Authentication auth,
+                                              @RequestBody UserDto userDto){
+        String login = auth.getName();
+        return ResponseEntity.ok(userService.updateUser(login, userDto));
+    }
+
+    @DeleteMapping("/v1/me")
+    public ResponseEntity<Void> deleteUser(Authentication authentication){
+        String login = authentication.getName();
+        userService.deleteUser(login);
         return ResponseEntity.noContent().build();
     }
+
 }

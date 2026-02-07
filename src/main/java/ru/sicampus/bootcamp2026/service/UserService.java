@@ -1,14 +1,17 @@
 package ru.sicampus.bootcamp2026.service;
 
 import ru.sicampus.bootcamp2026.dto.UserDto;
+import ru.sicampus.bootcamp2026.dto.UserRegisterDto;
 
 public interface UserService {
 
     UserDto getUserById(Long id);
 
-    UserDto createUser(UserDto dto);
+    UserDto createUser(UserRegisterDto dto);
 
-    UserDto updateUser(Long id, UserDto dto);
+    UserDto updateUser(String login, UserDto dto);
 
-    void deleteUser(Long id);
+    void deleteUser(String login);
+
+    UserDto getUserByLogin(String login);
 }

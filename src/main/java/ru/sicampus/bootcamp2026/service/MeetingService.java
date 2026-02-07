@@ -8,7 +8,7 @@ public interface MeetingService {
 
     MeetingDto createMeeting(MeetingDto dto);
 
-    MeetingDto updateMeeting(Long id, MeetingDto dto);
+    MeetingDto updateMeeting(Long id, MeetingDto dto, Long useId);
 
-    void deleteMeeting(Long id);
+    void deleteMeeting(Long id, Long userId);
 }

@@ -111,10 +111,13 @@ public class MeetingServiceImpl implements MeetingService {
      * @throws UserBusyInThisTimeException если новый участник занят
      */
     @Override
-    public MeetingDto updateMeeting(Long id, MeetingDto dto) {
+    public MeetingDto updateMeeting(Long id, MeetingDto dto, Long userId) {
         validateMeetingTime(dto);
         var existingMeeting = meetingRepository.findById(id)
                 .orElseThrow(() -> new MeetingNotFoundException("Meeting not found"));
+        if (!userId.equals(existingMeeting.getOrganizer().getId())){
+            throw new UserNotOrganizerException("User not organizer");
+        }
 
         checkBusyTimeForOrganizer(dto, id);
 
@@ -217,7 +220,14 @@ public class MeetingServiceImpl implements MeetingService {
      * @param id идентификатор встречи
      */
     @Override
-    public void deleteMeeting(Long id) {
+    public void deleteMeeting(Long id, Long userId) {
+        Optional<Meeting> meeting = meetingRepository.findById(id);
+        if (meeting.isEmpty()){
+            throw new MeetingNotFoundException("Meeting not exist");
+        }
+        if (!meeting.get().getOrganizer().getId().equals(userId)){
+            throw new UserNotOrganizerException("User can't delete this meeting. He is not organizer");
+        }
         meetingRepository.deleteById(id);
     }
 

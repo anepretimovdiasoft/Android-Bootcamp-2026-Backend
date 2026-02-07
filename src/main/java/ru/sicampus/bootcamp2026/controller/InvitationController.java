@@ -2,10 +2,12 @@ package ru.sicampus.bootcamp2026.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.InvitationDto;
 import ru.sicampus.bootcamp2026.enums.InvitationStatus;
 import ru.sicampus.bootcamp2026.service.InvitationService;
+import ru.sicampus.bootcamp2026.service.UserService;
 
 import java.util.List;
 
@@ -15,15 +17,14 @@ import java.util.List;
 public class InvitationController {
 
     private final InvitationService invitationService;
-
-    // Временно: демо-пользователь = 1L
-    private static final Long CURRENT_USER_ID = 1L;
-
+    private final UserService userService;
     /**
      * Получить список активных приглашений текущего пользователя.
      */
-    @GetMapping("/v1/{id}")
-    public ResponseEntity<List<InvitationDto>> getMyInvitations(@PathVariable Long id) {
+    @GetMapping("/v1/me")
+    public ResponseEntity<List<InvitationDto>> getMyInvitations(Authentication authentication) {
+        String login = authentication.getName();
+        Long id = userService.getUserByLogin(login).getId();
         return ResponseEntity.ok(invitationService.getMyInvitations(id));
     }
 
@@ -32,9 +33,12 @@ public class InvitationController {
      */
     @PatchMapping("/v1/{invitationId}")
     public ResponseEntity<Void> respondToInvitation(
+            Authentication authentication,
             @PathVariable Long invitationId,
             @RequestParam InvitationStatus status) {
-        invitationService.respondToInvitation(invitationId, status, CURRENT_USER_ID);
+        String login = authentication.getName();
+        Long id = userService.getUserByLogin(login).getId();
+        invitationService.respondToInvitation(invitationId, status, id);
         return ResponseEntity.noContent().build();
     }
 
@@ -42,7 +46,11 @@ public class InvitationController {
      * Получить статусы всех приглашённых на встречу (для организатора).
      */
     @GetMapping("/v1/meeting/{meetingId}")
-    public ResponseEntity<List<InvitationDto>> getMeetingInvitations(@PathVariable Long meetingId) {
-        return ResponseEntity.ok(invitationService.getMeetingInvitations(meetingId, CURRENT_USER_ID));
+    public ResponseEntity<List<InvitationDto>> getMeetingInvitations(
+            Authentication authentication,
+            @PathVariable Long meetingId) {
+        String login = authentication.getName();
+        Long id = userService.getUserByLogin(login).getId();
+        return ResponseEntity.ok(invitationService.getMeetingInvitations(meetingId, id));
     }
 }
