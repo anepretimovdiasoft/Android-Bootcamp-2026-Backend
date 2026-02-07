@@ -40,5 +40,4 @@ public class UserMapper {
                 .map(UserMapper::toMiniDto)
                 .collect(Collectors.toList());
     }
-
 }

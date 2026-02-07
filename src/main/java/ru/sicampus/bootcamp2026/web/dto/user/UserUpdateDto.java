@@ -16,12 +16,12 @@ public class UserUpdateDto {
 
     @Schema(description = "Имя", example = "Андрей")
     @NotNull(message = "Имя не может быть пустым.")
-    @Length(max = 20, message = "Максимальная длина имени 20 символов.")
+    @Length(min = 1, max = 20, message = "Длина имени от 1 до 20 символов.")
     private String firstName;
 
     @Schema(description = "Фамилия", example = "Петров")
     @NotNull(message = "Фамилия не может быть пустой.")
-    @Length(max = 20, message = "Максимальная длина фамилии 20 символов.")
+    @Length(min = 1, max = 20, message = "Длина фамилии от 1 до 20 символов.")
     private String secondName;
 
     @Schema(description = "Описание", example = "Это описание")

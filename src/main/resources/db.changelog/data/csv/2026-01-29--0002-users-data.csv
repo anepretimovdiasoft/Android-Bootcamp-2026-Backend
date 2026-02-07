@@ -1,5 +1,5 @@
 email;password;first_name;second_name;description;position;department;role_id
-andreypetrov@yandex.org;11111111;Андрей;Петров;Это описание;Front dev;Android приложений;2
-daniil@proton.mail;11111111;Даниил;Даниилович;мяу;UI/UX desiner;Android приложений;2
-limasov@gmail.com;11111111;Алексей;Навальный;null;null;null;1
-test@mail.ru;11111111;Владимир;Владимирович;null;null;null;1
+andreypetrov@yandex.org;$2a$10$Yfzv8zh8wC619Y5Tr07uIOAES/G.k0SK6XB5Nc8IvmRARjxknjURO;Андрей;Петров;Это описание;Front dev;Android приложений;2
+daniil@proton.mail;$2a$10$Yfzv8zh8wC619Y5Tr07uIOAES/G.k0SK6XB5Nc8IvmRARjxknjURO;Даниил;Даниилович;мяу;UI/UX desiner;Android приложений;2
+limasov@gmail.com;$2a$10$Yfzv8zh8wC619Y5Tr07uIOAES/G.k0SK6XB5Nc8IvmRARjxknjURO;Алексей;Навальный;null;null;null;1
+test@mail.ru;$2a$10$Yfzv8zh8wC619Y5Tr07uIOAES/G.k0SK6XB5Nc8IvmRARjxknjURO;Владимир;Владимирович;null;null;null;1

@@ -36,11 +36,11 @@ public class Meeting {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(nullable = false)
-    private LocalTime time_start;
+    @Column(name = "time_start", nullable = false)
+    private LocalTime timeStart;
 
-    @Column(nullable = false)
-    private LocalTime time_end;
+    @Column(name = "time_end", nullable = false)
+    private LocalTime timeEnd;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -1,24 +1,22 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.aspect.annotation.LogExample;
 import ru.sicampus.bootcamp2026.entity.User;
 import ru.sicampus.bootcamp2026.exceptions.ResourceNotFoundException;
-import ru.sicampus.bootcamp2026.repository.RoleRepository;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.web.dto.user.UserUpdateDto;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
     @Override
     @LogExample
@@ -39,8 +37,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @LogExample
     @Transactional(readOnly = true)
-    public List<User> search(String search) {
-        return userRepository.search(search);
+    public Page<User> search(String search, Pageable pageable) {
+        return userRepository.search(search, pageable);
     }
 
     @Override

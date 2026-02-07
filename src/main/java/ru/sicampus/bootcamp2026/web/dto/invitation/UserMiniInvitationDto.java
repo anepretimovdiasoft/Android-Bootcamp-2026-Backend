@@ -1,8 +1,10 @@
-package ru.sicampus.bootcamp2026.web.dto.user;
+package ru.sicampus.bootcamp2026.web.dto.invitation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -27,7 +29,7 @@ public class UserMiniInvitationDto {
     private String status;
 
     @Schema(description = "Время ответа на приглашение", example = "2026-01-11T22:55:40.269177")
-    private String respondedAt;
+    private LocalDateTime respondedAt;
 
 }
 
