@@ -7,11 +7,15 @@
     <include file="db.changelog/1.0/2026-01-28--0002-person.xml"/>
     <include file="db.changelog/1.0/2026-01-29--0004-meetup.xml"/>
     <include file="db.changelog/1.0/2026-01-29--0003-invite.xml"/>
+    <include file="db.changelog/1.0/2026-02-05--0005-authority.xml"/>
+    <include file="db.changelog/1.0/2026-02-05--0006-person-authority.xml"/>
 
     <include file="db.changelog/data/2026-01-28--0001-department-data.xml"/>
     <include file="db.changelog/data/2026-01-28--0002-person-data.xml"/>
     <include file="db.changelog/data/2026-01-29--0004-meetup-data.xml"/>
     <include file="db.changelog/data/2026-01-29--0003-invite-data.xml"/>
+    <include file="db.changelog/data/2026-02-05--0005-authority-data.xml"/>
+    <include file="db.changelog/data/2026-02-05--0006-person-authority-data.xml"/>
 
 
 

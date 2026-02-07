@@ -2,9 +2,15 @@ package ru.example.edu.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ru.example.edu.dto.PersonRegisterDTO;
+import ru.example.edu.dto.PersonShortDTO;
 import ru.example.edu.dto.PersonWithInvitesDTO;
 import ru.example.edu.service.PersonService;
 
@@ -23,16 +29,21 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PersonWithInvitesDTO> getPersonById(@PathVariable Long id) {
-        return ResponseEntity.ok(personService.getPersonByUd(id));
+        return ResponseEntity.ok(personService.getPersonById(id));
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<PersonWithInvitesDTO> loginPerson(Authentication authentication) {
+        return ResponseEntity.ok(personService.getPersonByLogin(authentication.getName()));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<PersonWithInvitesDTO> createPerson(@RequestBody PersonWithInvitesDTO dto) {
+    public ResponseEntity<PersonShortDTO> createPerson(@RequestBody PersonRegisterDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.createPerson(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonWithInvitesDTO> updatePerson(@PathVariable Long id, @RequestBody PersonWithInvitesDTO dto) {
+    public ResponseEntity<PersonWithInvitesDTO> updatePerson(@PathVariable Long id, @RequestBody PersonShortDTO dto) {
         return ResponseEntity.ok(personService.updatePerson(id, dto));
     }
 
@@ -40,5 +51,17 @@ public class PersonController {
     public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
         personService.deletePerson(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/login/{login}")
+    public ResponseEntity<String> getByLogin(@PathVariable String login) {
+        PersonWithInvitesDTO person = personService.getPersonByLogin(login);
+        return ResponseEntity.ok("User " + person.getLogin() + " is registered");
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<PersonWithInvitesDTO>> getAllPersonPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(personService.getAllPersonPaginated(pageable));
     }
 }

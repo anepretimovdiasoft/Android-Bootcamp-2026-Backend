@@ -1,5 +1,9 @@
 package ru.example.edu.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import ru.example.edu.dto.PersonRegisterDTO;
+import ru.example.edu.dto.PersonShortDTO;
 import ru.example.edu.dto.PersonWithInvitesDTO;
 
 import java.util.List;
@@ -7,11 +11,15 @@ import java.util.List;
 public interface PersonService {
     List<PersonWithInvitesDTO> getAllPersons();
 
-    PersonWithInvitesDTO getPersonByUd(Long id);
+    PersonWithInvitesDTO getPersonById(Long id);
 
-    PersonWithInvitesDTO createPerson(PersonWithInvitesDTO dto);
+    PersonWithInvitesDTO getPersonByLogin(String login);
 
-    PersonWithInvitesDTO updatePerson(Long id, PersonWithInvitesDTO dto);
+    PersonShortDTO createPerson(PersonRegisterDTO dto);
+
+    PersonWithInvitesDTO updatePerson(Long id, PersonShortDTO dto);
 
     void deletePerson(Long id);
+
+    Page<PersonWithInvitesDTO> getAllPersonPaginated(Pageable pageable);
 }

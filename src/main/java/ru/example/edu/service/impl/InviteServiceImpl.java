@@ -3,6 +3,7 @@ package ru.example.edu.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.example.edu.dto.InviteDTO;
+import ru.example.edu.dto.InviteUpdateDTO;
 import ru.example.edu.entity.Invite;
 import ru.example.edu.exception.InviteNotFoundException;
 import ru.example.edu.repository.InviteRepository;
@@ -16,7 +17,7 @@ public class InviteServiceImpl implements InviteService {
     private final InviteRepository inviteRepository;
 
     @Override
-    public InviteDTO updateInvite(Long id, InviteDTO dto) {
+    public InviteDTO updateInvite(Long id, InviteUpdateDTO dto) {
         Invite invite = inviteRepository.findById(id).orElseThrow(() -> new InviteNotFoundException("Invite not found!"));
 
         invite.setAgree(dto.getAgree());
