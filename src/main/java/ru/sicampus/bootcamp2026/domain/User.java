@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     @Column(name = "enabled")
     private boolean enabled = false;
 

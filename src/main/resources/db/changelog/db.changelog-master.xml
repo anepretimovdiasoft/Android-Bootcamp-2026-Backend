@@ -18,6 +18,7 @@
     <include file="db/changelog/v1/008-add-user-details.xml"/>
     <include file="db/changelog/v1/009-add-meeting-color.xml"/>
     <include file="db/changelog/v1/010-add-meeting-description.xml"/>
+    <include file="db/changelog/v1/011-add-user-avatar.xml"/>
 
     <include file="db/changelog/data/010-users-data.xml"/>
     <include file="db/changelog/data/011-meetings-data.xml"/>

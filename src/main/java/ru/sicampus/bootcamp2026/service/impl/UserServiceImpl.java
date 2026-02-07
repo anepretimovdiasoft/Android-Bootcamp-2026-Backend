@@ -94,11 +94,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse update(long id, UpdateUserRequest req) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found: " + id));
+
         u.setPosition(req.position());
-        u.setLogin(req.login());
         u.setName(req.name());
         u.setPhone(req.phone());
         u.setBirthDate(req.birthDate());
+
+        if (req.avatarUrl() != null) {
+            u.setAvatarUrl(req.avatarUrl());
+        }
+
         userRepository.save(u);
         return UserMapper.toResponse(u);
     }
