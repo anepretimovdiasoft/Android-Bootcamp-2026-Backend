@@ -11,6 +11,7 @@ public class GetEmployeeRequest {
     @NotBlank(message = "df")
     @NotNull(message = "fgh")
     private String name;
+    @NotBlank
 
     public String getName() {
         return name;

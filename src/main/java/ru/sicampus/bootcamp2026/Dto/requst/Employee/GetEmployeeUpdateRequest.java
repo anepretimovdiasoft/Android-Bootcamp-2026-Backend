@@ -10,6 +10,7 @@ public class GetEmployeeUpdateRequest {
     @NotBlank
     private  String father_name;
     @NotBlank
+
     private  String mail;
     @NotBlank
     @Size(min = 8,max = 20)
