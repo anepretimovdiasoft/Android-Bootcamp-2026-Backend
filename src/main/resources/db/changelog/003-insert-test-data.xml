@@ -5,6 +5,17 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
+    <changeSet id="003-insert-test-data-cast" author="rodion">
+        <sql dbms="postgresql">
+            CREATE CAST (character varying as meeting_status) WITH INOUT AS IMPLICIT;
+        </sql>
+        <rollback>
+            <sql dbms="postgresql">
+                DROP CAST IF EXISTS (character varying as meeting_status);
+            </sql>
+        </rollback>
+    </changeSet>
+
     <changeSet id="003-insert-test-data" author="rodion" context="test">
         <loadData tableName="users"
                   file="db/data/users.csv"

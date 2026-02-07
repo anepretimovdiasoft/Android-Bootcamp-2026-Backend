@@ -7,7 +7,7 @@
 
     <changeSet id="001-create-schema" author="rodion">
         <sql dbms="postgresql" stripComments="true">
-            CREATE TYPE meeting_status AS ENUM ('scheduled', 'cancelled', 'completed');
+            CREATE TYPE meeting_status AS ENUM ('SCHEDULED', 'CANCELED', 'COMPLETED');
         </sql>
         <rollback>
             <sql dbms="postgresql">
@@ -79,7 +79,7 @@
             <column name="end_time" type="timestamptz" remarks="Время окончания встречи">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="meeting_status" defaultValue="scheduled" remarks="Статус встречи">
+            <column name="status" type="meeting_status" defaultValue="SCHEDULED" remarks="Статус встречи">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP" remarks="Время создания записи"/>

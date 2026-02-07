@@ -60,7 +60,7 @@ public class MeetingController {
     /**
      * Создание новой встречи
      */
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<MeetingResponse> createMeeting(
             @Valid @RequestBody CreateMeetingRequest request,
             @AuthenticationPrincipal CustomUserDetails currentUser
