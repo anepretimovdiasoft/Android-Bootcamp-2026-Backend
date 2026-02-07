@@ -1,4 +1,5 @@
 package ru.sicampus.bootcamp2026.model;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,17 +18,16 @@ public class MeetingParticipant {
     private MeetingParticipantId id = new MeetingParticipantId();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("meetingId") // Связывает поле meetingId составного ключа с полем meetingId сущности Meeting
+    @MapsId("meetingId")
     @JoinColumn(name = "meeting_id", nullable = false)
-    private Meeting meetingId;
+    private Meeting meeting;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId") // То же самое, но для User
+    @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ParticipantStatus status = ParticipantStatus.PENDING;
-
 }

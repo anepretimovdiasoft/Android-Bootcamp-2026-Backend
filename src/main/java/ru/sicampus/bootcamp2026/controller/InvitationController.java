@@ -3,9 +3,12 @@ package ru.sicampus.bootcamp2026.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.request.InvitationActionRequest;
 import ru.sicampus.bootcamp2026.dto.response.InvitationResponse;
+import ru.sicampus.bootcamp2026.model.CustomUserDetails;
+import ru.sicampus.bootcamp2026.service.InvitationService;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,30 +18,33 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InvitationController {
 
-    /*
-        TODO: Внедрить сервис(ы) позже
-    */
+    private final InvitationService invitationService;
 
     /**
      * Получение списка активных приглашений текущего пользователя
      */
     @GetMapping
-    public ResponseEntity<List<InvitationResponse>> getInvitations() {
-        /*
-            TODO: Получить текущего пользователя и вернуть его приглашения
-        */
-        throw new UnsupportedOperationException("Метод getInvitations еще не реализован");
+    public ResponseEntity<List<InvitationResponse>> getInvitations(
+            @AuthenticationPrincipal CustomUserDetails currentUser
+    ) {
+        List<InvitationResponse> invitations =
+                invitationService.getUserInvitations(currentUser.user().getId());
+        return ResponseEntity.ok(invitations);
     }
 
     /**
      * Получение приглашения по ID встречи, детали приглашения
      */
     @GetMapping("/{meetingId}")
-    public ResponseEntity<InvitationResponse> getInvitationDetails(@PathVariable UUID meetingId) {
-        /*
-            TODO: Получить текущего пользователя и вернуть приглашение
-        */
-        throw new UnsupportedOperationException("Метод getInvitationById еще не реализован");
+    public ResponseEntity<InvitationResponse> getInvitationDetails(
+            @PathVariable UUID meetingId,
+            @AuthenticationPrincipal CustomUserDetails currentUser
+    ) {
+        InvitationResponse invitation = invitationService.getInvitationById(
+                currentUser.user().getId(),
+                meetingId
+        );
+        return ResponseEntity.ok(invitation);
     }
 
     /**
@@ -47,10 +53,14 @@ public class InvitationController {
     @PutMapping("/{meetingId}/respond")
     public ResponseEntity<InvitationResponse> respondToInvitation(
             @PathVariable UUID meetingId,
-            @Valid @RequestBody InvitationActionRequest request) {
-        /*
-            TODO: Получить текущего пользователя и обработать ответ на приглашение
-        */
-        throw new UnsupportedOperationException("Метод respondToInvitation еще не реализован");
+            @Valid @RequestBody InvitationActionRequest request,
+            @AuthenticationPrincipal CustomUserDetails currentUser
+    ) {
+        InvitationResponse response = invitationService.respondToInvitation(
+                currentUser.user().getId(),
+                meetingId,
+                request.getStatus()
+        );
+        return ResponseEntity.ok(response);
     }
 }

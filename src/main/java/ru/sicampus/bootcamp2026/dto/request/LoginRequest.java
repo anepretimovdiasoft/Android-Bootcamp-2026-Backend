@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest {
+public class LoginRequest {
 
     @NotBlank(message = "Email обязателен")
     @Email(message = "Email должен быть валидным")

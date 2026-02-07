@@ -18,9 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Переопределяет e&hc только для полей с аннотацией @EqualsAndHashCode.Include
-@Table(name = "meetings") /*
-       TODO: добавить индексы
-*/
+@Table(name = "meetings")
 public class Meeting {
 
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -31,7 +29,7 @@ public class Meeting {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY) // У одного пользователя может быть множество встреч
-    @JoinColumn(name = "organizer_id_id")
+    @JoinColumn(name = "organizer_id")
     private User organizer_id;
 
     @NotBlank

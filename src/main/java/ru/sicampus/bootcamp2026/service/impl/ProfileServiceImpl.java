@@ -1,51 +1,73 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.sicampus.bootcamp2026.dto.request.UpdateAvatarRequest;
 import ru.sicampus.bootcamp2026.dto.request.UserProfileRequest;
 import ru.sicampus.bootcamp2026.dto.response.UserProfileResponse;
+import ru.sicampus.bootcamp2026.exception.UserNotFoundException;
+import ru.sicampus.bootcamp2026.model.User;
+import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.ProfileService;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
-    /*
-        TODO: Внедрить репозиторий позже
-    */
+    private final UserRepository userRepository;
 
     @Override
     public UserProfileResponse getProfile(UUID userId) {
-        /*
-            TODO: Реализовать получение профиля пользователя
-        */
-        throw new UnsupportedOperationException("Метод getProfile еще не реализован");
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+
+        return UserProfileResponse.fromUser(user);
     }
 
     @Override
     public UserProfileResponse updateProfile(UUID userId, UserProfileRequest request) {
-        /*
-            TODO: Реализовать обновление профиля пользователя
-        */
-        throw new UnsupportedOperationException("Метод updateProfile еще не реализован");
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+
+        if (request.getUsername() != null && !request.getUsername().isBlank()) {
+            user.setUsername(request.getUsername());
+        }
+
+        if (request.getAvatarUrl() != null) {
+            user.setAvatarUrl(request.getAvatarUrl());
+        }
+
+        userRepository.save(user);
+
+        return UserProfileResponse.fromUser(user);
+    }
+
+    @Override
+    public UserProfileResponse updateAvatar(UUID userId, UpdateAvatarRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+
+        user.setAvatarUrl(request.getAvatarUrl()); // Сохраняется URL аватарки
+        userRepository.save(user);
+
+        return UserProfileResponse.fromUser(user);
     }
 
     @Override
     public UserProfileResponse getPublicProfile(UUID userId) {
-        /*
-            TODO: Реализовать получение публичного профиля
-        */
-        throw new UnsupportedOperationException("Метод getPublicProfile еще не реализован");
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+
+        return UserProfileResponse.fromUser(user);
     }
 
     @Override
-    public List<UserProfileResponse> getAllUsers(UUID currentUserId) {
-        /*
-            TODO: Реализовать получение списка всех пользователей
-        */
-        throw new UnsupportedOperationException("Метод getAllUsers еще не реализован");
+    public Page<UserProfileResponse> getAllUsers(UUID currentUserId, Pageable pageable) {
+        return userRepository.findAllExceptCurrentUser(currentUserId, pageable)
+                .map(UserProfileResponse::fromUser);
     }
 }

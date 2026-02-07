@@ -14,7 +14,7 @@ public interface JwtService {
 
    public Claims extractAllClaims(String token);
 
-   public String generateAccessToken(User user, RefreshToken refreshToken);
+   public String generateAccessToken(User user, RefreshToken refreshToken, Instant now, Instant expiration);
 
    public String generateRefreshToken(User user, Instant now, Instant expiration);
 

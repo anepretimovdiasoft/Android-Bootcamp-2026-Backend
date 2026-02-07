@@ -1,7 +1,6 @@
 package ru.sicampus.bootcamp2026.service;
 
-import org.springframework.stereotype.Repository;
-import ru.sicampus.bootcamp2026.dto.request.AuthRequest;
+import ru.sicampus.bootcamp2026.dto.request.LoginRequest;
 import ru.sicampus.bootcamp2026.dto.request.RegisterRequest;
 import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
 
@@ -17,7 +16,7 @@ public interface AuthService {
     /**
      * Аутентификация пользователя
      */
-    AuthResponse authenticate(AuthRequest request);
+    AuthResponse authenticate(LoginRequest request);
 
     /**
      * Выход из системы

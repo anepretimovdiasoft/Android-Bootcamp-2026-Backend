@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sicampus.bootcamp2026.dto.request.AuthRequest;
+import ru.sicampus.bootcamp2026.dto.request.LoginRequest;
 import ru.sicampus.bootcamp2026.dto.request.RegisterRequest;
 import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
+import ru.sicampus.bootcamp2026.exception.SecurityException;
+import ru.sicampus.bootcamp2026.service.AuthService;
 
 
 @RestController
@@ -14,51 +16,43 @@ import ru.sicampus.bootcamp2026.dto.response.AuthResponse;
 @RequiredArgsConstructor
 public class AuthController {
 
-    /*
-        TODO: Внедрить потом сервис(ы)
-    */
+    private final AuthService authService;
 
-    /**
-     * Регистрация нового пользователя
-     */
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        /*
-            TODO: Реализовать регистрацию пользователя
-        */
-        throw new UnsupportedOperationException("Метод register еще не реализован");
+        return ResponseEntity.ok(authService.register(request));
     }
 
-    /**
-     * Авторизация пользователя
-     */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
-        /*
-            TODO: Реализовать аутентификацию пользователя
-        */
-        throw new UnsupportedOperationException("Метод login еще не реализован");
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    /**
-     * Выход из системы (отзыв токенов)
-     */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
-        /*
-            TODO: Получить текущего пользователя и забрать токены
-        */
-        throw new UnsupportedOperationException("Метод logout еще не реализован");
+        authService.logout(authService.getCurrentUserId());
+        return ResponseEntity.noContent().build();
     }
 
-    /**
-     * Обновление access токена с помощью refresh токена
-     */
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@RequestHeader("Authorization") String authorizationHeader) {
-        /*
-            TODO: Извлечь refresh токен и сгенерировать новый access токен
-        */
-        throw new UnsupportedOperationException("Метод refresh еще не реализован");
+        String refreshToken = extractBearerToken(authorizationHeader);
+        return ResponseEntity.ok(authService.refreshToken(refreshToken));
+    }
+
+    //Вытаскивает token из заголовка Authorization формата "Bearer <token>".
+    private String extractBearerToken(String authorizationHeader) {
+        if (authorizationHeader == null || authorizationHeader.isBlank()) {
+            throw new SecurityException("Missing Authorization header");
+        }
+        String prefix = "Bearer ";
+        if (!authorizationHeader.startsWith(prefix)) {
+            throw new SecurityException("Authorization header must start with 'Bearer '");
+        }
+        String token = authorizationHeader.substring(prefix.length()).trim();
+        if (token.isBlank()) {
+            throw new SecurityException("Bearer token is empty");
+        }
+        return token;
     }
 }

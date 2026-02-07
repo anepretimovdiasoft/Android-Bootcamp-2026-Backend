@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import io.jsonwebtoken.*;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,12 @@ public class JwtServiceImpl implements JwtService {
 
     private final JwtUtil jwtUtil;
     private JwtParser jwtParser;
-    private final JwtService jwtService;
-    private final JwtConfig jwtConfig;
 
+    @PostConstruct
     void init(){
         this.jwtParser = Jwts.parserBuilder()
-                .setSigningKey(jwtUtil.getPublicKey())//установка ключа для проверки на соответствие
-                .build();//создаем экземпляр парсера
+                .setSigningKey(jwtUtil.getPublicKey()) // Установка ключа для проверки на соответствие
+                .build(); // Создаем экземпляр парсера
     }
 
     @Override
@@ -39,15 +39,12 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public Claims extractAllClaims(String token) {
         return jwtParser
-                .parseClaimsJws(token)//сверяет при помощи публичного ключа подпись токена и извлекает его payload (Claims)
+                .parseClaimsJws(token) // Серяет при помощи публичного ключа подпись токена и извлекает его payload (Claims)
                 .getBody();
     }
 
     @Override
-    public String generateAccessToken(User user, RefreshToken refreshToken) {
-        Instant now = Instant.now();
-        Instant expiration = now.plusMillis(jwtConfig.getAccessTokenExpirationMs());
-
+    public String generateAccessToken(User user, RefreshToken refreshToken, Instant now, Instant expiration) {
         return Jwts.builder()
                 .setSubject(String.valueOf(user.getId()))
                 .claim("role", user.getRole())
