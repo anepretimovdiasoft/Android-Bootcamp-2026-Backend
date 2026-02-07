@@ -6,16 +6,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
-
 
 @Entity
 @Table(name = "users")
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -38,12 +36,22 @@ public class User implements UserDetails {
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    @Column(name = "enabled")
+    private boolean enabled = false;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id")
-    )    private Set<Authority> authorities;
+    )
+    private Set<Authority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,22 +72,16 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

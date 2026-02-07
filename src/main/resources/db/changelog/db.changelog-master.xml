@@ -13,7 +13,11 @@
     <include file="db/changelog/v1/004-create-authorities.xml"/>
     <include file="/db/changelog/v1/005-create-user-authority.xml"/>
 
-
+    <include file="db/changelog/v1/006-create-confirmation-token.xml"/>
+    <include file="db/changelog/v1/007-add-user-enabled.xml"/>
+    <include file="db/changelog/v1/008-add-user-details.xml"/>
+    <include file="db/changelog/v1/009-add-meeting-color.xml"/>
+    <include file="db/changelog/v1/010-add-meeting-description.xml"/>
 
     <include file="db/changelog/data/010-users-data.xml"/>
     <include file="db/changelog/data/011-meetings-data.xml"/>

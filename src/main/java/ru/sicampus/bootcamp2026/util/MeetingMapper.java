@@ -8,6 +8,14 @@ public final class MeetingMapper {
     private MeetingMapper() {}
 
     public static MeetingResponse toResponse(Meeting m) {
-        return new MeetingResponse(m.getId(), m.getTitle(), m.getStartsAt(), m.getEndsAt());
+        return new MeetingResponse(
+                m.getId(),
+                m.getTitle(),
+                m.getStartsAt(),
+                m.getEndsAt(),
+                m.getColorHex(),
+                m.getDescription()
+        );
     }
+
 }

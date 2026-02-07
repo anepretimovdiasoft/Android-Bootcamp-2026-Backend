@@ -11,6 +11,7 @@ public class MeetingDtos {
 
     public record CreateMeetingRequest(
             @NotBlank @Size(max = 255) String title,
+            String description,
             @NotNull OffsetDateTime startsAt,
             @NotNull OffsetDateTime endsAt,
             @Size(min = 1) List<Long> invitedUserIds
@@ -19,10 +20,18 @@ public class MeetingDtos {
 
     public record UpdateMeetingRequest(
             @NotBlank @Size(max = 255) String title,
+            String description,
             @NotNull OffsetDateTime startsAt,
             @NotNull OffsetDateTime endsAt
 
     ) {}
 
-    public record MeetingResponse(Long id, String title, OffsetDateTime startsAt, OffsetDateTime endsAt) {}
+    public record MeetingResponse(
+            Long id,
+            String title,
+            OffsetDateTime startsAt,
+            OffsetDateTime endsAt,
+            String colorHex,
+            String description
+    ) {}
 }

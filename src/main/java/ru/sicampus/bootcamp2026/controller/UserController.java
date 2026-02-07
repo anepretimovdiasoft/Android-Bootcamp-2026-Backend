@@ -5,16 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingResponse;
-import ru.sicampus.bootcamp2026.dto.UserDtos.CreateUserRequest;
-import ru.sicampus.bootcamp2026.dto.UserDtos.InvitationDecisionRequest;
-import ru.sicampus.bootcamp2026.dto.UserDtos.UpdateUserRequest;
-import ru.sicampus.bootcamp2026.dto.UserDtos.UserResponse;
+import ru.sicampus.bootcamp2026.dto.UserDtos.*;
 import ru.sicampus.bootcamp2026.service.UserService;
-
 import java.util.List;
 
 @RestController
@@ -23,57 +18,37 @@ import java.util.List;
 public class UserController {
 
     private final UserService service;
-    private final UserService userService;
 
     @PatchMapping("/{userId}/meetings/{meetingId}/invitation")
-    public InvitationDecisionRequest decideInvitation(
-            @PathVariable long userId,
-            @PathVariable long meetingId,
-            @Valid @RequestBody InvitationDecisionRequest req
-    ) {
+    public InvitationDecisionRequest decideInvitation(@PathVariable long userId, @PathVariable long meetingId, @Valid @RequestBody InvitationDecisionRequest req) {
         return service.decideInvitation(userId, meetingId, req);
     }
 
     @GetMapping("/{userId}/meetings")
-    public List<MeetingResponse> meetingsByStatus(
-            @PathVariable long userId,
-            @RequestParam String status
-    ) {
+    public List<MeetingResponse> meetingsByStatus(@PathVariable long userId, @RequestParam String status) {
         return service.listMeetingsByStatus(userId, status);
     }
 
     @GetMapping("/paginated")
     public Page<UserResponse> getAllPersonPaginated(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-            ) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search
+    ) {
         Pageable pageable = PageRequest.of(page, size);
-        return userService.getAllUserPaginated(pageable);
+        return service.getAllUserPaginated(search, pageable);
     }
+
     @GetMapping("/login")
     public UserResponse login(Authentication authentication) {
-        return userService.getByLogin(authentication.getName());
-    }
-    @GetMapping("/getByLogin/{login}")
-    public ResponseEntity<String> getByLogin(@PathVariable String login) {
-        UserResponse user = userService.getByLogin(login);
-        return ResponseEntity.ok("User " + user.login() + " is registered");
+        return service.getByLogin(authentication.getName());
     }
 
     @GetMapping
-    public List<UserResponse> list() {
-        return service.list();
-    }
+    public List<UserResponse> list() { return service.list(); }
 
     @GetMapping("/{id}")
-    public UserResponse get(@PathVariable long id) {
-        return service.get(id);
-    }
-
-    @PostMapping("/register")
-    public UserResponse create(@Valid @RequestBody CreateUserRequest req) {
-        return service.create(req);
-    }
+    public UserResponse get(@PathVariable long id) { return service.get(id); }
 
     @PutMapping("/{id}")
     public UserResponse update(@PathVariable long id, @Valid @RequestBody UpdateUserRequest req) {
@@ -81,7 +56,5 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
-        service.delete(id);
-    }
+    public void delete(@PathVariable long id) { service.delete(id); }
 }

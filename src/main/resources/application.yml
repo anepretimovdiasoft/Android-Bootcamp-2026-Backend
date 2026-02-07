@@ -1,6 +1,17 @@
 spring:
+  mail:
+    host: ${smtp_server}
+    port: ${port}
+    username: ${S_EMAIL}
+    password: ${S_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:file:./data/bootcampdb
     driverClassName: org.h2.Driver
     username: sa
     password:

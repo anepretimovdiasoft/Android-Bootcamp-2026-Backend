@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.UniqueElements;
 
+import java.time.LocalDate;
+
 public class UserDtos {
 
     public record CreateUserRequest(
@@ -14,15 +16,23 @@ public class UserDtos {
             @NotBlank @Size(max = 255) String name,
             @NotBlank @Size(max = 255) String login,
             @NotBlank @Size(max = 255) String password
-
-
     ) {}
 
     public record UpdateUserRequest(
             @NotBlank @Size(max = 255) String position,
             @NotBlank @Size(max = 255) String name,
-            @NotBlank @Size(max = 255) String login
+            @NotBlank @Size(max = 255) String login,
+            String phone,
+            LocalDate birthDate
+    ) {}
 
+    public record UserResponse(
+            Long id,
+            String position,
+            String name,
+            String email,
+            String phone,
+            LocalDate birthDate
     ) {}
 
     public record InvitationDecisionRequest(
@@ -31,6 +41,4 @@ public class UserDtos {
             @Pattern(regexp = "ACCEPTED|REJECTED|PENDING")
             String status
     ) {}
-
-    public record UserResponse(Long id, String position, String name, String login) {}
 }
