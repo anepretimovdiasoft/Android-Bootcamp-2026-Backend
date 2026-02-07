@@ -80,7 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             e.put("last_name",employee1.getLast_name());
             e.put("father_name",employee1.getFather_name());
             e.put("age",employee1.getAge());
-            e.put("avtar",employee1.getAvatar().getName());
+            e.put("avatar",employee1.getAvatar().getName());
             e.put("mail",employee1.getMail());
             List<Map<String, String>> contact1 = new ArrayList<>();
             List<Contact> contacts = contactRepository.findByEmployeeId(employee1.getId());
