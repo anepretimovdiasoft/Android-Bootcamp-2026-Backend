@@ -118,9 +118,9 @@ public class BookingServiceImpl implements BookingService {
         Map<String, List<Map<String, Object>>> bookingByDay = new LinkedHashMap<>();
         List<Map<String, Object>> dailyBookings = null;
         List<Map<String, Object>> invitedBookings = null;
+        dailyBookings = new ArrayList<>();
         for (int i = 0; i <= days; i++) {
             LocalDate currentDate = startDate.plusDays(i);
-            dailyBookings = new ArrayList<>();
             for (Booking booking : bookings) {
                 if (!booking.getStart().toLocalDate().equals(currentDate)) continue;
                 Map<String, Object> book = new LinkedHashMap<>();

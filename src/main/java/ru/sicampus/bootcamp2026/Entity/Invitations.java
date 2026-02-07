@@ -32,4 +32,8 @@ public class Invitations {
     public Booking getBooking() {
         return booking;
     }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
 }
