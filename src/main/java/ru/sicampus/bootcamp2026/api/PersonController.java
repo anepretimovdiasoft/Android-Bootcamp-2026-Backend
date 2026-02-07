@@ -1,13 +1,15 @@
 package ru.sicampus.bootcamp2026.api;
 
 import jakarta.validation.Valid;
-import java.util.List;
 import ru.sicampus.bootcamp2026.api.dto.AuthenticationResponse;
 import ru.sicampus.bootcamp2026.api.dto.PersonRegisterRequest;
 import ru.sicampus.bootcamp2026.api.dto.PersonResponse;
 import ru.sicampus.bootcamp2026.api.dto.PersonUpdateRequest;
 import ru.sicampus.bootcamp2026.domain.Person;
 import ru.sicampus.bootcamp2026.service.PersonService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -55,8 +58,12 @@ public class PersonController {
 
     // Private: other /api/person/** endpoints (configured in WebSecurityConfig)
     @GetMapping
-    public List<PersonResponse> list() {
-        return personService.list().stream().map(PersonController::toResponse).toList();
+    public Page<PersonResponse> list(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return personService.list(pageable).map(PersonController::toResponse);
     }
 
     @GetMapping("/{id}")
@@ -87,4 +94,3 @@ public class PersonController {
         );
     }
 }
-

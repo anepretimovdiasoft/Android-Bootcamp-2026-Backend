@@ -41,6 +41,11 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/person/register").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/person/email/**").permitAll()
 
+                // Authenticated user-specific endpoints
+                .requestMatchers("/api/meetings/my/**").authenticated()
+                .requestMatchers("/api/invitations/my/**").authenticated()
+                .requestMatchers(HttpMethod.PATCH, "/api/invitations/**").authenticated()
+
                 // Admin-only person deletes
                 .requestMatchers(HttpMethod.DELETE, "/api/person/**").hasRole("ADMIN")
 
@@ -54,4 +59,3 @@ public class WebSecurityConfig {
             .build();
     }
 }
-

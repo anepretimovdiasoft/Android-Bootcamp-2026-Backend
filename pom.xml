@@ -66,6 +66,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ru.sicampus.bootcamp2026.App</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

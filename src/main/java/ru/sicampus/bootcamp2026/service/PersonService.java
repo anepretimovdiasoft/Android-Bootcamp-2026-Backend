@@ -12,6 +12,8 @@ import ru.sicampus.bootcamp2026.domain.Authority;
 import ru.sicampus.bootcamp2026.domain.Person;
 import ru.sicampus.bootcamp2026.repository.AuthorityRepository;
 import ru.sicampus.bootcamp2026.repository.PersonRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +35,8 @@ public class PersonService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Person> list() {
-        return personRepository.findAll();
+    public Page<Person> list(Pageable pageable) {
+        return personRepository.findAll(pageable);
     }
 
     public Person get(Long id) {
