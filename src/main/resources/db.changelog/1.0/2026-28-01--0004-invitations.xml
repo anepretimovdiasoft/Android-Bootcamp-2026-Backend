@@ -30,5 +30,8 @@
             <constraints nullable="false" notNullConstraintName="status_not_null"/>
         </column>
     </createTable>
+    <addUniqueConstraint tableName="invitations"
+                         columnNames="meeting_id, user_id"
+                         constraintName="uk_invitations_meeting_user"/>
 </changeSet>
 </databaseChangeLog>

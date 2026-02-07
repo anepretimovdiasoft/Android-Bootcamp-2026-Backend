@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
         user.setLastname(dto.getLastname());
         user.setAboutMe(dto.getAboutMe());
         user.setPhotoUrl(dto.getPhotoUrl());
-        user.setPassword("temp");
 
         return UserMapper.toDto(userRepository.save(user));
     }

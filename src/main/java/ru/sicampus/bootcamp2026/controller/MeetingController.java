@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,16 +24,20 @@ public class MeetingController {
     }
 
     @PostMapping("/v1")
-    public ResponseEntity<MeetingDto> createMeeting(@RequestBody MeetingDto dto) {
+    public ResponseEntity<MeetingDto> createMeeting(
+            Authentication authentication,
+            @Valid @RequestBody MeetingDto dto) {
+        String login = authentication.getName();
+        Long organizerId = userService.getUserByLogin(login).getId();
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(meetingService.createMeeting(dto));
+                .body(meetingService.createMeeting(dto, organizerId));
     }
 
     @PutMapping("/v1/{meetingId}")
     public ResponseEntity<MeetingDto> updateMeeting(
             Authentication authentication,
             @PathVariable Long meetingId,
-            @RequestBody MeetingDto dto) {
+            @Valid @RequestBody MeetingDto dto) {
         String login = authentication.getName();
         Long userId = userService.getUserByLogin(login).getId();
         return ResponseEntity.ok(meetingService.updateMeeting(meetingId, dto, userId));

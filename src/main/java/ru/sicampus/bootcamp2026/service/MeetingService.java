@@ -6,7 +6,7 @@ public interface MeetingService {
 
     MeetingDto getMeetingById(Long id);
 
-    MeetingDto createMeeting(MeetingDto dto);
+    MeetingDto createMeeting(MeetingDto dto, Long organizerId);
 
     MeetingDto updateMeeting(Long id, MeetingDto dto, Long useId);
 
