@@ -23,6 +23,15 @@
         </createTable>
     </changeSet>
 
-
+    <changeSet id="2026-02-05--0001-login_data" author="winfeo">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists tableName="login_data" indexName="idx_login_data_email"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="login_data" indexName="idx_login_data_email">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
 
 </databaseChangeLog>

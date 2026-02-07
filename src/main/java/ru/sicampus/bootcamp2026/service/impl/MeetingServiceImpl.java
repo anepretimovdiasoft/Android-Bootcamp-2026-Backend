@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.dto.fromApp.NewMeetingDTO;
@@ -18,12 +19,14 @@ import ru.sicampus.bootcamp2026.util.MeetingMapper;
 import ru.sicampus.bootcamp2026.util.TimeSlotMapper;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class MeetingServiceImpl implements MeetingService {
     private final MeetingRepository meetingRepository;
     private final TimeSlotRepository timeSlotRepository;
@@ -33,55 +36,72 @@ public class MeetingServiceImpl implements MeetingService {
 
 
     @Override
+    @Transactional
     public MeetingDTO createMeeting(NewMeetingDTO dto) {
-        if (dto.getStartTime().isAfter(dto.getEndTime())) {
+        LocalTime startTime = dto.getStartTime();
+        LocalTime endTime = dto.getEndTime();
+        if (startTime.isAfter(endTime)) {
             throw new InvalidTimeRangeException("Время начала не может быть позднее времени окончания.");
         }
 
-        if (timeSlotRepository.existsAlreadyBookedSlots(dto.getDate(), dto.getStartTime(), dto.getEndTime())) {
-            throw new AlreadyBookedTimeSlotException("Временной слот (" + dto.getStartTime() + " - " + dto.getEndTime() + ") невозможно создать. Часть времени забронирована для другого слота.");
+        if (timeSlotRepository.existsAlreadyBookedSlots(dto.getDate(), startTime, endTime)) {
+            throw new AlreadyBookedTimeSlotException("Временной слот (" + startTime + " - " + endTime + ") невозможно создать. Часть времени забронирована для другого слота.");
         }
-
 
         User organizer = userRepository.findById(dto.getOrganizerId()).orElseThrow(() ->
                 new UserNotFoundException("Организатор (id: " + dto.getOrganizerId() + ") не найден."));
 
+        //дата (поиск или добавл нолвой)
         DateTime date = dateRepository.findByDate(dto.getDate()).orElseGet(() -> {
-                    DateTime dateTime = new DateTime();
-                    dateTime.setDate(dto.getDate());
-                    return dateRepository.save(dateTime);
+            DateTime dateTime = new DateTime();
+            dateTime.setDate(dto.getDate());
+            return dateRepository.save(dateTime);
         });
 
+        //создан времен слота
         TimeSlot slot = new TimeSlot();
         slot.setDate(date);
         slot.setStartTime(dto.getStartTime());
         slot.setEndTime(dto.getEndTime());
 
+        //создание меро (включает слот)
         Meeting meeting = new Meeting();
         meeting.setOrganizer(organizer);
         meeting.setTitle(dto.getTitle());
         meeting.setDescription(dto.getDescription());
         meeting.setTimeSlot(slot);
 
-        for (Long id: dto.getParticipantsId()) {
+        //поик участн встречи
+        List<Long> participantsIds = dto.getParticipantsId();
+        List<User> participants = userRepository.findAllByIds(participantsIds);
+        if (participants.size() != participantsIds.size()) {
+            Set<Long> found = participants.stream()
+                    .map(User::getId)
+                    .collect(Collectors.toSet());
+            List<Long> missed = participantsIds.stream()
+                    .filter(id -> !found.contains(id))
+                    .toList();
 
-            User user = userRepository.findById(id).orElseThrow(() ->
-                    new UserNotFoundException("Пользователь (id: " + id + ") не найден."));
+            throw new UserNotFoundException("Пользователи (ID: " + missed + ")не найдены.");
+        }
 
-            InvitedParticipant participant = new InvitedParticipant();
-            participant.setParticipant(user);
-            participant.setMeeting(meeting);
-            Long statusCode = ParticipantStatusEnum.WAITING_FOR_ANSWER.getCode();
-            ParticipantStatus status = participantStatusRepository.getStatusById(statusCode);
-            participant.setParticipantStatus(status);
+        //доавлен участн
+        Long waitingStatusCode = ParticipantStatusEnum.WAITING_FOR_ANSWER.getCode();
+        ParticipantStatus waitingStatus = participantStatusRepository.getReferenceById(waitingStatusCode);
+        for (User user: participants) {
+            InvitedParticipant newParticipant = new InvitedParticipant();
+            newParticipant.setParticipant(user);
+            newParticipant.setMeeting(meeting);
+            newParticipant.setParticipantStatus(waitingStatus);
 
-            meeting.addParticipant(participant);
+            meeting.addParticipant(newParticipant);
         }
 
         return MeetingMapper.convertToDto(meetingRepository.save(meeting));
     }
 
     @Override
+    @Transactional
     public void deleteMeeting(Long id) {
         Meeting meeting = meetingRepository.findById(id).orElseThrow(() ->
                 new MeetingNotFoundException("Встреча (id: " + id + ") не найдена."));
@@ -90,6 +110,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public MeetingDTO getMeetingById(Long id) {
         Meeting meeting = meetingRepository.findById(id).orElseThrow(() ->
                 new MeetingNotFoundException("Встреча (id: " + id + ") не найдена."));
@@ -98,33 +119,52 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MeetingDTO> getAllMeetings() {
         return convertList(meetingRepository.findAll());
     }
 
     @Override
-    public List<TimeSlotDTO> getBookedSlotsByDate(String dateTime) {
+    @Transactional(readOnly = true)
+    public List<TimeSlotDTO> getEmptySlotsByDate(String dateTime) {
         LocalDate date = LocalDate.parse(dateTime);
-        List<TimeSlot> timeSlots = timeSlotRepository.getBookedSlotsByDate(date);
-        return timeSlots.stream()
-                .map(TimeSlotMapper::convertToDto)
-                .collect(Collectors.toList());
+        List<TimeSlot> bookedSlots = timeSlotRepository.getBookedSlotsByDate(date);
+
+        List<TimeSlotDTO> emptySlots = new ArrayList<>();
+        LocalTime startWorkTime = LocalTime.of(9, 0);
+        LocalTime endWorkTime = LocalTime.of(18,0);
+
+        for (LocalTime start = startWorkTime; start.isBefore(endWorkTime); start = start.plusHours(1)) {
+            LocalTime startTime = start;
+            LocalTime endTime = start.plusHours(1);
+
+            boolean isBooked = bookedSlots.stream()
+                    .anyMatch(booked -> startTime.isBefore(booked.getEndTime()) && endTime.isAfter(booked.getStartTime()));
+
+            if (!isBooked) {
+                emptySlots.add(TimeSlotMapper.convertToDto(date, startTime, endTime));
+            }
+        }
+        return emptySlots;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MeetingDTO> getUserMeetings(
             Long id,
             String start,
-            String end
+            String end,
+            Sort sort
     ) {
         LocalDate startDate = start != null ? LocalDate.parse(start): null;
         LocalDate endDate = end != null ? LocalDate.parse(end): null;
-        List<Meeting> meetings = meetingRepository.findUserMeetings(id, startDate, endDate);
+        List<Meeting> meetings = meetingRepository.findUserMeetings(id, startDate, endDate, sort);
 
         return convertList(meetings);
     }
 
     @Override
+    @Transactional
     public void respondToMeeting(MeetingResponseDTO dto) {
         Meeting meeting = meetingRepository.findById(dto.getMeetingId())
                 .orElseThrow(() -> new MeetingNotFoundException("Встреча (id: " + dto.getMeetingId() + ") не найдена."));
@@ -147,6 +187,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MeetingDTO> getUserInvitations(Long id) {
         return convertList(meetingRepository.findUserInvitations(id));
     }

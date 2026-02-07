@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.service;
 
+import org.springframework.data.domain.Sort;
 import ru.sicampus.bootcamp2026.dto.fromApp.NewMeetingDTO;
 import ru.sicampus.bootcamp2026.dto.fromApp.MeetingResponseDTO;
 import ru.sicampus.bootcamp2026.dto.toApp.MeetingDTO;
@@ -16,12 +17,13 @@ public interface MeetingService {
     MeetingDTO getMeetingById(Long meetingId);
     List<MeetingDTO> getAllMeetings();
 
-    List<TimeSlotDTO> getBookedSlotsByDate(String date);
+    List<TimeSlotDTO> getEmptySlotsByDate(String date);
 
     List<MeetingDTO> getUserMeetings(
             Long userId,
             String startDate,
-            String endDate
+            String endDate,
+            Sort sort
     );
 
     void respondToMeeting(MeetingResponseDTO dto);

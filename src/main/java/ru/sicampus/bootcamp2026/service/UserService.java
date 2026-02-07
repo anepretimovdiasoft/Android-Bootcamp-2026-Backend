@@ -1,5 +1,7 @@
 package ru.sicampus.bootcamp2026.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.sicampus.bootcamp2026.dto.fromApp.NewUserDTO;
 import ru.sicampus.bootcamp2026.dto.toApp.UserDTO;
 
@@ -13,4 +15,5 @@ public interface UserService {
     UserDTO updateUser(UserDTO dto);
     void deleteUser(Long id);
     UserDTO getUserByEmail(String email);
+    Page<UserDTO> getAllUsersPaginated(int page, int size);
 }

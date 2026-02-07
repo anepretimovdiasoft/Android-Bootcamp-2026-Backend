@@ -1,9 +1,11 @@
 package ru.sicampus.bootcamp2026.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "participants_status")
 public class ParticipantStatus {

@@ -1,11 +1,14 @@
 package ru.sicampus.bootcamp2026.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "time_slots")
 public class TimeSlot {
@@ -15,7 +18,6 @@ public class TimeSlot {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "date_id", nullable = false)
-    //TODO поменять на LocalDate?
     private DateTime date;
 
     @Column(name = "start_time", nullable = false)
