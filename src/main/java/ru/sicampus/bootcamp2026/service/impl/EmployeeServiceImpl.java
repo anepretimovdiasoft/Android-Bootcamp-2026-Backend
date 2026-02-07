@@ -17,6 +17,7 @@ import ru.sicampus.bootcamp2026.service.EmployeeService;
 import ru.sicampus.bootcamp2026.util.EmployeeMapper;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -51,8 +52,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO editEmployee(EmployeeEditDTO employeeEditDTO, String username) {
         Employee employee = employeeRepository.findByUsername(username);
-        if(employeeRepository.existsByEmailOrPhoneNumber(employeeEditDTO.getEmail(), employeeEditDTO.getPhoneNumber())) {
-            throw new EmployeeAlreadyExistsException("Employee with the same credentials is already registered");
+        if(!Objects.equals(employeeEditDTO.getEmail(), employee.getEmail()) && employeeRepository.existsByEmail(employeeEditDTO.getEmail())) {
+            throw new EmployeeAlreadyExistsException("Employee with the same email is already registered");
+        }
+        if(!Objects.equals(employeeEditDTO.getPhoneNumber(), employee.getPhoneNumber()) && employeeRepository.existsByPhoneNumber(employeeEditDTO.getPhoneNumber())) {
+            throw new EmployeeAlreadyExistsException("Employee with the same phone number is already registered");
         }
         String name = employeeEditDTO.getName();
         String position = employeeEditDTO.getPosition();
