@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-02-04--0001-person" author="mepifanov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="person"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="person">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="photo_url" type="VARCHAR(100)"/>
+            <column name="department_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_person_department"
+                             referencedTableName="department"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2026-02-06--0002-username" author="mepifanov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="person"/>
+            <not>
+                <columnExists tableName="person" columnName="username"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="person">
+            <column name="username" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2026-02-06--0003-password" author="mepifanov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="person"/>
+            <not>
+                <columnExists tableName="person" columnName="password"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="person">
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

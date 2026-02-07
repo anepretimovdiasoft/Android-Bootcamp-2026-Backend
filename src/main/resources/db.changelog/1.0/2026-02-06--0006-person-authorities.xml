@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="2026-02-06--0006-person-authorities" author="mepifanov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="person_authorities"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="person_authorities">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="person_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_persauth_person" referencedTableName="person"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="authorities_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_persauth_authority" referencedTableName="authority"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

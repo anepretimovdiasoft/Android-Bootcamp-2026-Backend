@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "invitations")
+@Table(name = "invitation")
 public class Invitation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +19,16 @@ public class Invitation {
     private Meeting meeting;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private InvitationStatus status;
+    private InvitationStatus status = InvitationStatus.PENDING;
 
     @Column(name = "responded_at")
     private LocalDateTime respondedAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

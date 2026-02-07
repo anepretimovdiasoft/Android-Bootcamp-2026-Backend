@@ -4,14 +4,18 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="db.changelog/1.0/2026-02-05--0004-departments.xml"/>
-    <include file="db.changelog/1.0/2026-02-04--0001-users.xml"/>
-    <include file="db.changelog/1.0/2026-02-04--0002-meetings.xml"/>
-    <include file="db.changelog/1.0/2026-02-04--0003-invitations.xml"/>
+    <include file="db.changelog/1.0/2026-02-05--0004-department.xml"/>
+    <include file="db.changelog/1.0/2026-02-04--0001-person.xml"/>
+    <include file="db.changelog/1.0/2026-02-04--0002-meeting.xml"/>
+    <include file="db.changelog/1.0/2026-02-04--0003-invitation.xml"/>
+    <include file="db.changelog/1.0/2026-02-06--0005-authority.xml"/>
+    <include file="db.changelog/1.0/2026-02-06--0006-person-authorities.xml"/>
 
-    <include file="db.changelog/data/2026-02-05--0004-departments-data.xml"/>
-    <include file="db.changelog/data/2026-02-04--0001-users-data.xml"/>
-    <include file="db.changelog/data/2026-02-04--0002-meetings-data.xml"/>
-    <include file="db.changelog/data/2026-02-04--0003-invitations-data.xml"/>
+    <include file="db.changelog/data/2026-02-05--0004-department-data.xml"/>
+    <include file="db.changelog/data/2026-02-04--0001-person-data.xml"/>
+    <include file="db.changelog/data/2026-02-04--0002-meeting-data.xml"/>
+    <include file="db.changelog/data/2026-02-04--0003-invitation-data.xml"/>
+    <include file="db.changelog/data/2026-02-06--0005-authority-data.xml"/>
+    <include file="db.changelog/data/2026-02-06--0006-person-authorities-data.xml"/>
 
 </databaseChangeLog>

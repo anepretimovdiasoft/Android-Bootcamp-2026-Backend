@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2026-02-04--0003-invitation" author="mepifanov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="invitation"/>
+            </not>
+        </preConditions>
+
+        <sql>
+            CREATE TYPE invitation_status AS ENUM ('PENDING', 'ACCEPTED', 'DECLINED');
+        </sql>
+
+        <createTable tableName="invitation">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="meeting_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_invitation_meeting"
+                             referencedTableName="meeting"
+                             referencedColumnNames="id"
+                />
+            </column>
+            <column name="person_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_invitation_person"
+                             referencedTableName="person"
+                             referencedColumnNames="id"
+                />
+            </column>
+            <column name="status" type="invitation_status" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="responded_at" type="TIMESTAMP"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
