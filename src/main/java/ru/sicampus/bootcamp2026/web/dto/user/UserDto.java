@@ -1,8 +1,11 @@
 package ru.sicampus.bootcamp2026.web.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +22,9 @@ public class UserDto {
 
     @Schema(description = "Фамилия", example = "Петров")
     private String secondName;
+
+    @Schema(description = "Почта", example = "limasov@gmail.com")
+    private String email;
 
     @Schema(description = "Описание", example = "Это описание")
     private String description;
