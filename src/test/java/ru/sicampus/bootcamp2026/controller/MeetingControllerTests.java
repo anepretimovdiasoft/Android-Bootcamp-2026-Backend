@@ -59,7 +59,7 @@ public class MeetingControllerTests {
         meet.setEndTime(LocalDateTime.parse("2026-07-01T11:00:00"));
 
         this.mockMvc.perform(
-                        post("/api/meeting/")
+                        post("/api/meeting")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(meet))
@@ -84,7 +84,7 @@ public class MeetingControllerTests {
         meetInvalid.setEndTime(LocalDateTime.parse("1970-01-01T11:00:00"));
 
         this.mockMvc.perform(
-                        post("/api/meeting/")
+                        post("/api/meeting")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(meetPastDate))
@@ -94,7 +94,7 @@ public class MeetingControllerTests {
         );
 
         this.mockMvc.perform(
-                        post("/api/meeting/")
+                        post("/api/meeting")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(meetInvalid))

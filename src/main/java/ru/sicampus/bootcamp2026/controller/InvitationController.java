@@ -57,6 +57,14 @@ public class InvitationController {
     }
 
     @PostMapping("/batch")
+    @Operation(summary = "Create Invitations for multiple users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "400", description = "Invalid Data"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "409", description = "Meeting not owned by user / Invitation already exists / Employee is busy at this time")
+    })
     ResponseEntity<List<InvitationDTO>> createInvitationsBatch(@RequestBody @Valid InvitationCreateBatchDTO dto, Authentication authentication) {
         return ResponseEntity.ok(invitationService.createInvitationsBatch(dto, authentication.getName()));
     }

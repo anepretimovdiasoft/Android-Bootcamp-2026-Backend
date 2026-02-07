@@ -41,7 +41,7 @@ public class InvitationControllerTests {
         meet.setEndTime(LocalDateTime.parse("2026-07-01T11:00:00"));
 
         MvcResult result = this.mockMvc.perform(
-                        post("/api/meeting/")
+                        post("/api/meeting")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(meet))
@@ -57,7 +57,7 @@ public class InvitationControllerTests {
         inv.setMessage("Приглашаю тебя на тестовое собрание");
 
         this.mockMvc.perform(
-                        post("/api/invitation/")
+                        post("/api/invitation")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(inv))
@@ -76,7 +76,7 @@ public class InvitationControllerTests {
         meet.setEndTime(LocalDateTime.parse("2026-07-01T11:00:00"));
 
         MvcResult result = this.mockMvc.perform(
-                        post("/api/meeting/")
+                        post("/api/meeting")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(meet))
@@ -97,7 +97,7 @@ public class InvitationControllerTests {
         invInvalidMeeting.setMessage("Приглашаю тебя на тестовое собрание");
 
         this.mockMvc.perform(
-                        post("/api/invitation/")
+                        post("/api/invitation")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(invInvalidUser))
@@ -107,13 +107,13 @@ public class InvitationControllerTests {
                 );
 
         this.mockMvc.perform(
-                        post("/api/invitation/")
+                        post("/api/invitation")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(invInvalidMeeting))
                 )
                 .andDo(print())
-                .andExpect(status().isNotFound()
+                .andExpect(status().isConflict()
                 );
     }
 
@@ -126,7 +126,7 @@ public class InvitationControllerTests {
         meet.setEndTime(LocalDateTime.parse("2026-07-01T11:00:00"));
 
         MvcResult result = this.mockMvc.perform(
-                        post("/api/meeting/")
+                        post("/api/meeting")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(meet))
@@ -142,7 +142,7 @@ public class InvitationControllerTests {
         inv.setMessage("Приглашаю тебя на тестовое собрание");
 
         MvcResult resultInv = this.mockMvc.perform(
-                        post("/api/invitation/")
+                        post("/api/invitation")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                                 .content(objectMapper.writeValueAsString(inv))
@@ -157,7 +157,7 @@ public class InvitationControllerTests {
         answerDTO.setStatus("ACCEPTED");
 
         this.mockMvc.perform(
-                        patch("/api/invitation/")
+                        patch("/api/invitation")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(httpBasic("iv_ivan", "1234561234"))
                                 .content(objectMapper.writeValueAsString(answerDTO))

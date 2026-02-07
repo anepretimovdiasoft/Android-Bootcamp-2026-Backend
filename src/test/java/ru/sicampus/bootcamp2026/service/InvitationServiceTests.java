@@ -9,6 +9,7 @@ import ru.sicampus.bootcamp2026.dto.*;
 import ru.sicampus.bootcamp2026.entity.Invitation;
 import ru.sicampus.bootcamp2026.exception.EmployeeNotFoundException;
 import ru.sicampus.bootcamp2026.exception.MeetingNotFoundExeception;
+import ru.sicampus.bootcamp2026.exception.MeetingNotOwnedException;
 import ru.sicampus.bootcamp2026.repository.InvitationRepository;
 
 import java.time.LocalDateTime;
@@ -69,8 +70,8 @@ public class InvitationServiceTests {
         invInvalidMeeting.setEmployeeUsername("iv_ivan");
         invInvalidMeeting.setMessage("Приглашаю тебя на тестовое собрание");
 
-        Exception exceptionMeetingNotFound = assertThrows(MeetingNotFoundExeception.class, () -> invitationService.createInvitation(invInvalidMeeting, "andrey_limasov"));
-        assertTrue(exceptionMeetingNotFound.getMessage().contains("Meeting not found"));
+        Exception exceptionMeetingNotFound = assertThrows(MeetingNotOwnedException.class, () -> invitationService.createInvitation(invInvalidMeeting, "andrey_limasov"));
+        assertTrue(exceptionMeetingNotFound.getMessage().contains("Meeting does not exist or is not owned by you"));
 
         Exception exceptionEmployeeNotFound = assertThrows(EmployeeNotFoundException.class, () -> invitationService.createInvitation(invInvalidUser, "andrey_limasov"));
         assertTrue(exceptionEmployeeNotFound.getMessage().contains("Employee not found"));
