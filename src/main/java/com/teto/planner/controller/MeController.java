@@ -36,7 +36,7 @@ public class MeController {
     @PatchMapping
     public UserMeDto patchMe(@Valid @RequestBody UpdateUserRequest request) {
         UserEntity user = currentUserService.getCurrentUser();
-        return userService.updateMe(user, request.name(), request.telegramNick());
+        return userService.updateMe(user, request.name(), request.telegramNick(), request.bio());
     }
 
     @PutMapping(value = "/avatar", consumes = {"image/jpeg", "image/png"})

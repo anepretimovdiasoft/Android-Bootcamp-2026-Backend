@@ -7,6 +7,7 @@ public record UserSummaryDto(
         String login,
         String name,
         String telegramNick,
+        String bio,
         Integer busyHours,
         LoadStatus loadStatus,
         String avatarUrl

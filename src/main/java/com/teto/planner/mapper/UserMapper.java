@@ -1,10 +1,14 @@
 package com.teto.planner.mapper;
 
 import com.teto.planner.dto.LoadStatus;
+import com.teto.planner.dto.RoleDto;
 import com.teto.planner.dto.UserDto;
 import com.teto.planner.dto.UserMeDto;
 import com.teto.planner.dto.UserSummaryDto;
+import com.teto.planner.entity.RoleEntity;
 import com.teto.planner.entity.UserEntity;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +20,7 @@ public class UserMapper {
                 user.getLogin(),
                 user.getName(),
                 user.getTelegramNick(),
+                user.getBio(),
                 avatarUrl(user),
                 user.getAvatarContentType(),
                 user.getCreatedAt(),
@@ -24,15 +29,20 @@ public class UserMapper {
     }
 
     public UserMeDto toMe(UserEntity user) {
+        List<RoleDto> roles = user.getRoles().stream()
+                .map(this::toRole)
+                .collect(Collectors.toList());
         return new UserMeDto(
                 user.getId(),
                 user.getLogin(),
                 user.getName(),
                 user.getTelegramNick(),
+                user.getBio(),
                 avatarUrl(user),
                 user.getAvatarContentType(),
                 user.getCreatedAt(),
-                user.getUpdatedAt()
+                user.getUpdatedAt(),
+                roles
         );
     }
 
@@ -42,10 +52,15 @@ public class UserMapper {
                 user.getLogin(),
                 user.getName(),
                 user.getTelegramNick(),
+                user.getBio(),
                 busyHours,
                 loadStatus,
                 avatarUrl(user)
         );
+    }
+
+    private RoleDto toRole(RoleEntity role) {
+        return new RoleDto(role.getId(), role.getSlug(), role.getName());
     }
 
     private String avatarUrl(UserEntity user) {

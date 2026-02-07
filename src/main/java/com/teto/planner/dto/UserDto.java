@@ -8,6 +8,7 @@ public record UserDto(
         String login,
         String name,
         String telegramNick,
+        String bio,
         String avatarUrl,
         String avatarContentType,
         OffsetDateTime createdAt,

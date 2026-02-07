@@ -1,5 +1,6 @@
 package com.teto.planner.controller;
 
+import com.teto.planner.dto.CreateUserRequest;
 import com.teto.planner.dto.LoginRequest;
 import com.teto.planner.dto.UserMeDto;
 import com.teto.planner.service.AuthService;
@@ -23,5 +24,17 @@ public class AuthController {
     @SecurityRequirements
     public UserMeDto login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request.login(), request.password());
+    }
+
+    @PostMapping("/register")
+    @SecurityRequirements
+    public UserMeDto register(@Valid @RequestBody CreateUserRequest request) {
+        return authService.register(
+                request.login(),
+                request.name(),
+                request.password(),
+                request.telegramNick(),
+                request.bio()
+        );
     }
 }

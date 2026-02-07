@@ -10,3 +10,7 @@ databaseChangeLog:
   - include:
       file: 003_seed.yaml
       relativeToChangelogFile: true
+
+  - include:
+      file: 004_add_bio.yaml
+      relativeToChangelogFile: true

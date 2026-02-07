@@ -2,11 +2,14 @@ package com.teto.planner.service;
 
 import com.teto.planner.dto.BusySlotDto;
 import com.teto.planner.dto.BusySlotsResponse;
+import com.teto.planner.dto.AddParticipantsRequest;
 import com.teto.planner.dto.MeetingDto;
+import com.teto.planner.dto.MeetingParticipantDto;
 import com.teto.planner.dto.MeetingsPage;
 import com.teto.planner.dto.PageMeta;
 import com.teto.planner.dto.MeetingCreateRequest;
 import com.teto.planner.dto.MeetingUpdateRequest;
+import com.teto.planner.dto.UpdateParticipantRequest;
 import com.teto.planner.entity.MeetingEntity;
 import com.teto.planner.entity.MeetingParticipantEntity;
 import com.teto.planner.entity.MeetingParticipantId;
@@ -18,16 +21,18 @@ import com.teto.planner.exception.ConflictException;
 import com.teto.planner.exception.ForbiddenException;
 import com.teto.planner.exception.NotFoundException;
 import com.teto.planner.mapper.MeetingMapper;
+import com.teto.planner.pagination.Pagination;
 import com.teto.planner.repository.MeetingParticipantRepository;
 import com.teto.planner.repository.MeetingRepository;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +61,15 @@ public class MeetingService {
     public MeetingsPage listMeetings(UserEntity currentUser, LocalDate startDate, LocalDate endDate,
                                      boolean includePending, int page, int size) {
         Page<MeetingEntity> meetings = meetingRepository.findForUserBetween(
-                currentUser.getId(), startDate, endDate, includePending, PageRequest.of(page, size));
+                currentUser.getId(),
+                startDate,
+                endDate,
+                includePending,
+                Pagination.pageRequest(page, size, Sort.by(
+                        Sort.Order.asc("meetingDate"),
+                        Sort.Order.asc("startHour"),
+                        Sort.Order.asc("id")
+                )));
         List<MeetingDto> items = meetings.getContent().stream()
                 .map(meetingMapper::toDto)
                 .collect(Collectors.toList());
@@ -160,6 +173,64 @@ public class MeetingService {
                 .map(mp -> new BusySlotDto(mp.getStartHour() != null ? mp.getStartHour().intValue() : null, mp.getMeeting().getId()))
                 .collect(Collectors.toList());
         return new BusySlotsResponse(meetingDate, items);
+    }
+
+    public List<MeetingParticipantDto> listParticipants(UUID meetingId) {
+        MeetingEntity meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new NotFoundException("MEETING_NOT_FOUND", "Meeting not found"));
+        return meeting.getParticipants().stream().map(meetingMapper::toParticipant).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public MeetingDto addParticipants(UserEntity currentUser, UUID meetingId, AddParticipantsRequest request) {
+        MeetingEntity meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new NotFoundException("MEETING_NOT_FOUND", "Meeting not found"));
+        requireOrganizer(currentUser, meeting);
+
+        Set<UUID> existing = meeting.getParticipants().stream()
+                .map(mp -> mp.getUser().getId())
+                .collect(Collectors.toSet());
+
+        for (UUID userId : request.userIds()) {
+            if (existing.contains(userId)) {
+                continue;
+            }
+            UserEntity user = userService.findUser(userId);
+            meeting.getParticipants().add(buildParticipant(meeting, user, ParticipantRole.ATTENDEE, ParticipantStatus.PENDING));
+        }
+
+        return meetingMapper.toDto(meeting);
+    }
+
+    @Transactional
+    public MeetingParticipantDto updateParticipant(UserEntity currentUser, UUID meetingId, UUID userId,
+                                                   UpdateParticipantRequest request) {
+        MeetingParticipantEntity participant = participantRepository.findById(new MeetingParticipantId(meetingId, userId))
+                .orElseThrow(() -> new NotFoundException("PARTICIPANT_NOT_FOUND", "Participant not found"));
+
+        MeetingEntity meeting = participant.getMeeting();
+        requireOrganizer(currentUser, meeting);
+
+        if (request.status() != null) {
+            if (request.status() == ParticipantStatus.ACCEPTED
+                    && participant.getStatus() != ParticipantStatus.ACCEPTED) {
+                long conflicts = participantRepository.countAcceptedAtSlot(userId, meeting.getMeetingDate(), meeting.getStartHour());
+                if (conflicts > 0) {
+                    throw new ConflictException("SLOT_CONFLICT", "User already has accepted meeting at that slot");
+                }
+            }
+            participant.setStatus(request.status());
+            participant.setRespondedAt(OffsetDateTime.now());
+        }
+        return meetingMapper.toParticipant(participant);
+    }
+
+    @Transactional
+    public void deleteParticipant(UserEntity currentUser, UUID meetingId, UUID userId) {
+        MeetingEntity meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new NotFoundException("MEETING_NOT_FOUND", "Meeting not found"));
+        requireOrganizer(currentUser, meeting);
+        participantRepository.deleteById(new MeetingParticipantId(meetingId, userId));
     }
 
     private void requireOrganizer(UserEntity currentUser, MeetingEntity meeting) {

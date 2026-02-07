@@ -2,9 +2,10 @@ services:
   postgres:
     image: 'postgres:17'
     environment:
-      - 'POSTGRES_DB=postgres'
+      # Keep defaults aligned with src/main/resources/application.yaml
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_USER=myuser'
       - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=postgres'
     ports:
       - '5432:5432'
     volumes:

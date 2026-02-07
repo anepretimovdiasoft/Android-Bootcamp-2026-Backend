@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Size;
 
 public record UpdateUserRequest(
         @Size(max = 128) String name,
-        @Size(max = 64) String telegramNick
+        @Size(max = 64) String telegramNick,
+        @Size(max = 256) String bio
 ) {
 }

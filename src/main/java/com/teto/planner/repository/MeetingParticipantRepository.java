@@ -87,4 +87,18 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
             @Param("startHour") Short startHour
     );
 
+    @Query("""
+        select mp from MeetingParticipantEntity mp
+        join fetch mp.user u
+        join mp.meeting m
+        where mp.user.id in :userIds
+          and mp.meetingDate = :meetingDate
+          and mp.status = com.teto.planner.entity.ParticipantStatus.ACCEPTED
+          and m.status = com.teto.planner.entity.MeetingStatus.SCHEDULED
+        """)
+    List<MeetingParticipantEntity> findAcceptedForUsersOnDate(
+            @Param("userIds") List<UUID> userIds,
+            @Param("meetingDate") LocalDate meetingDate
+    );
+
 }

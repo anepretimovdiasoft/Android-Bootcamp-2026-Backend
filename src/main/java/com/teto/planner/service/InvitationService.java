@@ -13,13 +13,14 @@ import com.teto.planner.entity.UserEntity;
 import com.teto.planner.exception.ConflictException;
 import com.teto.planner.exception.NotFoundException;
 import com.teto.planner.mapper.MeetingMapper;
+import com.teto.planner.pagination.Pagination;
 import com.teto.planner.repository.MeetingParticipantRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +37,12 @@ public class InvitationService {
     public InvitationsResponse listInvitations(UserEntity currentUser, ParticipantStatus status, int page, int size) {
         ParticipantStatus effective = status == null ? ParticipantStatus.PENDING : status;
         Page<MeetingParticipantEntity> pageResult = participantRepository.findByUserIdAndStatus(
-                currentUser.getId(), effective, PageRequest.of(page, size));
+                currentUser.getId(),
+                effective,
+                Pagination.pageRequest(page, size, Sort.by(
+                        Sort.Order.asc("meetingDate"),
+                        Sort.Order.asc("startHour")
+                )));
 
         List<InvitationDto> items = pageResult.getContent().stream()
                 .map(mp -> new InvitationDto(

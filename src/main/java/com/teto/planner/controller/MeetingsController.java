@@ -1,15 +1,19 @@
 package com.teto.planner.controller;
 
 import com.teto.planner.dto.BusySlotsResponse;
+import com.teto.planner.dto.AddParticipantsRequest;
 import com.teto.planner.dto.MeetingCreateRequest;
 import com.teto.planner.dto.MeetingDto;
+import com.teto.planner.dto.MeetingParticipantDto;
 import com.teto.planner.dto.MeetingUpdateRequest;
 import com.teto.planner.dto.MeetingsPage;
+import com.teto.planner.dto.UpdateParticipantRequest;
 import com.teto.planner.entity.UserEntity;
 import com.teto.planner.service.CurrentUserService;
 import com.teto.planner.service.MeetingService;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +88,40 @@ public class MeetingsController {
     ) {
         UserEntity currentUser = currentUserService.getCurrentUser();
         return meetingService.getBusySlots(currentUser, meetingDate);
+    }
+
+    @GetMapping("/{meetingId}/participants")
+    public List<MeetingParticipantDto> listParticipants(@PathVariable UUID meetingId) {
+        return meetingService.listParticipants(meetingId);
+    }
+
+    @PostMapping("/{meetingId}/participants")
+    public MeetingDto addParticipants(
+            @PathVariable UUID meetingId,
+            @Valid @RequestBody AddParticipantsRequest request
+    ) {
+        UserEntity currentUser = currentUserService.getCurrentUser();
+        return meetingService.addParticipants(currentUser, meetingId, request);
+    }
+
+    @PatchMapping("/{meetingId}/participants/{userId}")
+    public MeetingParticipantDto patchParticipant(
+            @PathVariable UUID meetingId,
+            @PathVariable UUID userId,
+            @Valid @RequestBody UpdateParticipantRequest request
+    ) {
+        UserEntity currentUser = currentUserService.getCurrentUser();
+        return meetingService.updateParticipant(currentUser, meetingId, userId, request);
+    }
+
+    @DeleteMapping("/{meetingId}/participants/{userId}")
+    public ResponseEntity<Void> deleteParticipant(
+            @PathVariable UUID meetingId,
+            @PathVariable UUID userId
+    ) {
+        UserEntity currentUser = currentUserService.getCurrentUser();
+        meetingService.deleteParticipant(currentUser, meetingId, userId);
+        return ResponseEntity.noContent().build();
     }
 
 }
