@@ -19,7 +19,7 @@ public class AuthorityRepositoryTests {
 
     @Test
     void getAuthorityById() {
-        var authority = authorityRepository.findById(1L).orElse(null);
+        Authority authority = authorityRepository.findById(1L).orElse(null);
         assertNotNull(authority);
         assertEquals("EMPLOYEE", authority.getAuthority());
     }
