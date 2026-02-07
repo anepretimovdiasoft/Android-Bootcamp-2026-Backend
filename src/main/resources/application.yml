@@ -43,7 +43,7 @@ spring:
   datasource:
     url: ${URL}
     username: ${USERNAME}
-    password: @{PASSWORD}
+    password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   h2:
