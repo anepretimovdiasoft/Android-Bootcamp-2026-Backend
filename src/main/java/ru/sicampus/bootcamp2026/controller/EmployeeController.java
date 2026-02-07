@@ -98,4 +98,9 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.searchEmployeesPaginated(search, pageable));
     }
 
+    @PostMapping("/loginTeapot")
+    public ResponseEntity<Object> postVoid() {
+        return ResponseEntity.status(418).build();
+    }
+
 }
