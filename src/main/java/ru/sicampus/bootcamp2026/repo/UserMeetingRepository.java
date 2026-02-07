@@ -1,5 +1,7 @@
 package ru.sicampus.bootcamp2026.repo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -7,16 +9,14 @@ import ru.sicampus.bootcamp2026.domain.Meeting;
 import ru.sicampus.bootcamp2026.domain.User;
 import ru.sicampus.bootcamp2026.domain.UserMeeting;
 import ru.sicampus.bootcamp2026.domain.UserMeetingId;
-
 import java.time.OffsetDateTime;
-import java.util.List;
 
 public interface UserMeetingRepository extends JpaRepository<UserMeeting, UserMeetingId> {
 
     void deleteByMeeting(Meeting meeting);
 
     @Query("select um.meeting from UserMeeting um where um.user.id = :userId and um.status = :status")
-    List<Meeting> findMeetingsByUserIdAndStatus(@Param("userId") long userId, @Param("status") String status);
+    Page<Meeting> findMeetingsByUserIdAndStatus(@Param("userId") long userId, @Param("status") String status, Pageable pageable);
 
     void deleteByUser(User user);
 

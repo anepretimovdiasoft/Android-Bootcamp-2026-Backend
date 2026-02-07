@@ -25,8 +25,14 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/meetings")
-    public List<MeetingResponse> meetingsByStatus(@PathVariable long userId, @RequestParam String status) {
-        return service.listMeetingsByStatus(userId, status);
+    public Page<MeetingResponse> meetingsByStatus(
+            @PathVariable long userId,
+            @RequestParam String status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return service.listMeetingsByStatus(userId, status, pageable);
     }
 
     @GetMapping("/paginated")

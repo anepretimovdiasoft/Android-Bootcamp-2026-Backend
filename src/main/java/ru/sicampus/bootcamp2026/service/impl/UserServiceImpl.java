@@ -55,11 +55,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<MeetingResponse> listMeetingsByStatus(long userId, String status) {
+    public Page<MeetingResponse> listMeetingsByStatus(long userId, String status, Pageable pageable) {
         if (!userRepository.existsById(userId)) throw new UserNotFoundException("User not found: " + userId);
+
         String normalized = status == null ? "" : status.trim().toUpperCase();
         if (!ALLOWED_STATUSES.contains(normalized)) throw new WrongInvitationException("Invalid status");
-        return usMetRepo.findMeetingsByUserIdAndStatus(userId, normalized).stream().map(MeetingMapper::toResponse).toList();
+
+        return usMetRepo.findMeetingsByUserIdAndStatus(userId, normalized, pageable)
+                .map(MeetingMapper::toResponse);
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface UserService {
 
     List<UserResponse> list();
 
-    List<MeetingResponse> listMeetingsByStatus(long userId, String status);
+    Page<MeetingResponse> listMeetingsByStatus(long userId, String status, Pageable pageable);
 
     InvitationDecisionRequest decideInvitation(long userId, long meetingId, InvitationDecisionRequest req);
 
