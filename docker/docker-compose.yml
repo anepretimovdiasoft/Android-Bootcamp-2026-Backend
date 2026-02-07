@@ -21,7 +21,7 @@ services:
       POSTGRES_DB: application_db
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5430:5432"
+      - "127.0.0.1:5430:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/pgdata
     restart: unless-stopped
