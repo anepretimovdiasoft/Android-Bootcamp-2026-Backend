@@ -15,6 +15,9 @@
             <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="contact" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

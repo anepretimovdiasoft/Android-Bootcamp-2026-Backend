@@ -1,4 +1,4 @@
-name;mail;avatar;age
-Dmitry;rtfg@mail.ru;https://avatars.mds.yandex.net/i?id=41ecc6043febf8025ca91b18fcbebbb0fe9b8acf-9727996-images-thumbs&n=13;18
-Artem;tygh@bk.ru;https://as1.ftcdn.net/jpg/01/95/65/16/1000_F_195651603_0erEP7sgqH9ZOAfTlZIFdXdvrNhYesSU.jpg;23
-Egore;yuhj@bk.ru;https://avatars.mds.yandex.net/i?id=1e81eef3cdbc79dc8c22f3b9a5413139_l-5195024-images-thumbs&n=13;24
+name;last_name;father_name;mail;avatar_id;age;password
+Dmitry;Nikolaev;Nikolaevich;rtfg@mail.ru;1;18;1234
+Artem;dfg;dfgh;tygh@bk.ru;1;23;12345678
+Egore;ert;erty;yuhj@bk.ru;2;24;234

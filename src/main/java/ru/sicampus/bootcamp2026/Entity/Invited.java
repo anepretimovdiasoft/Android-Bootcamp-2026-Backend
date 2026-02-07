@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name="invited")
 public class Invited {
     @Id
@@ -23,4 +21,16 @@ public class Invited {
     @JoinColumn(name="invitations_id")
     private Invitations invitations;
     private boolean Approval;
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public Boolean getApproval() {
+        return  Approval;
+    }
+
+    public Invitations getInvitations() {
+        return invitations;
+    }
 }

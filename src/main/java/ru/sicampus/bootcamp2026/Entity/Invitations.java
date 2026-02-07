@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 @Entity
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name="invitations")
 public class Invitations {
@@ -26,4 +24,12 @@ public class Invitations {
     private Employee employee;
     @OneToMany(mappedBy = "invitations",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private ArrayList<Invited> inviteds=new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
 }

@@ -1,19 +1,17 @@
 package ru.sicampus.bootcamp2026.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.context.support.BeanDefinitionDsl;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Builder
+@Getter @Setter
 @Table(name="Employee")
 public class Employee {
     @Id
@@ -24,20 +22,20 @@ public class Employee {
     private String father_name;
     private Boolean сhosenness;
     private long age;
-    private String avatar;
+    @ManyToOne
+    @JoinColumn(name="Avatar_id")
+    private Avatar avatar;
     private String mail;
+    private String password;
     @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private ArrayList<Booking> bookings=new ArrayList<>();
+    private List<Booking> bookings=new ArrayList<>();
     @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private ArrayList<Invitations> invitations=new ArrayList<>();
+    private List<Invitations> invitations=new ArrayList<>();
     @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private ArrayList<Contact> contacts=new ArrayList<>();
+    private List<Contact> contacts=new ArrayList<>();
     @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private ArrayList<Invited> inviteds=new ArrayList<>();
-
-    public void setName(String name) {
-        this.name=name;
-    }
+    private List<Invited> inviteds=new ArrayList<>();
+    
     public String getName() {
         return name;
     }
@@ -46,10 +44,51 @@ public class Employee {
         return last_name;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public String getFather_name() {
+        return father_name;
     }
-    public void setFather_name(String father_name){
-        this.father_name=father_name;
+
+    public String getMail() {
+        return mail;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLast_name(String lastName) {
+        this.last_name = lastName;
+    }
+
+    public void setFather_name(String fatherName) {
+        this.father_name = fatherName;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public long getAge() {
+        return age;
     }
 }

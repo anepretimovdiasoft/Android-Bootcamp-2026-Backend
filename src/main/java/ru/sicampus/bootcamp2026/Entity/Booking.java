@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 @Entity
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="Booking")
@@ -29,4 +28,24 @@ public class Booking {
     private Employee employee;
     @OneToMany(mappedBy = "booking",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private ArrayList<Invitations> invitations=new ArrayList<>();
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
