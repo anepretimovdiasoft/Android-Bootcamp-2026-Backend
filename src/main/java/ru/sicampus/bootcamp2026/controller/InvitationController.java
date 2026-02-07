@@ -23,7 +23,7 @@ public class InvitationController {
     InvitationService invitationService;
 
     // TODO: When security is added
-    @PatchMapping("/")
+    @PatchMapping("")
     @Operation(summary = "Answer Invitation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful"),
@@ -36,7 +36,7 @@ public class InvitationController {
         return ResponseEntity.ok(invitationService.answerInvitation(invitationAnswerDTO, authentication.getName()));
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @Operation(summary = "Create Invitation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful"),

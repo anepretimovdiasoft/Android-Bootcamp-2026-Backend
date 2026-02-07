@@ -23,7 +23,7 @@ public class MeetingController {
     @Autowired
     MeetingService meetingService;
 
-    @PostMapping("/")
+    @PostMapping("")
     @Operation(summary = "Create meeting")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful"),
