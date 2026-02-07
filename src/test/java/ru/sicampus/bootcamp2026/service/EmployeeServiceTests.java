@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 public class EmployeeServiceTests {
     @Autowired
-    private EmployeeService employeeService;
+    EmployeeService employeeService;
     @Autowired
-    private EmployeeRepository employeeRepository;
+    EmployeeRepository employeeRepository;
 
     @Test
     void createEmployee() {

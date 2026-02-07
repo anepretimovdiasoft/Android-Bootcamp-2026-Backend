@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ActiveProfiles("tests")
 public class AuthorityRepositoryTests {
     @Autowired
-    private AuthorityRepository authorityRepository;
+    AuthorityRepository authorityRepository;
 
     @Test
     void getAuthorityById() {

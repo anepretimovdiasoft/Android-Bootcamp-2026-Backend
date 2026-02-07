@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 public class MeetingServiceTests {
     @Autowired
-    private MeetingService meetingService;
+    MeetingService meetingService;
 
     @Autowired
-    private MeetingRepository meetingRepository;
+    MeetingRepository meetingRepository;
 
     @Test
     void createMeeting() {

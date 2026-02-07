@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 public class InvitationServiceTests {
     @Autowired
-    private InvitationService invitationService;
+    InvitationService invitationService;
 
     @Autowired
-    private InvitationRepository invitationRepository;
+    InvitationRepository invitationRepository;
 
     @Autowired
-    private MeetingService meetingService;
+    MeetingService meetingService;
 
     @Test
     void createInvitation() {
