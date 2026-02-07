@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import ru.sicampus.bootcamp2026.enums.MeetingType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +47,7 @@ public class Meeting {
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
-    private Type type;
+    private MeetingType type;
 
     @Column(name = "location")
     private String location;
@@ -55,11 +57,8 @@ public class Meeting {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
-    private List<Invitation> invitations;
+    private List<Invitation> invitations = new ArrayList<>();
 
-    public enum Type {
-        ONLINE, OFFLINE, HYBRID
-    }
 
     @Override
     public final boolean equals(Object o) {

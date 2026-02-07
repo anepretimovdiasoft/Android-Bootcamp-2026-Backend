@@ -10,8 +10,6 @@ public class MeetingMapper {
         var dto = new MeetingDto();
 
         dto.setId(entity.getId());
-        dto.setOrganizerName(entity.getOrganizer().getName());
-        dto.setOrganizerLastName(entity.getOrganizer().getLastname());
         dto.setTitle(entity.getTitle());
         dto.setStartAt(entity.getStartAt());
         dto.setEndAt(entity.getEndAt());

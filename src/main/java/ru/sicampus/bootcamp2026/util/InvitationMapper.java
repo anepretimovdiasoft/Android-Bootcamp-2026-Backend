@@ -12,10 +12,7 @@ public class InvitationMapper {
 
         dto.setId(entity.getId());
         dto.setInviteeId(entity.getInvitee().getId());
-        dto.setOrganizerId(entity.getOrganizer().getId());
         dto.setMeetingId(entity.getMeeting().getId());
-        dto.setOrganizerName(entity.getOrganizer().getName());
-        dto.setOrganizerLastname(entity.getOrganizer().getLastname());
         dto.setMeetingType(entity.getMeeting().getType());
         dto.setMeetingStartAt(entity.getMeeting().getStartAt());
         dto.setMeetingEndAt(entity.getMeeting().getEndAt());

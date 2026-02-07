@@ -11,7 +11,7 @@ public class UserMapper {
         var dto = new UserDto();
 
         dto.setId(entity.getId());
-        dto.setLogin(dto.getLogin());
+        dto.setLogin(entity.getLogin());
         dto.setName(entity.getName());
         dto.setLastname(entity.getLastname());
         dto.setAboutMe(entity.getAboutMe());

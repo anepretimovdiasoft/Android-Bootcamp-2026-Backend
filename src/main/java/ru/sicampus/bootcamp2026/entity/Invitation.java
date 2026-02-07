@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import ru.sicampus.bootcamp2026.enums.InvitationStatus;
 
 import java.util.Objects;
 
@@ -29,20 +30,10 @@ public class Invitation {
     @NotNull
     private User invitee;
 
-    @ManyToOne
-    @JoinColumn(name = "organizer_id", nullable = false)
-    @NotNull
-    private User organizer;
-
     @Column(name = "status", nullable = false)
     @Enumerated(value  = EnumType.STRING)
     @NotNull
-    private Status status;
-
-
-    public enum Status {
-        PENDING, ACCEPTED, DECLINED
-    }
+    private InvitationStatus status;
 
     @Override
     public final boolean equals(Object o) {

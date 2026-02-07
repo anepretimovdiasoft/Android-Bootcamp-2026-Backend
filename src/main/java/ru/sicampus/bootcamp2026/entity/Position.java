@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,13 +21,13 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "position", nullable = false)
+    @Column(name = "position", nullable = false, unique = true)
     @NotBlank
     private String position;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     @Override
     public final boolean equals(Object o) {
