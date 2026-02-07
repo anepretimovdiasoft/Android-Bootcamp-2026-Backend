@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -78,6 +80,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserNotFound("Не удалось удалить: пользователь не найден");
         }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<UserDto> getAllUsersPaginated(Pageable pageable) {
+        return userRepository.findAll(pageable).map(UserMapper::convertToDto);
     }
 
     @Override

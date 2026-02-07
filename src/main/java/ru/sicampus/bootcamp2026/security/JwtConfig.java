@@ -1,8 +1,8 @@
 package ru.sicampus.bootcamp2026.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -21,23 +21,25 @@ public class JwtConfig {
     @Value("${app.jwt.lifetime}")
     private int lifetime;
 
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
+
     public String generateToken(Authentication auth) {
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
-        return Jwts.builder().setSubject((userDetails.getUsername())).setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + lifetime))
-                .signWith(SignatureAlgorithm.HS512, secret)
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + lifetime))
+                .signWith(getSigningKey())
                 .compact();
     }
 
     public String getUsernameFromToken(String token) {
         JwtParser parser = Jwts.parser()
-                .setSigningKey(getSigninKey())
+                .setSigningKey(getSigningKey())
                 .build();
-        return parser.parseClaimsJws(token).getBody().getSubject();
+        Claims claims = parser.parseClaimsJws(token).getBody();
+        return claims.getSubject();
     }
-
-    private Key getSigninKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    }
-
 }
