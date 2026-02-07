@@ -7,10 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.*;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.AuthorizedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
@@ -76,5 +73,10 @@ public class EmployeeController {
     public ResponseEntity<?> updateEmployee(@Valid @RequestBody GetEmployeeUpdateRequest dto){
             String token=employeeService.updateEmployee(dto).getToken();
             return ResponseEntity.ok(token);
+    }
+    @GetMapping("/getYou")
+    public ResponseEntity<?> geyou(){
+        GetYouResponse getYouResponse=employeeService.getYou();
+        return ResponseEntity.ok(getYouResponse);
     }
 }

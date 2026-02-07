@@ -4,10 +4,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeRequest;
-import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetEmployeeUpdateRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Employee.*;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeesResponse;
@@ -164,6 +161,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.save(employee);
         String token1=tokenAuthService.createToken(dto.getMail());
         return new UpdateEmployeeResponse(token1);
+    }
+    @Override
+    public GetYouResponse getYou(){
+        String token=SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
+        List<Contact> contacts=contactRepository.findByEmployeeId(employee.getId());
+        List<Map<String,String>> contactList=new ArrayList<>();
+        for(Contact contact:contacts){
+            Map<String,String> cont=new LinkedHashMap<>();
+            cont.put(contact.getContact(),contact.getName());
+            contactList.add(cont);
+        }
+        GetYouResponse getYouResponse=new GetYouResponse(employee.getName(),employee.getLast_name(),employee.getFather_name(),employee.getMail(),employee.getPassword(),employee.getAvatar().getName(),employee.getAge(),contactList);
+        return getYouResponse;
     }
 
 }
