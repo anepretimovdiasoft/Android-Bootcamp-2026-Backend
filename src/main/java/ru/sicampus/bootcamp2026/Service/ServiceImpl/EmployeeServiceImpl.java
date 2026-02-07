@@ -37,19 +37,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public GetEmployeeResponse getEmployee(GetEmployeeRequest dto){
         List<Employee>employee=employeeRepository.findByName(dto.getName());
-        List<Map<String,Object>> employees=new ArrayList<>((Collection) employee.stream()
-                .filter(e-> e.getLast_name()==dto.getLast_name()& e.getFather_name()==dto.getFather_name())
-                .collect(Collectors.toMap(e->e.getMail(),e->{
-                    Map<String,Object> emp=new LinkedHashMap<>();
-                    emp.put("name",e.getName());
-                    emp.put("last_name",e.getLast_name());
-                    emp.put("father_nme",e.getFather_name());
-                    emp.put("age",e.getAge());
-                    emp.put("avatar",e.getAvatar().getName());
-                    emp.put("contact",contactRepository.findByEmployeeId(e.getId()));
-                    return emp;
-                        }
-                )));
+        List<Map<String,Object>> employees=new ArrayList<>();
+        for(Employee employee1: employee){
+            Map<String,Object> er=new LinkedHashMap<>();
+            er.put("name",employee1.getName());
+            er.put("last_name",employee1.getLast_name());
+            er.put("father_name",employee1.getFather_name());
+            er.put("mail",employee1.getMail());
+            er.put("avatar",employee1.getAvatar().getName());
+            er.put("age",employee1.getAge());
+            List<Map<String,String>> conts=new ArrayList<>();
+            List<Contact> contact=contactRepository.findByEmployeeId(employee1.getId());
+            for(Contact contact1:contact){
+                Map<String,String> cont=new LinkedHashMap<>();
+                cont.put(contact1.getContact(),contact1.getName());
+                conts.add(cont);
+            }
+            er.put("contacts",conts);
+            employees.add(er);
+        }
+
         GetEmployeeResponse getEmployeeResponse=new GetEmployeeResponse();
         getEmployeeResponse.setEmployees(employees);
         return getEmployeeResponse;

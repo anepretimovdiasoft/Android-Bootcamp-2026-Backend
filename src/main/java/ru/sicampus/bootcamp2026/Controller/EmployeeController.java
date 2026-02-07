@@ -31,7 +31,7 @@ public class EmployeeController {
     @Autowired
     private TokenAuthService tokenAuthService;
 
-    @GetMapping("/Employee")
+    @PostMapping("/Employee")
     public ResponseEntity<?> getEmployee(@Valid @RequestBody GetEmployeeRequest dto){
         try{
             return ResponseEntity.ok(employeeService.getEmployee(dto));
