@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.CreatedEmployeeRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.GetAuthorizedEmployeeRequest;
@@ -37,6 +38,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public GetEmployeeResponse getEmployee(GetEmployeeRequest dto){
         List<Employee>employee=employeeRepository.findByName(dto.getName());
+        List<Employee> employee2 = employee.stream()
+                .filter(e -> (dto.getLast_name() != null && dto.getLast_name().equals(e.getLast_name())) && (dto.getFather_name() != null && dto.getFather_name().equals(e.getFather_name()))
+                )
+                .toList();
+        if(employee2.isEmpty()){
+            throw new EmployeeNotFound("dfdg");
+        }
         List<Map<String,Object>> employees=new ArrayList<>();
         for(Employee employee1: employee){
             Map<String,Object> er=new LinkedHashMap<>();
@@ -117,6 +125,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto) {
+        if(employeeRepository.existsByMail(dto.getMail())){
+            throw  new EmployeeFound("");
+        }
         Employee employee=new Employee();
         if(dto.getMail()!=null){
             if(employeeRepository.findByMail(dto.getMail()).isEmpty()){
