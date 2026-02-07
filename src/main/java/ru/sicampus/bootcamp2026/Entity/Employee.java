@@ -91,4 +91,8 @@ public class Employee {
     public long getAge() {
         return age;
     }
+
+    public void setAge(Long age) {
+        this.age = age;
+    }
 }

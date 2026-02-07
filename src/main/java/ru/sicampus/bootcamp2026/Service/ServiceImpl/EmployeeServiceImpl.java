@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.Service.ServiceImpl;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -125,36 +126,44 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto) {
-        if(employeeRepository.existsByMail(dto.getMail())){
-            throw  new EmployeeFound("");
-        }
-        Employee employee=new Employee();
-        if(dto.getMail()!=null){
-            if(employeeRepository.findByMail(dto.getMail()).isEmpty()){
-                employee.setMail(dto.getMail());
-            }
-        }
-        if(dto.getName()!=null){
+        String token =SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
+        if (dto.getName() != null && !dto.getName().isBlank()) {
             employee.setName(dto.getName());
         }
-        if(dto.getLast_name()!=null){
+
+        if (dto.getLast_name() != null && !dto.getLast_name().isBlank()) {
             employee.setLast_name(dto.getLast_name());
         }
-        if(dto.getFather_name()!=null){
+
+        if (dto.getFather_name() != null && !dto.getFather_name().isBlank()) {
             employee.setFather_name(dto.getFather_name());
         }
-        if(dto.getPassword()!=null){
+
+        if (dto.getMail() != null && !dto.getMail().isBlank()) {
+            employee.setMail(dto.getMail());
+        }
+
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             employee.setPassword(dto.getPassword());
         }
-        if(dto.getAvatar()!=null){
-            Avatar avatar=avatarRepository.findByName(dto.getAvatar()).orElseThrow();
-            if(avatarRepository.findByName(dto.getAvatar()).isPresent()) {
-                employee.setAvatar(avatar);
+
+        if (dto.getAge() != null) {
+            if (dto.getAge() < 18) try {
+                throw new BadRequestException("Возраст < 18");
+            } catch (BadRequestException e) {
+                throw new RuntimeException(e);
             }
+            employee.setAge(dto.getAge());
         }
+
+        if (dto.getAvatar() != null && !dto.getAvatar().isBlank()) {
+            employee.setAvatar(avatarRepository.findByName(dto.getAvatar()));
+        }
+
         employeeRepository.save(employee);
-        String token=tokenAuthService.createToken(dto.getMail());
-        return new UpdateEmployeeResponse(token);
+        String token1=tokenAuthService.createToken(dto.getMail());
+        return new UpdateEmployeeResponse(token1);
     }
 
 }

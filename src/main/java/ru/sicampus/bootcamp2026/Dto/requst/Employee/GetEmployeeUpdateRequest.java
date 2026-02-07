@@ -1,23 +1,18 @@
 package ru.sicampus.bootcamp2026.Dto.requst.Employee;
 
 import jakarta.validation.constraints.*;
+import ru.sicampus.bootcamp2026.Entity.Avatar;
 
 public class GetEmployeeUpdateRequest {
-    @NotBlank
     private String name;
-    @NotBlank
     private String last_name;
-    @NotBlank
     private  String father_name;
-    @NotBlank
     private  String mail;
-    @NotBlank
     @Size(min = 8,max = 20)
     private  String password;
     @Min(value = 18)
     @Positive
-    private int age;
-    @NotBlank
+    private Long age;
     private String avatar;
 
     public String getMail() {
@@ -42,5 +37,9 @@ public class GetEmployeeUpdateRequest {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    public Long getAge() {
+        return age;
     }
 }
