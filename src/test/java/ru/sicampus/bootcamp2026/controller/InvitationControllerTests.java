@@ -13,10 +13,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import ru.sicampus.bootcamp2026.dto.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -164,5 +165,25 @@ public class InvitationControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk()
                 );
+    }
+
+    @Test
+    void getActiveInvitations() throws Exception {
+        MvcResult result = this.mockMvc.perform(
+                        get("/api/invitation/active")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(httpBasic("andrey_limasov", "1234561234"))
+                )
+                .andDo(print())
+                .andReturn();
+
+        String json = result.getResponse().getContentAsString();
+        List<InvitationMeetingDTO> invitations = objectMapper.readValue(
+                json,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, InvitationMeetingDTO.class)
+        );
+        boolean containsMeeting = invitations.stream()
+                .anyMatch(invitation -> "Планирование спринта".equals(invitation.getMeeting().getName()));
+        assertTrue(containsMeeting);
     }
 }
