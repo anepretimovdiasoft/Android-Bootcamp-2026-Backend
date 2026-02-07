@@ -1,6 +1,8 @@
 package ru.examle.edu.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.examle.edu.dto.RoomDTO;
@@ -11,9 +13,6 @@ import ru.examle.edu.repository.RoomRepository;
 import ru.examle.edu.service.RoomService;
 import ru.examle.edu.ulti.RoomMapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
@@ -22,10 +21,8 @@ public class RoomServiceImpl implements RoomService {
     private final RoomMapper roomMapper;
 
     @Override
-    public List<RoomDTO> getAllRooms() {
-        return roomRepository.findAll().stream()
-                .map(roomMapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<RoomDTO> getAllRooms(Pageable pageable) {
+        return roomRepository.findAll(pageable).map(roomMapper::toDTO);
     }
 
     @Override
@@ -87,16 +84,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDTO> getActiveRooms() {
-        return roomRepository.findByIsActive(true).stream()
-                .map(roomMapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<RoomDTO> getActiveRooms(Pageable pageable) {
+        return roomRepository.findByIsActive(true, pageable).map(roomMapper::toDTO);
     }
 
     @Override
-    public List<RoomDTO> getRoomsByMinCapacity(Integer minCapacity) {
-        return roomRepository.findByCapacityGreaterThanEqual(minCapacity).stream()
-                .map(roomMapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<RoomDTO> getRoomsByMinCapacity(Integer minCapacity, Pageable pageable) {
+        return roomRepository.findByCapacityGreaterThanEqual(minCapacity, pageable).map(roomMapper::toDTO);
     }
 }

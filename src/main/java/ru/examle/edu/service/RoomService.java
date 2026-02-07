@@ -1,16 +1,16 @@
 package ru.examle.edu.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.examle.edu.dto.RoomDTO;
 
-import java.util.List;
-
 public interface RoomService {
-    List<RoomDTO> getAllRooms();
+    Page<RoomDTO> getAllRooms(Pageable pageable);
     RoomDTO getRoomById(Long id);
     RoomDTO getRoomByName(String name);
     RoomDTO createRoom(RoomDTO roomDTO);
     RoomDTO updateRoom(Long id, RoomDTO roomDTO);
     void deleteRoom(Long id);
-    List<RoomDTO> getActiveRooms();
-    List<RoomDTO> getRoomsByMinCapacity(Integer minCapacity);
+    Page<RoomDTO> getActiveRooms(Pageable pageable);
+    Page<RoomDTO> getRoomsByMinCapacity(Integer minCapacity, Pageable pageable);
 }

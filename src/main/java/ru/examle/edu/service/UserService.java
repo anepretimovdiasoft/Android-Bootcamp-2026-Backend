@@ -1,10 +1,11 @@
 package ru.examle.edu.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.examle.edu.dto.UserDTO;
-import java.util.List;
 
 public interface UserService {
-    List<UserDTO> getAllUsers();
+    Page<UserDTO> getAllUsers(Pageable pageable);
     UserDTO getUserById(Long id);
     UserDTO getUserByEmail(String email);
     UserDTO createUser(UserDTO userDTO);
