@@ -7,6 +7,7 @@
         <loadData file="db.changelog/data/csv/users-authority.csv" tableName="users_authorities"
                   separator=";"
                   quotchar='"'
-                  encoding="UTF-8"/>
+                  encoding="UTF-8"
+                  usePreparedStatements="true"/>
     </changeSet>
 </databaseChangeLog>

@@ -4,12 +4,27 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="load-users" author="igramagadev">
-        <loadData file="db.changelog/data/csv/users.csv" tableName="users"
+        <loadData file="db.changelog/data/csv/users.csv"
+                  tableName="users"
                   separator=";"
                   quotchar='"'
                   encoding="UTF-8">
-            <column name="is_active" type="BOOLEAN"/>
-            <column name="created_at" type="TIMESTAMP"/>
+
+            <column name="id" header="id" type="NUMERIC"/>
+
+            <column name="email" header="email" type="STRING"/>
+            <column name="password" header="password" type="STRING"/>
+            <column name="full_name" header="full_name" type="STRING"/>
+            <column name="avatar_url" header="avatar_url" type="STRING"/>
+            <column name="contact_info" header="contact_info" type="STRING"/>
+
+            <column name="job_title_id" header="job_title_id" type="NUMERIC"/>
+            <column name="department_id" header="department_id" type="NUMERIC"/>
+            <column name="age" header="age" type="NUMERIC"/>
+
+            <column name="is_active" header="is_active" type="BOOLEAN"/>
+
+            <column name="created_at" header="created_at" type="TIMESTAMP"/>
         </loadData>
     </changeSet>
 </databaseChangeLog>

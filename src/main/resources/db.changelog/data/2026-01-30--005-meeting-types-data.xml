@@ -7,6 +7,7 @@
         <loadData file="db.changelog/data/csv/meeting_types.csv" tableName="meeting_types"
                   separator=";"
                   quotchar='"'
-                  encoding="UTF-8"/>
+                  encoding="UTF-8"
+                  usePreparedStatements="true"/>
     </changeSet>
 </databaseChangeLog>

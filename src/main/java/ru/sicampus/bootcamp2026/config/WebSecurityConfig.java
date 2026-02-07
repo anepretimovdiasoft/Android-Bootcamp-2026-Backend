@@ -41,6 +41,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/users/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/api/departments/**").permitAll()
+                        .requestMatchers("/api/job-titles/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(basic -> {});

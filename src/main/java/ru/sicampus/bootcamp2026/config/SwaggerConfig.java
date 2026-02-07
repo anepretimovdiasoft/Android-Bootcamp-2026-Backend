@@ -12,7 +12,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Samsung Bootcamp 2026")
-                        .version("0.0.1")
+                        .version("0.0.2")
                         .description("API for Bootcamp"));
     }
 }

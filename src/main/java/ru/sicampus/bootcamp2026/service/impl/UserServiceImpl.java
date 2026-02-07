@@ -15,6 +15,7 @@ import ru.sicampus.bootcamp2026.util.UserMapper;
 import ru.sicampus.bootcamp2026.repository.*;
 import ru.sicampus.bootcamp2026.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
         if (roleUser.isEmpty()) {
             throw new RuntimeException("Authority not found");
         }
-
+        LocalDateTime now = LocalDateTime.now();
         User user = new User();
         user.setFullName(dto.getFullName());
         user.setEmail(dto.getEmail());
@@ -79,6 +80,7 @@ public class UserServiceImpl implements UserService {
         user.setJobTitle(job);
         user.setDepartment(dept);
         user.setAuthorities(Set.of(roleUser.get()));
+        user.setCreatedAt(now);
 
         return userMapper.toDTO(userRepository.save(user));
     }
@@ -92,6 +94,7 @@ public class UserServiceImpl implements UserService {
         if (dto.getFullName() != null) user.setFullName(dto.getFullName());
         if (dto.getContactInfo() != null) user.setContactInfo(dto.getContactInfo());
         if (dto.getAvatarUrl() != null) user.setAvatarUrl(dto.getAvatarUrl());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
 
         if (dto.getJobTitle() != null) {
             JobTitle job = jobTitleRepository.findByTitleName(dto.getJobTitle())
