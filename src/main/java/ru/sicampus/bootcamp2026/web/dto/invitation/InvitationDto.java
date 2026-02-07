@@ -1,7 +1,6 @@
 package ru.sicampus.bootcamp2026.web.dto.invitation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
