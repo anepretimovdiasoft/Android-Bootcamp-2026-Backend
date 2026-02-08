@@ -30,7 +30,6 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(httpBasic -> httpBasic.disable())
                 .addFilterBefore(jwtIMplFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
