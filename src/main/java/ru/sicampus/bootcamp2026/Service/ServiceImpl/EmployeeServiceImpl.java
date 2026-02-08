@@ -102,7 +102,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new IllegalArgumentException("");
         }
         if(employeeRepository.existsByMail(dto.getMail())){
-            throw new EmployeeFound("");
+            throw new EmployeeFound("The user already exists");
         }
 
         if (dto.getAvatar() == null || dto.getAvatar().isBlank()) {

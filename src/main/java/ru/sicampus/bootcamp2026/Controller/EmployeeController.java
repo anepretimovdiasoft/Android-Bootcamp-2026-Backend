@@ -54,7 +54,7 @@ public class EmployeeController {
             String employee = employeeService.createdEmployee(dto).getToken();
             return ResponseEntity.ok(employee);
         } catch (EmployeeFound e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
     @PutMapping("/updateEmployee")
