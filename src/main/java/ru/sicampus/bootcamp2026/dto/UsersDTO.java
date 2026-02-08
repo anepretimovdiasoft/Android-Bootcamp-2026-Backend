@@ -15,5 +15,4 @@ public class UsersDTO {
     private String department;
     private String position;
     private String photoUrl;
-
 }
