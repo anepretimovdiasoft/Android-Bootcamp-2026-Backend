@@ -10,12 +10,19 @@ import ru.sicampus.bootcamp2026.dto.UserDto;
 import ru.sicampus.bootcamp2026.dto.UserRegisterDto;
 import ru.sicampus.bootcamp2026.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/v1/all")
+    public ResponseEntity<List<UserDto>> getAllUser(){
+        return  ResponseEntity.ok(userService.getAllUsers());
+    }
 
     @PostMapping("/v1/register")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRegisterDto userDto){

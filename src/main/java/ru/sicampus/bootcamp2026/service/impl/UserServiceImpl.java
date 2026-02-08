@@ -16,6 +16,7 @@ import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.UserService;
 import ru.sicampus.bootcamp2026.util.UserMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,14 @@ public class UserServiceImpl implements UserService {
     private final PositionRepository positionRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::toDto)
+                .toList();
+    }
 
     @Override
     @Transactional
