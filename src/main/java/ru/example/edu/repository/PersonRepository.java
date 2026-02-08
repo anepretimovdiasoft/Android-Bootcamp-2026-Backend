@@ -20,4 +20,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Override
     Page<Person> findAll(Pageable pageable);
+
+    List<Person> findByNameLike(String likeName);
 }

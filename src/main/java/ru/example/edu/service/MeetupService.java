@@ -17,4 +17,6 @@ public interface MeetupService {
     MeetupShortDTO updateMeetup(Long id, MeetupShortDTO dto);
 
     void deleteMeetup(Long id);
+
+    List<MeetupWithInvitesDTO> getAllPersonsMeetups(Long id);
 }

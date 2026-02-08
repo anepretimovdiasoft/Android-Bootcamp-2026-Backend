@@ -64,4 +64,9 @@ public class PersonController {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(personService.getAllPersonPaginated(pageable));
     }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<PersonShortDTO>> getPersonWithNameLike(@RequestParam String likeName) {
+        return ResponseEntity.ok(personService.getPersonWithNameLike(likeName));
+    }
 }

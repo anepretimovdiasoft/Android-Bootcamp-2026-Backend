@@ -84,7 +84,9 @@ public class PersonServiceImpl implements PersonService {
     public PersonWithInvitesDTO updatePerson(Long id, PersonShortDTO dto) {
         Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException("Person not found!"));
 
-        if (personRepository.findByLogin(dto.getLogin()).isPresent()) {
+        Optional<Person> already = personRepository.findByLogin(dto.getLogin());
+
+        if (already.isPresent() && already.get().getId() != dto.getId()) {
             throw new PersonAlreadyExistsException("Login already exists!");
         }
 
@@ -107,5 +109,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Page<PersonWithInvitesDTO> getAllPersonPaginated(Pageable pageable) {
         return personRepository.findAll(pageable).map(PersonMapper::convertToDtoWithInvites);
+    }
+
+    @Override
+    public List<PersonShortDTO> getPersonWithNameLike(String likeName) {
+        return personRepository.findByNameLike(likeName).stream().map(PersonMapper::convertToShortDto).collect(Collectors.toList());
     }
 }

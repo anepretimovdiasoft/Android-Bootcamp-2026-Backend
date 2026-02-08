@@ -22,4 +22,6 @@ public interface PersonService {
     void deletePerson(Long id);
 
     Page<PersonWithInvitesDTO> getAllPersonPaginated(Pageable pageable);
+
+    List<PersonShortDTO> getPersonWithNameLike(String likeName);
 }

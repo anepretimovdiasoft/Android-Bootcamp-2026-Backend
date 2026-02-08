@@ -27,7 +27,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bootcamp_db
       SPRING_DATASOURCE_USERNAME: bootcamp
-      SPRINGDATASOURCE_PASSWORD: admin7529
+      SPRING_DATASOURCE_PASSWORD: admin7529
     depends_on:
       postgres:
         condition: service_healthy
