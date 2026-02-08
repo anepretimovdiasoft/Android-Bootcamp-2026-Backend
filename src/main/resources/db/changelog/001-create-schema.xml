@@ -7,7 +7,7 @@
 
     <changeSet id="001-create-schema" author="rodion">
         <sql dbms="postgresql" stripComments="true">
-            CREATE TYPE meeting_status AS ENUM ('SCHEDULED', 'CANCELED', 'COMPLETED');
+            CREATE TYPE meeting_status AS ENUM ('SCHEDULED', 'CANCELLED', 'COMPLETED');
         </sql>
         <rollback>
             <sql dbms="postgresql">
