@@ -143,6 +143,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto) {
         String token =SecurityContextHolder.getContext().getAuthentication().getName();
         Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
+
         if (dto.getName() != null && !dto.getName().isBlank()) {
             employee.setName(dto.getName());
         }
@@ -160,7 +161,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-            employee.setPassword(dto.getPassword());
+            if(!employeeRepository.existsByPassword(dto.getPassword())) {
+                employee.setPassword(dto.getPassword());
+            }else{
+                throw new EmployeeFound("");
+            }
         }
 
         if (dto.getAge() != null) {
