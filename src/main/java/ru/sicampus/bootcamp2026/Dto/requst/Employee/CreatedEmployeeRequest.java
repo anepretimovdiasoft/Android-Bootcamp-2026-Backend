@@ -29,9 +29,9 @@ public class CreatedEmployeeRequest {
     @NotNull
     @Size(min=8,max = 20)
     private String password;
-    @NotEmpty
     @Positive
-    private long code;
+    @Min(value = 4)
+    private Long code;
 
     public String getMail() {
         return mail;
