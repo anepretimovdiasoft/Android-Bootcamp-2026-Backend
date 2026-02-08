@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBooingByDayRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingByWeekRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingCreatedRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingUpdateRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByDayResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByMonthResponse;
@@ -164,5 +165,25 @@ public class BookingServiceImpl implements BookingService {
         }
         bookingRepository.save(booking);
     }
+    @Override
+    public void createdBooking(GetBookingCreatedRequest dto){
+        String token=SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
+        List<Booking> bookings=bookingRepository.findByEmployee(employee).stream().filter(b->
+                Objects.equals(dto.getStart(),b.getStart())&&
+                Objects.equals(dto.getEnd_time(),b.getEnd())
+        ).toList();
+        if(!bookings.isEmpty()){
+            throw new IllegalArgumentException("");
+        }else{
+            Booking booking=new Booking();
+            booking.setStart(dto.getStart());
+            booking.setEnd(dto.getEnd_time());
+            booking.setName(dto.getName());
+            booking.setEmployee(employee);
+            bookingRepository.save(booking);
+        }
+    }
+
 
 }

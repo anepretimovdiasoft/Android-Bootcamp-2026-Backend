@@ -34,24 +34,8 @@ public class Booking {
     @JoinColumn(name = "employee_admin")
     private Employee employee;
 
-    @OneToMany(
-            mappedBy = "booking",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Invitations> invitations = new ArrayList<>();
-
-    public void addInvitation(Invitations invitation) {
-        invitations.add(invitation);
-        invitation.setBooking(this);
-    }
-
-    public void removeInvitation(Invitations invitation) {
-        invitations.remove(invitation);
-        invitation.setBooking(null);
-    }
-
     public Object getName() {
         return name;
     }
@@ -78,6 +62,10 @@ public class Booking {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }
    

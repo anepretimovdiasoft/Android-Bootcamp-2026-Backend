@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBooingByDayRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingByWeekRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingCreatedRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingUpdateRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByDayResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByMonthResponse;
@@ -47,6 +48,11 @@ public class BookingController {
             @Valid @RequestBody GetBookingUpdateRequest dto) {
         bookingService.updateBooking(dto);
         return  ResponseEntity.ok().build();
+    }
+    @PostMapping("/createdBo")
+    public ResponseEntity<?> createdBooking(@Valid @RequestBody GetBookingCreatedRequest dto){
+        bookingService.createdBooking(dto);
+        return ResponseEntity.ok().build();
     }
 
 }
