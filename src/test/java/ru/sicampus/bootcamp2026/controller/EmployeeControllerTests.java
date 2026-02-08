@@ -58,7 +58,7 @@ public class EmployeeControllerTests {
                                 .content(objectMapper.writeValueAsString(emp))
                 )
                 .andDo(print())
-                .andExpect(status().isOk()
+                .andExpect(status().isCreated()
                 );
     }
 
@@ -187,8 +187,27 @@ public class EmployeeControllerTests {
                                 .with(httpBasic("andrey_limasov", "1234561234"))
                 )
                 .andDo(print())
-                .andExpect(status().isNotFound())
-                .andReturn();
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    void employeeSelfDelete() throws Exception {
+        this.mockMvc.perform(
+                        delete("/api/employee")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(httpBasic("andrey_limasov", "1234561234"))
+                )
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        this.mockMvc.perform(
+                        post("/api/employee/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(httpBasic("andrey_limasov", "1234561234"))
+                )
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
 
     }
 }

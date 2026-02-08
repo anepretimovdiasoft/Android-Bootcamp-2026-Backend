@@ -27,13 +27,13 @@ public class MeetingController {
     @PostMapping("")
     @Operation(summary = "Create meeting")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "201", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
             @ApiResponse(responseCode = "409", description = "You already have a meeting at this time"),
     })
     ResponseEntity<MeetingDTO> createMeeting(@RequestBody @Valid MeetingCreateDTO meetingCreateDTO, Authentication authentication) {
-        return ResponseEntity.ok(meetingService.createMeeting(meetingCreateDTO, authentication.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(meetingService.createMeeting(meetingCreateDTO, authentication.getName()));
     }
 
     @GetMapping("/{id}")
@@ -49,12 +49,11 @@ public class MeetingController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Get a meeting by ID")
+    @Operation(summary = "Delete a meeting by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Meeting not found")
-
     })
     ResponseEntity<Void> deleteMeetingById(@PathVariable Long id, Authentication authentication) {
         meetingService.deleteById(id, authentication.getName());

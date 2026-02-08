@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -65,7 +66,7 @@ public class MeetingControllerTests {
                                 .content(objectMapper.writeValueAsString(meet))
                 )
                 .andDo(print())
-                .andExpect(status().isOk()
+                .andExpect(status().isCreated()
         );
     }
 
@@ -135,7 +136,7 @@ public class MeetingControllerTests {
         boolean containsIndexZero = participants.stream()
                 .anyMatch(participant -> "indexzero".equals(participant.getEmployee().getUsername()));
 
-        assertEquals(true, containsIndexZero);
+        assertTrue(containsIndexZero);
     }
     @Test
     void getMeetingSchedule() throws Exception {
@@ -156,6 +157,6 @@ public class MeetingControllerTests {
         boolean containsMeeting = meetings.stream()
                 .anyMatch(meeting -> "Ретроспектива спринта".equals(meeting.getName()));
 
-        assertEquals(true, containsMeeting);
+        assertTrue(containsMeeting);
     }
 }

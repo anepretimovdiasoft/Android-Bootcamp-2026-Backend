@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,6 @@ public class InvitationController {
     @Autowired
     InvitationService invitationService;
 
-    // TODO: When security is added
     @PatchMapping("")
     @Operation(summary = "Answer Invitation")
     @ApiResponses(value = {
@@ -36,14 +36,14 @@ public class InvitationController {
     @PostMapping("")
     @Operation(summary = "Create Invitation")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "201", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid Data"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "409", description = "Meeting not owned by user / Invitation already exists / Employee is busy at this time")
     })
     ResponseEntity<InvitationDTO> createInvitation(@RequestBody @Valid InvitationCreateDTO invitationCreateDTO, Authentication authentication) {
-        return ResponseEntity.ok(invitationService.createInvitation(invitationCreateDTO, authentication.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(invitationService.createInvitation(invitationCreateDTO, authentication.getName()));
     }
 
     @GetMapping("/active")
@@ -59,13 +59,13 @@ public class InvitationController {
     @PostMapping("/batch")
     @Operation(summary = "Create Invitations for multiple users")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "201", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid Data"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "409", description = "Meeting not owned by user / Invitation already exists / Employee is busy at this time")
     })
     ResponseEntity<List<InvitationDTO>> createInvitationsBatch(@RequestBody @Valid InvitationCreateBatchDTO dto, Authentication authentication) {
-        return ResponseEntity.ok(invitationService.createInvitationsBatch(dto, authentication.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(invitationService.createInvitationsBatch(dto, authentication.getName()));
     }
 }

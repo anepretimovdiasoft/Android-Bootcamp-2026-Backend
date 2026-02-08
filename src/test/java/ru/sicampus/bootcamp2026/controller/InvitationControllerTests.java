@@ -63,7 +63,7 @@ public class InvitationControllerTests {
                                 .content(objectMapper.writeValueAsString(inv))
                 )
                 .andDo(print())
-                .andExpect(status().isOk()
+                .andExpect(status().isCreated()
                 );
     }
 

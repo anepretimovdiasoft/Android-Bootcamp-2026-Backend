@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.EmployeeDTO;
 import ru.sicampus.bootcamp2026.dto.EmployeeEditDTO;
 import ru.sicampus.bootcamp2026.dto.EmployeeRegisterDTO;
-import ru.sicampus.bootcamp2026.repository.EmployeeRepository;
 import ru.sicampus.bootcamp2026.service.EmployeeService;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class EmployeeController {
     @PostMapping("/register")
     @Operation(summary = "Register an employee")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "201", description = "Successful"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
             @ApiResponse(responseCode = "409", description = "Employee with such username, email or phone number already exists")
 
@@ -102,11 +101,23 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{username}")
+    @Operation(summary = "Delete a user by username (ADMIN only)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful"),
+            @ApiResponse(responseCode = "404", description = "Employee not found"),
+            @ApiResponse(responseCode = "403", description = "No admin authority"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     public ResponseEntity<Void> deleteEmployee(@PathVariable String username) {
         employeeService.deleteEmployee(username);
         return ResponseEntity.noContent().build();
     }
     @DeleteMapping("")
+    @Operation(summary = "User self-deletion")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     public ResponseEntity<Void> selfDeleteEmployee(Authentication authentication) {
         employeeService.deleteEmployee(authentication.getName());
         return ResponseEntity.noContent().build();
