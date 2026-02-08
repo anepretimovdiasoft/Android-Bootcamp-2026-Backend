@@ -19,6 +19,7 @@ import ru.sicampus.bootcamp2026.Entity.Booking;
 import ru.sicampus.bootcamp2026.Entity.Employee;
 import ru.sicampus.bootcamp2026.Entity.Invitations;
 import ru.sicampus.bootcamp2026.Entity.Invited;
+import ru.sicampus.bootcamp2026.Excepations.BookingNotFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
 import ru.sicampus.bootcamp2026.Repository.BookingRepository;
 import ru.sicampus.bootcamp2026.Repository.EmployeeRepository;
@@ -144,10 +145,24 @@ public class BookingServiceImpl implements BookingService {
     public void updateBooking(GetBookingUpdateRequest dto){
         String token=SecurityContextHolder.getContext().getAuthentication().getName();
         Employee employee=employeeRepository.findByMail(token).orElseThrow();
-        List<Booking> bookings=bookingRepository.findByEmployee(employee).stream().filter(b->b.getStart()==dto.getStart()||b.getEnd()==dto.getEnd()).toList();
+        Booking booking = bookingRepository.findByEmployee(employee)
+                .stream()
+                .filter(b ->
+                        Objects.equals(dto.getStart_time(), b.getStart()) &&
+                                Objects.equals(dto.getEnd_time(), b.getEnd())
+                )
+                .findFirst()
+                .orElseThrow(() -> new BookingNotFound(""));
         if(dto.getName()!=null){
-
+            booking.setName(dto.getName());
         }
+        if(dto.getStart()!=null){
+            booking.setStart(dto.getStart());
+        }
+        if(dto.getEnd()!=null){
+            booking.setEnd(dto.getEnd());
+        }
+        bookingRepository.save(booking);
     }
 
 }

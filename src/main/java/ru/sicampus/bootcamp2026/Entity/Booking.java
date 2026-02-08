@@ -67,5 +67,17 @@ public class Booking {
     public LocalDateTime getEnd() {
         return end;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
 }
    

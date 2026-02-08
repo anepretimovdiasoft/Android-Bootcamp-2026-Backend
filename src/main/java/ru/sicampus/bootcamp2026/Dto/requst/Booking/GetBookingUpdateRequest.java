@@ -5,26 +5,19 @@ import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 public class GetBookingUpdateRequest {
-    @NotBlank
+    @NotNull
     @Future
+    @JsonFormat(pattern = "yyyy:MM:dd HH:mm:ss")
     private LocalDateTime start_time;
-    @NotBlank
     @Future
-    @JsonFormat(pattern = "yyyy:MM:dd HH:mm")
+    @NotNull
+    @JsonFormat(pattern = "yyyy:MM:dd HH:mm:ss")
     private LocalDateTime end_time;
-    @NotBlank
     private String name;
-    @NotBlank
-    @NotNull
-    @JsonFormat(pattern = "yyyy:MM:dd HH:mm")
+    @JsonFormat(pattern = "yyyy:MM:dd HH:mm:ss")
     private  LocalDateTime start;
-    @NotBlank
-    @NotNull
-    @JsonFormat(pattern = "yyyy:MM:dd HH:mm")
+    @JsonFormat(pattern = "yyyy:MM:dd HH:mm:ss")
     private  LocalDateTime end;
-    @Positive
-    @Min(value = 18)
-    private  long age;
     public String getName() {
         return name;
     }
@@ -35,5 +28,13 @@ public class GetBookingUpdateRequest {
 
     public LocalDateTime getEnd() {
         return end;
+    }
+
+    public LocalDateTime getStart_time() {
+        return start_time;
+    }
+
+    public LocalDateTime getEnd_time() {
+        return end_time;
     }
 }

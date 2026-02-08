@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBooingByDayRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingByWeekRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingUpdateRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByDayResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByMonthResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByWeekResponse;
@@ -19,25 +20,33 @@ import java.util.List;
 public class BookingController {
     @Autowired
     private BookingService bookingService;
+
     @PostMapping("/BookingByDay")
     public ResponseEntity<?> getBookingByDay(
             @Valid @RequestBody GetBooingByDayRequest dto,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
-    ){
+    ) {
         return ResponseEntity.ok(
                 bookingService.getBookingByDay(dto, page, size)
         );
     }
+
     @PostMapping("/BookingByWeek")
     public ResponseEntity<?> getBookingByWeek(
             @Valid @RequestBody GetBookingByWeekRequest dto,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
-    ){
+    ) {
         return ResponseEntity.ok(
                 bookingService.getBookingByWeek(dto, page, size)
         );
+    }
+    @PostMapping("/updateBo")
+    public ResponseEntity<?> updateBooking(
+            @Valid @RequestBody GetBookingUpdateRequest dto) {
+        bookingService.updateBooking(dto);
+        return  ResponseEntity.ok().build();
     }
 
 }
