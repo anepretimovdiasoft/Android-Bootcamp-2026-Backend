@@ -9,9 +9,13 @@ import ru.sicampus.bootcamp2026.domain.Meeting;
 import ru.sicampus.bootcamp2026.domain.User;
 import ru.sicampus.bootcamp2026.domain.UserMeeting;
 import ru.sicampus.bootcamp2026.domain.UserMeetingId;
+
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public interface UserMeetingRepository extends JpaRepository<UserMeeting, UserMeetingId> {
+
+    List<UserMeeting> findByMeeting_Id(Long meetingId);
 
     void deleteByMeeting(Meeting meeting);
 

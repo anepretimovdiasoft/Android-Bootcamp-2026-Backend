@@ -9,6 +9,7 @@ import ru.sicampus.bootcamp2026.domain.User;
 import ru.sicampus.bootcamp2026.domain.UserMeeting;
 import ru.sicampus.bootcamp2026.domain.UserMeetingId;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.CreateMeetingRequest;
+import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingParticipantResponse;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingResponse;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.UpdateMeetingRequest;
 import ru.sicampus.bootcamp2026.error.MeetingConflictException;
@@ -20,6 +21,8 @@ import ru.sicampus.bootcamp2026.repo.UserRepository;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 import ru.sicampus.bootcamp2026.util.MeetingMapper;
 import ru.sicampus.bootcamp2026.util.PastelColorGenerator;
+import ru.sicampus.bootcamp2026.util.UserMapper;
+
 import java.util.List;
 
 @Service
@@ -43,6 +46,28 @@ public class MeetingServiceImpl implements MeetingService {
         Meeting m = repo.findById(id)
                 .orElseThrow(() -> new MeetingNotFoundException("Meeting not found: " + id));
         return MeetingMapper.toResponse(m);
+    }
+
+    @Override
+    public List<MeetingParticipantResponse> getParticipants(long meetingId) {
+        if (!repo.existsById(meetingId)) {
+            throw new MeetingNotFoundException("Meeting not found: " + meetingId);
+        }
+        return usMetRepo.findByMeeting_Id(meetingId).stream()
+                .map(um -> {
+                    var ur = UserMapper.toResponse(um.getUser());
+                    return new MeetingParticipantResponse(
+                            ur.id(),
+                            ur.position(),
+                            ur.name(),
+                            ur.email(),
+                            ur.phone(),
+                            ur.birthDate(),
+                            ur.avatarUrl(),
+                            um.getStatus()
+                    );
+                })
+                .toList();
     }
 
     @Override
