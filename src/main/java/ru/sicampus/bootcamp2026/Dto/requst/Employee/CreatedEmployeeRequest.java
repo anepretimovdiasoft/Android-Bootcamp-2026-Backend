@@ -31,7 +31,7 @@ public class CreatedEmployeeRequest {
     private String password;
     @NotEmpty
     @Positive
-    private Long code;
+    private long code;
 
     public String getMail() {
         return mail;
