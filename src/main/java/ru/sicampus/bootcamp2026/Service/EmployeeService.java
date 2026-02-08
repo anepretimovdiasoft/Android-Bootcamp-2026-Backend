@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface EmployeeService {
     GetEmployeeResponse getEmployee(GetEmployeeRequest dto);
-    GetEmployeesResponse getEmployees();
+    GetEmployeesResponse getEmployees(int page, int size);
      CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto);
      Boolean AuthorizedEmployee(GetAuthorizedEmployeeRequest dto);
     UpdateEmployeeResponse updateEmployee(GetEmployeeUpdateRequest dto);

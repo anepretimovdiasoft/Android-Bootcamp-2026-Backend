@@ -38,14 +38,14 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @GetMapping( "/Employees")
-    public ResponseEntity<?> getEmployees(){
-        try{
-            GetEmployeesResponse result=employeeService.getEmployees();
-            return ResponseEntity.ok(result);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    @GetMapping("/Employees")
+    public ResponseEntity<?> getEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        return ResponseEntity.ok(
+                employeeService.getEmployees(page, size)
+        );
     }
     @PostMapping("/auth")
     public ResponseEntity<?> AuthorizedEmployee(@Valid @RequestBody GetAuthorizedEmployeeRequest dto){

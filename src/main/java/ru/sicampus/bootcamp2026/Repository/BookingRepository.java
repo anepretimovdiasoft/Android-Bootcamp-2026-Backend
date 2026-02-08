@@ -1,5 +1,7 @@
 package ru.sicampus.bootcamp2026.Repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.sicampus.bootcamp2026.Entity.Booking;
@@ -11,4 +13,5 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findByEmployee(Employee employee);
     List<Booking> findByStart(LocalDate date);
+    Page<Booking> findByEmployee(Employee employee, Pageable pageable);
 }

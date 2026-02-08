@@ -2,11 +2,9 @@ package ru.sicampus.bootcamp2026.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.context.support.BeanDefinitionDsl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor

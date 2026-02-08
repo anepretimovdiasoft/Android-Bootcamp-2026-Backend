@@ -2,6 +2,10 @@ package ru.sicampus.bootcamp2026.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBooingByDayRequest;
@@ -44,63 +48,35 @@ public class BookingServiceImpl implements BookingService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public BookingByDayResponse getBookingByDay(GetBooingByDayRequest dto) {
-
-        String mail = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        Employee employee = employeeRepository.findByMail(mail)
-                .orElseThrow(() -> new RuntimeException("Employee not found: " + mail));
-
+    public BookingByDayResponse getBookingByDay(GetBooingByDayRequest dto, int page, int size) {
+        Employee employee = employeeRepository.findByMail(
+                SecurityContextHolder.getContext().getAuthentication().getName()
+        ).orElseThrow();
+        Pageable pageable = PageRequest.of(page, size, Sort.by("start").ascending());
+        Page<Booking> bookings = bookingRepository.findByEmployee(employee, pageable);
         LocalDate date = dto.getDate();
-
-        List<Map<String, Object>> ownBookings = new ArrayList<>();
-
-        List<Booking> bookings = bookingRepository.findByEmployee(employee);
-
-        for (Booking booking : bookings) {
-
+        List<Map<String,Object>> ownBookings = new ArrayList<>();
+        for (Booking booking : bookings.getContent()) {
             if (!booking.getStart().toLocalDate().equals(date)) continue;
-
-            Map<String, Object> book = new LinkedHashMap<>();
+            Map<String,Object> book = new LinkedHashMap<>();
             book.put("name", booking.getName());
             book.put("start", booking.getStart());
             book.put("end", booking.getEnd());
-            book.put("admin", booking.getEmployee().getName() + "" + booking.getEmployee().getLast_name() + "" + booking.getEmployee().getFather_name());
-            List<String> invitedNames =
-                    invitedRepository
-                            .findByInvitations(
-                                    invitationsRepository.findByBooking(booking)
-                            )
-                            .stream()
-                            .map(i -> i.getEmployee().getName())
-                            .toList();
-            book.put("invited", invitedNames);
+            book.put("admin",
+                    booking.getEmployee().getName() + " " +
+                            booking.getEmployee().getLast_name() + " " +
+                            booking.getEmployee().getFather_name()
+            );
             ownBookings.add(book);
         }
-        List<Map<String, Object>> invitedBookings = new ArrayList<>();
-        List<Invited> inviteds =
-                invitedRepository.findByEmployee(employee)
-                        .stream()
-                        .filter(i -> Boolean.TRUE.equals(i.getApproval()))
-                        .toList();
-        for (Invited invited : inviteds) {
-            Booking booking = invited.getInvitations().getBooking();
-            if (!booking.getStart().toLocalDate().equals(date)) continue;
-            if (booking.getEmployee().equals(employee)) continue;
-            Map<String, Object> book = new LinkedHashMap<>();
-            book.put("name", booking.getName());
-            book.put("start", booking.getStart());
-            book.put("end", booking.getEnd());
-            book.put("admin", booking.getEmployee().getName() + "" + booking.getEmployee().getLast_name() + "" + booking.getEmployee().getFather_name());
-            invitedBookings.add(book);
-        }
-        return new BookingByDayResponse(ownBookings, invitedBookings);
+        return new BookingByDayResponse(ownBookings, List.of());
     }
-
     @Override
-    public BookingByWeekResponse getBookingByWeek(GetBookingByWeekRequest dto) {
+    public BookingByWeekResponse getBookingByWeek(
+            GetBookingByWeekRequest dto,
+            int page,
+            int size
+    ) {
         String mail = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
@@ -114,50 +90,53 @@ public class BookingServiceImpl implements BookingService {
         } else {
             days = 6;
         }
-        List<Booking> bookings = bookingRepository.findByEmployee(employee);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("start").ascending()
+        );
+        Page<Booking> bookingPage = bookingRepository.findByEmployee(employee, pageable);
         Map<String, List<Map<String, Object>>> bookingByDay = new LinkedHashMap<>();
-        List<Map<String, Object>> dailyBookings = null;
-        List<Map<String, Object>> invitedBookings = null;
-        dailyBookings = new ArrayList<>();
-        for (int i = 0; i <= days; i++) {
-            LocalDate currentDate = startDate.plusDays(i);
-            for (Booking booking : bookings) {
-                if (!booking.getStart().toLocalDate().equals(currentDate)) continue;
-                Map<String, Object> book = new LinkedHashMap<>();
-                book.put("name", booking.getName());
-                book.put("admin", booking.getEmployee().getName());
-                book.put("start", booking.getStart().toLocalTime());
-                book.put("end", booking.getEnd().toLocalTime());
-                List<String> invitedNames =
-                        invitedRepository
-                                .findByInvitations(
-                                        invitationsRepository.findByBooking(booking)
-                                )
-                                .stream()
-                                .map(e -> e.getEmployee().getName())
-                                .toList();
-                book.put("invited", invitedNames);
-                dailyBookings.add(book);
-            }
-            invitedBookings = new ArrayList<>();
-            List<Invited> inviteds =
-                    invitedRepository.findByEmployee(employee)
+        List<Map<String, Object>> ownBookings = new ArrayList<>();
+        List<Map<String, Object>> invitedBookings = new ArrayList<>();
+        for (Booking booking : bookingPage.getContent()) {
+            LocalDate bookingDate = booking.getStart().toLocalDate();
+            if (bookingDate.isBefore(startDate) ||
+                    bookingDate.isAfter(startDate.plusDays(days))) continue;
+            Map<String, Object> book = new LinkedHashMap<>();
+            book.put("name", booking.getName());
+            book.put("admin", booking.getEmployee().getName());
+            book.put("start", booking.getStart().toLocalTime());
+            book.put("end", booking.getEnd().toLocalTime());
+            List<String> invitedNames = invitedRepository.findByInvitations(invitationsRepository.findByBooking(booking)
+                            )
                             .stream()
-                            .filter(e -> Boolean.TRUE.equals(e.getApproval()))
+                            .map(i -> i.getEmployee().getName())
                             .toList();
-            for (Invited invited : inviteds) {
-                Booking booking = invited.getInvitations().getBooking();
-                if (!booking.getStart().toLocalDate().equals(startDate)) continue;
-                if (booking.getEmployee().equals(employee)) continue;
-                Map<String, Object> book = new LinkedHashMap<>();
-                book.put("name", booking.getName());
-                book.put("start", booking.getStart());
-                book.put("end", booking.getEnd());
-                book.put("admin", booking.getEmployee().getName() + "" + booking.getEmployee().getLast_name() + "" + booking.getEmployee().getFather_name());
-                invitedBookings.add(book);
-            }
+
+            book.put("invited", invitedNames);
+            ownBookings.add(book);
         }
-        bookingByDay.put("ваши", dailyBookings);
+        List<Invited> inviteds =
+                invitedRepository.findByEmployee(employee)
+                        .stream()
+                        .filter(i -> Boolean.TRUE.equals(i.getApproval()))
+                        .toList();
+        for (Invited invited : inviteds) {
+            Booking booking = invited.getInvitations().getBooking();
+            LocalDate bookingDate = booking.getStart().toLocalDate();
+            if (bookingDate.isBefore(startDate) ||
+                    bookingDate.isAfter(startDate.plusDays(days))) continue;
+            if (booking.getEmployee().equals(employee)) continue;
+            Map<String, Object> book = new LinkedHashMap<>();
+            book.put("name", booking.getName());
+            book.put("start", booking.getStart());
+            book.put("end", booking.getEnd());
+            book.put("admin",
+                    booking.getEmployee().getName() + " " +
+                            booking.getEmployee().getLast_name() + " " +
+                            booking.getEmployee().getFather_name()
+            );
+            invitedBookings.add(book);
+        }
+        bookingByDay.put("ваши", ownBookings);
         bookingByDay.put("вам", invitedBookings);
         return new BookingByWeekResponse(bookingByDay);
     }

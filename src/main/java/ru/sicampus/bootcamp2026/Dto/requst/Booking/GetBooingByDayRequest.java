@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 public class GetBooingByDayRequest{
     @FutureOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy:MM:dd")
+    private LocalDate  date;
 
     public LocalDate getDate() {
         return date;

@@ -21,16 +21,23 @@ public class BookingController {
     private BookingService bookingService;
     @PostMapping("/BookingByDay")
     public ResponseEntity<?> getBookingByDay(
-            @Valid @RequestBody GetBooingByDayRequest dto
+            @Valid @RequestBody GetBooingByDayRequest dto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ){
         return ResponseEntity.ok(
-                bookingService.getBookingByDay(dto)
+                bookingService.getBookingByDay(dto, page, size)
         );
     }
     @PostMapping("/BookingByWeek")
-    public  ResponseEntity<?> getBookingByWeek(@Valid @RequestBody GetBookingByWeekRequest dto){
-            BookingByWeekResponse bookingByWeekResponse= bookingService.getBookingByWeek(dto);
-            return ResponseEntity.ok(bookingByWeekResponse);
+    public ResponseEntity<?> getBookingByWeek(
+            @Valid @RequestBody GetBookingByWeekRequest dto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        return ResponseEntity.ok(
+                bookingService.getBookingByWeek(dto, page, size)
+        );
     }
 
 }

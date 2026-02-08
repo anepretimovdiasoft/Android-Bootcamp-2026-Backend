@@ -2,6 +2,10 @@ package ru.sicampus.bootcamp2026.Service.ServiceImpl;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.*;
@@ -17,6 +21,7 @@ import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
 import ru.sicampus.bootcamp2026.Repository.AvatarRepository;
 import ru.sicampus.bootcamp2026.Repository.ContactRepository;
 import ru.sicampus.bootcamp2026.Repository.EmployeeRepository;
+import ru.sicampus.bootcamp2026.Service.AvatarService;
 import ru.sicampus.bootcamp2026.Service.EmployeeService;
 import ru.sicampus.bootcamp2026.Service.TokenAuthService;
 
@@ -33,6 +38,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private ContactRepository contactRepository;
     @Autowired
     private TokenAuthService tokenAuthService;
+    @Autowired
+    private AvatarService avatarService;
     @Override
     public GetEmployeeResponse getEmployee(GetEmployeeRequest dto){
         List<Employee>employee=employeeRepository.findByName(dto.getName());
@@ -68,38 +75,46 @@ public class EmployeeServiceImpl implements EmployeeService {
         return getEmployeeResponse;
     }
     @Override
-    public GetEmployeesResponse getEmployees() {
-        List<Employee> employee = employeeRepository.findAll();
-        List<Map<String,Object>> employeeList=new ArrayList<>();
-        for(Employee employee1 :employee){
-            Map<String,Object> e=new LinkedHashMap<>();
-            e.put("name",employee1.getName());
-            e.put("last_name",employee1.getLast_name());
-            e.put("father_name",employee1.getFather_name());
-            e.put("age",employee1.getAge());
-            e.put("avatar",employee1.getAvatar().getName());
-            e.put("mail",employee1.getMail());
-            List<Map<String, String>> contact1 = new ArrayList<>();
-            List<Contact> contacts = contactRepository.findByEmployeeId(employee1.getId());
-            for(Contact contact :contacts){
-                Map<String,String> contactList=new LinkedHashMap<>();
-                contactList.put("name",contact.getName());
-                contactList.put("contact",contact.getContact());
-                contact1.add(contactList);
+    public GetEmployeesResponse getEmployees(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<Employee> employees = employeeRepository.findAll(pageable);
+        List<Map<String,Object>> employeeList = new ArrayList<>();
+        for (Employee employee1 : employees.getContent()) {
+            Map<String,Object> e = new LinkedHashMap<>();
+            e.put("name", employee1.getName());
+            e.put("last_name", employee1.getLast_name());
+            e.put("father_name", employee1.getFather_name());
+            e.put("age", employee1.getAge());
+            e.put("avatar", employee1.getAvatar().getName());
+            e.put("mail", employee1.getMail());
+            List<Map<String,String>> contactsList = new ArrayList<>();
+            for (Contact contact : contactRepository.findByEmployeeId(employee1.getId())) {
+                Map<String,String> c = new LinkedHashMap<>();
+                c.put("name", contact.getName());
+                c.put("contact", contact.getContact());
+                contactsList.add(c);
             }
-            e.put("contact",contact1);
+            e.put("contact", contactsList);
             employeeList.add(e);
         }
-        GetEmployeesResponse getEmployeesResponse = new GetEmployeesResponse();
-        getEmployeesResponse.setEmployees(employeeList);
-        return getEmployeesResponse;
+        GetEmployeesResponse response = new GetEmployeesResponse();
+        response.setEmployees(employeeList);
+        return response;
     }
     @Override
     public CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto){
         if(employeeRepository.existsByMail(dto.getMail())){
             throw new EmployeeFound("");
         }
-        Avatar avatar=avatarRepository.findById(dto.getAvatar());
+
+        if (dto.getAvatar() == null || dto.getAvatar().isBlank()) {
+            throw new IllegalArgumentException("Avatar is required");
+        }
+
+        Avatar avatar = avatarRepository
+                .findByName(dto.getAvatar()).orElseGet(() -> avatarRepository.save(
+                        new Avatar(dto.getAvatar())
+                ));
         Employee employee=new Employee();
         employee.setName(dto.getName());
         employee.setLast_name(dto.getLast_name());
@@ -153,11 +168,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
             employee.setAge(dto.getAge());
         }
-
-        if (dto.getAvatar() != null && !dto.getAvatar().isBlank()) {
-            employee.setAvatar(avatarRepository.findByName(dto.getAvatar()));
+        if(dto.getAvatar()!=null&dto.getAvatar().isBlank()){
+                Avatar avatar=avatarRepository.findByName(dto.getAvatar()).orElseGet(()->avatarRepository.save(new Avatar(dto.getAvatar())));
+                employee.setAvatar(avatar);
         }
-
         employeeRepository.save(employee);
         String token1=tokenAuthService.createToken(dto.getMail());
         return new UpdateEmployeeResponse(token1);

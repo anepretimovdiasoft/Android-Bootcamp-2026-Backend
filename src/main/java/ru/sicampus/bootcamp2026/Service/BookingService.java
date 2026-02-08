@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 
 @Service
 public interface BookingService {
-    BookingByDayResponse getBookingByDay(GetBooingByDayRequest dto);
-    BookingByWeekResponse getBookingByWeek(GetBookingByWeekRequest dt);
+    BookingByDayResponse getBookingByDay(GetBooingByDayRequest dto, int page, int size);
+    BookingByWeekResponse getBookingByWeek(GetBookingByWeekRequest dt, int page, int size);
     void updateBooking(GetBookingUpdateRequest dto);
 
 }

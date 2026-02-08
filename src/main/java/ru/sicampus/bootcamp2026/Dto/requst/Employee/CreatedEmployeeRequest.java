@@ -20,7 +20,7 @@ public class CreatedEmployeeRequest {
     @NotNull(message = "")
     @Email(message = "")
     private String mail;
-    private long avatar;
+    private String avatar;
     @NotNull(message = "")
     @Positive(message = "")
     @Min(value = 18,message = "")
@@ -50,11 +50,11 @@ public class CreatedEmployeeRequest {
         return age;
     }
 
-    public long getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(long avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
