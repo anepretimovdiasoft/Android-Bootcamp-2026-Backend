@@ -13,8 +13,8 @@ public class GetAuthorizedEmployeeRequest {
     @Email(message = "This mail does not match the mail format.")
     private String mail;
     @NotNull(message = "The password cannot be empty.")
-    @NotBlank
-    @Size(min =3)
+    @NotBlank(message = "a password cannot be an empty string or contain spaces")
+    @Size(min =3,message = "a password cannot be less than 3 characters")
     private String password;
 
     public GetAuthorizedEmployeeRequest(String token) {

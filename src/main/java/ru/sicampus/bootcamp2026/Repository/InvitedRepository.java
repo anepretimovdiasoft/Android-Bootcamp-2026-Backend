@@ -1,5 +1,7 @@
 package ru.sicampus.bootcamp2026.Repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.sicampus.bootcamp2026.Entity.Employee;
@@ -13,4 +15,8 @@ public interface InvitedRepository extends JpaRepository<Invited,Long> {
     List<Invited> findByInvitations(Invitations invitations);
 
     List<Invited> findByEmployee(Employee employee);
+
+    Page<Invited> findByEmployee(Employee employee, Pageable pageable);
+
+    Page<Invited> findByInvitations_Employee(Employee employee, Pageable pageable);
 }

@@ -12,6 +12,6 @@ import java.util.List;
 @Service
 public interface InvitedService {
     List<Invited> createdInviteds(List<EmployeeNamesRequest> invitedList, Invitations invitations);
-    InvitedResponse getInvited();
+    InvitedResponse getInvited(int page,int size);
     void updateInvited(GetUpdateInvitedRequest dto);
 }

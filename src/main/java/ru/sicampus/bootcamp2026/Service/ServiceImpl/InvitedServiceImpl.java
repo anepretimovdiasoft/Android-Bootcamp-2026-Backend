@@ -1,6 +1,10 @@
 package ru.sicampus.bootcamp2026.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Infitations.EmployeeNamesRequest;
@@ -46,37 +50,57 @@ public class InvitedServiceImpl implements InvitedService {
         return inviteds;
     }
     @Override
-    public InvitedResponse getInvited(){
-        String token= SecurityContextHolder.getContext().getAuthentication().getName();
-        Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
-        List<Invitations> invitations=invitationsRepository.findByEmployee(employee);
-        List<Map<String, String>> result=new ArrayList<>();
-        List<Map<String,String>> result1=new ArrayList<>();
-        for(Invitations invitations1:invitations){
-            List<Invited> inviteds=invitedRepository.findByInvitations(invitations1);
-            for(Invited invited:inviteds){
-                Map<String, String> in=new LinkedHashMap<>();
-                in.put("Booking",  invitations1.getBooking().getName());
-                in.put("Employee", invitations1.getEmployee().getName()+" "+invitations1.getEmployee().getLast_name()+" "+invitations1.getEmployee().getFather_name()+" "+invitations1.getEmployee().getMail());
-                in.put("start_time",invitations1.getBooking().getStart().toString());
-                in.put("start_end",invitations1.getBooking().getEnd().toString());
-                in.put("Approval",invited.getApproval().toString());
-                result.add(in);
-            }
+    public InvitedResponse getInvited(int page, int size) {
+
+        String mail = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        Employee employee = employeeRepository.findByMail(mail)
+                .orElseThrow(() -> new EmployeeNotFound(""));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        Page<Invited> createdByMe =
+                invitedRepository.findByInvitations_Employee(employee, pageable);
+
+        Page<Invited> invitedMe =
+                invitedRepository.findByEmployee(employee, pageable);
+
+        List<Map<String, String>> result = new ArrayList<>();
+        for (Invited invited : createdByMe.getContent()) {
+            Map<String, String> map = new LinkedHashMap<>();
+            map.put("Booking", invited.getInvitations().getBooking().getName());
+            map.put("Employee",
+                    invited.getInvitations().getEmployee().getName() + " " +
+                            invited.getInvitations().getEmployee().getLast_name() + " " +
+                            invited.getInvitations().getEmployee().getFather_name() + " " +
+                            invited.getInvitations().getEmployee().getMail());
+            map.put("start_time", invited.getInvitations().getBooking().getStart().toString());
+            map.put("end_time", invited.getInvitations().getBooking().getEnd().toString());
+            map.put("Approval", invited.getApproval().toString());
+            result.add(map);
         }
-        List<Invited> inviteds=invitedRepository.findByEmployee(employee);
-        for(Invited invited:inviteds){
-            Map<String,String>  inv=new LinkedHashMap<>();
-            inv.put("Booking",invited.getInvitations().getBooking().getName());
-            inv.put("Employee",invited.getEmployee().getName()+ " "+invited.getEmployee().getLast_name()+" "+invited.getEmployee().getFather_name()+" "+invited.getEmployee().getMail());
-            inv.put("start_time",invited.getInvitations().getBooking().getStart().toString());
-            inv.put("end_time",invited.getInvitations().getBooking().getEnd().toString());
-            inv.put("Approval",invited.getApproval().toString());
-            result1.add(inv);
+
+        List<Map<String, String>> result1 = new ArrayList<>();
+        for (Invited invited : invitedMe.getContent()) {
+            Map<String, String> map = new LinkedHashMap<>();
+            map.put("Booking", invited.getInvitations().getBooking().getName());
+            map.put("Employee",
+                    invited.getEmployee().getName() + " " +
+                            invited.getEmployee().getLast_name() + " " +
+                            invited.getEmployee().getFather_name() + " " +
+                            invited.getEmployee().getMail());
+            map.put("start_time", invited.getInvitations().getBooking().getStart().toString());
+            map.put("end_time", invited.getInvitations().getBooking().getEnd().toString());
+            map.put("Approval", invited.getApproval().toString());
+            result1.add(map);
         }
-        InvitedResponse response=new InvitedResponse();
+        InvitedResponse response = new InvitedResponse();
         response.setResult(result);
         response.setResult1(result1);
+        response.setTotalPages(createdByMe.getTotalPages());
+        response.setTotalElements(createdByMe.getTotalElements());
         return response;
     }
     @Override

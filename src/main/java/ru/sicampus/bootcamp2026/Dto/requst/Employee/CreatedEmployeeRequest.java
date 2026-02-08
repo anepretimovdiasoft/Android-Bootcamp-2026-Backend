@@ -7,23 +7,23 @@ import lombok.Data;
 @Data
 @Builder
 public class CreatedEmployeeRequest {
-    @NotNull(message = "")
-    @NotBlank(message = "")
+    @NotNull(message = "The name cannot be empty.")
+    @NotBlank(message = "the name cannot be an empty string or contain spaces")
     private String name;
-    @NotBlank(message = "")
-    @NotNull(message = "")
+    @NotBlank(message = "a last name cannot be an empty string or contain spaces")
+    @NotNull(message = "The last name cannot be empty.")
     private String last_name;
-    @NotBlank(message = "")
-    @NotNull(message = "")
+    @NotBlank(message = "The patronymic cannot be an empty string or contain spaces.")
+    @NotNull(message = "The patronymic cannot be empty")
     private String father_name;
-    @NotBlank(message = "")
-    @NotNull(message = "")
-    @Email(message = "")
+    @NotBlank(message = "mail is not entered")
+    @NotNull(message = "mail cannot be empty")
+    @Email(message = "mail does not match the email format")
     private String mail;
     private String avatar;
     @NotNull(message = "")
     @Positive(message = "")
-    @Min(value = 18,message = "")
+    @Min(value = 18,message = "the age cannot be less than 18")
     private int age;
     @NotBlank
     @NotNull

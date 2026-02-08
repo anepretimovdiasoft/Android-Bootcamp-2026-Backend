@@ -1,10 +1,8 @@
 package ru.sicampus.bootcamp2026.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.Dto.requst.Infitations.GetUpdateInvitedRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Invited.InvitedResponse;
 import ru.sicampus.bootcamp2026.Service.InvitedService;
@@ -15,9 +13,12 @@ public class InvitedController {
     @Autowired
     private InvitedService invitedService;
     @GetMapping("/getInvited")
-    public InvitedResponse getInvited(){
-        InvitedResponse invitedResponse=invitedService.getInvited();
-        return invitedResponse;
+    public ResponseEntity<?> getInvited(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        InvitedResponse response = invitedService.getInvited(page, size);
+        return ResponseEntity.ok(response);
     }
     @PostMapping("/updateIn")
     public  void updateInvited(GetUpdateInvitedRequest dto){
