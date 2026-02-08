@@ -11,6 +11,7 @@ import java.util.ArrayList;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name="invitations")
 public class Invitations {
     @Id
