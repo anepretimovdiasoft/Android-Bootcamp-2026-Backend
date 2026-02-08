@@ -46,9 +46,21 @@ public class MeetingServiceImpl implements MeetingService {
         User user = SecurityUtils.getCurrentUser();
         Instant now = Instant.now();
 
-        return repository.findMeetingSchedule(user.getId(), now, now.plus(7, ChronoUnit.DAYS))
+        return repository.findMeetingSchedule(user.getId(), now, now.plus(30, ChronoUnit.DAYS))
                 .stream()
                 .map(MeetingMapper::convertToDto)
                 .toList();
+    }
+
+    @Override
+    public void deleteMeeting(long id) throws MeetingException {
+        User user = SecurityUtils.getCurrentUser();
+        Meeting meeting = repository.findById(id).orElseThrow(MeetingException::notFound);
+
+        if (meeting.getOrganizer().getId() != user.getId()) {
+            throw MeetingException.accessDenied();
+        }
+
+        repository.delete(meeting);
     }
 }

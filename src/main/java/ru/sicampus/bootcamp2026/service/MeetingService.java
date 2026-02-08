@@ -9,4 +9,5 @@ import java.util.List;
 public interface MeetingService {
     MeetingResponseDTO createMeeting(MeetingCreateDTO dto) throws MeetingException;
     List<MeetingResponseDTO> getSchedule();
+    void deleteMeeting(long id) throws MeetingException;
 }

@@ -2,6 +2,7 @@ package ru.sicampus.bootcamp2026.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,7 +32,7 @@ public class Invitation {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private InvitationStatus status;
+    private InvitationStatus status = InvitationStatus.PENDING;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)

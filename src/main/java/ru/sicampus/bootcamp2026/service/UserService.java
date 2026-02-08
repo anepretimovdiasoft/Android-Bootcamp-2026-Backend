@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface UserService {
     List<UserResponseDTO> getAllUsers();
+
+    List<UserResponseDTO> searchUsers(String query);
+
     UserResponseDTO getUserById(long id) throws UserNotFoundException;
     UserResponseDTO getUserByEmail(String email) throws UserNotFoundException;
     UserResponseDTO createUser(UserCreateDTO dto) throws UserExistsException;

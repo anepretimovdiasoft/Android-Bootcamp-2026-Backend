@@ -6,8 +6,5 @@ import lombok.Data;
 @Data
 public class InvitationAnswerDTO {
     @NotNull
-    private long id;
-
-    @NotNull
     private boolean accepted;
 }

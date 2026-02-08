@@ -11,9 +11,11 @@ import ru.sicampus.bootcamp2026.entity.Meeting;
 import ru.sicampus.bootcamp2026.entity.User;
 import ru.sicampus.bootcamp2026.exception.InvitationException;
 import ru.sicampus.bootcamp2026.exception.MeetingException;
+import ru.sicampus.bootcamp2026.exception.UserNotFoundException;
 import ru.sicampus.bootcamp2026.mapper.InvitationMapper;
 import ru.sicampus.bootcamp2026.repository.InvitationRepository;
 import ru.sicampus.bootcamp2026.repository.MeetingRepository;
+import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.InvitationService;
 import ru.sicampus.bootcamp2026.util.SecurityUtils;
 
@@ -24,6 +26,7 @@ import java.util.List;
 public class InvitationServiceImpl implements InvitationService {
     private final InvitationRepository invitationRepository;
     private final MeetingRepository meetingRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<InvitationResponseDTO> getPendingInvitations(User user) {
@@ -32,30 +35,31 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public ru.sicampus.bootcamp2026.dto.response.InvitationResponseDTO createInvitation(InvitationCreateDTO dto) throws InvitationException, MeetingException {
-        User user = SecurityUtils.getCurrentUser();
+    public ru.sicampus.bootcamp2026.dto.response.InvitationResponseDTO createInvitation(InvitationCreateDTO dto) throws InvitationException, MeetingException, UserNotFoundException {
+        User inviter = SecurityUtils.getCurrentUser();
+        User invitee = userRepository.findById(dto.getUserId()).orElseThrow(() -> new UserNotFoundException(dto.getUserId()));
 
         Meeting meeting = meetingRepository.findById(dto.getMeetingId())
                 .orElseThrow(MeetingException::notFound);
 
-        if (meeting.getOrganizer().getId() != user.getId()) {
+        if (meeting.getOrganizer().getId() != inviter.getId()) {
             throw MeetingException.accessDenied();
         }
 
-        if (invitationRepository.existsByUserAndMeeting(user, meeting)) {
+        if (invitationRepository.existsByUserAndMeeting(invitee, meeting)) {
             throw InvitationException.exists();
         }
 
-        Invitation invitation = new Invitation(meeting, user);
+        Invitation invitation = new Invitation(meeting, invitee);
 
         return InvitationMapper.convertToDto(invitationRepository.save(invitation));
     }
 
     @Override
-    public void replyToInvitation(InvitationAnswerDTO dto) throws InvitationException {
+    public void replyToInvitation(long id, InvitationAnswerDTO dto) throws InvitationException {
         User user = SecurityUtils.getCurrentUser();
 
-        var invitation = invitationRepository.findById(dto.getId())
+        var invitation = invitationRepository.findById(id)
                 .orElseThrow(InvitationException::notFound);
 
         if (invitation.getUser().getId() != user.getId()) {
