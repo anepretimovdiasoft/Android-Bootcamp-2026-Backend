@@ -9,6 +9,7 @@ import ru.sicampus.bootcamp2026.Entity.Booking;
 import ru.sicampus.bootcamp2026.Entity.Employee;
 import ru.sicampus.bootcamp2026.Entity.Invitations;
 import ru.sicampus.bootcamp2026.Entity.Invited;
+import ru.sicampus.bootcamp2026.Excepations.BookingNotFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
 import ru.sicampus.bootcamp2026.Repository.BookingRepository;
 import ru.sicampus.bootcamp2026.Repository.EmployeeRepository;
@@ -35,7 +36,7 @@ public class InvitationsServiceImpl implements InvitationsService {
     public void createdInvitations(GetInvitationsCreatedRequest dto){
         String token = SecurityContextHolder.getContext().getAuthentication().getName();
         Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
-        Booking booking=bookingRepository.findByName(dto.getName());
+        Booking booking=bookingRepository.findByName(dto.getName()).orElseThrow(()->new BookingNotFound(""));
         Invitations invitation=new Invitations();
         if(!invitationsRepository.existsByBooking(booking)){
             invitation.setBooking(booking);

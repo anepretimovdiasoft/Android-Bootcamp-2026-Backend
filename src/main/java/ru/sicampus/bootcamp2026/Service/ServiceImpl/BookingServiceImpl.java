@@ -67,7 +67,7 @@ public class BookingServiceImpl implements BookingService {
             book.put("admin",
                     booking.getEmployee().getName() + " " +
                             booking.getEmployee().getLast_name() + " " +
-                            booking.getEmployee().getFather_name()+""+booking.getEmployee().getMail()
+                            booking.getEmployee().getFather_name()+" "+booking.getEmployee().getMail()
             );
             ownBookings.add(book);
         }
@@ -104,7 +104,7 @@ public class BookingServiceImpl implements BookingService {
                     bookingDate.isAfter(startDate.plusDays(days))) continue;
             Map<String, Object> book = new LinkedHashMap<>();
             book.put("name", booking.getName());
-            book.put("admin", booking.getEmployee().getName()+""+booking.getEmployee().getLast_name()+""+booking.getEmployee().getFather_name()+booking.getEmployee().getMail());
+            book.put("admin", booking.getEmployee().getName()+" "+booking.getEmployee().getLast_name()+" "+booking.getEmployee().getFather_name()+" "+booking.getEmployee().getMail());
             book.put("start", booking.getStart().toLocalTime());
             book.put("end", booking.getEnd().toLocalTime());
             List<String> invitedNames = invitedRepository.findByInvitations(invitationsRepository.findByBooking(booking)
@@ -134,7 +134,7 @@ public class BookingServiceImpl implements BookingService {
             book.put("admin",
                     booking.getEmployee().getName() + " " +
                             booking.getEmployee().getLast_name() + " " +
-                            booking.getEmployee().getFather_name()+""+booking.getEmployee().getMail()
+                            booking.getEmployee().getFather_name()+" "+booking.getEmployee().getMail()
             );
             invitedBookings.add(book);
         }
@@ -155,13 +155,21 @@ public class BookingServiceImpl implements BookingService {
                 .findFirst()
                 .orElseThrow(() -> new BookingNotFound(""));
         if(dto.getName()!=null){
-            booking.setName(dto.getName());
+            if(!bookingRepository.existsByName(dto.getName())) {
+                booking.setName(dto.getName());
+            }else{
+                throw new IllegalArgumentException("");
+            }
         }
         if(dto.getStart()!=null){
-            booking.setStart(dto.getStart());
+            if(dto.getStart().isBefore(booking.getEnd())&&dto.getStart().isBefore(dto.getEnd())){
+                booking.setStart(dto.getStart());
+            }
         }
         if(dto.getEnd()!=null){
-            booking.setEnd(dto.getEnd());
+            if(dto.getEnd().isAfter(booking.getStart())&&dto.getEnd().isAfter(dto.getStart())){
+                booking.setEnd(dto.getEnd());
+            };
         }
         bookingRepository.save(booking);
     }
@@ -177,9 +185,13 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("");
         }else{
             Booking booking=new Booking();
-            booking.setStart(dto.getStart());
-            booking.setEnd(dto.getEnd_time());
-            booking.setName(dto.getName());
+            if(dto.getEnd_time().isBefore(dto.getStart())){
+                booking.setStart(dto.getStart());
+                booking.setEnd(dto.getEnd_time());
+            }
+            if(bookingRepository.existsByName(dto.getName())){
+                booking.setName(dto.getName());
+            }
             booking.setEmployee(employee);
             bookingRepository.save(booking);
         }

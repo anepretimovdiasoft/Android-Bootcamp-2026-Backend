@@ -12,4 +12,5 @@ import java.util.List;
 public interface InvitedService {
     List<Invited> createdInviteds(List<EmployeeNamesRequest> invitedList, Invitations invitations);
     InvitedResponse getInvited();
+    void updateInvited(String Booking_name);
 }

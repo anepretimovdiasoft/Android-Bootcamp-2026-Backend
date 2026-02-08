@@ -5,10 +5,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Infitations.EmployeeNamesRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Invited.InvitedResponse;
+import ru.sicampus.bootcamp2026.Entity.Booking;
 import ru.sicampus.bootcamp2026.Entity.Employee;
 import ru.sicampus.bootcamp2026.Entity.Invitations;
 import ru.sicampus.bootcamp2026.Entity.Invited;
+import ru.sicampus.bootcamp2026.Excepations.BookingNotFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
+import ru.sicampus.bootcamp2026.Repository.BookingRepository;
 import ru.sicampus.bootcamp2026.Repository.EmployeeRepository;
 import ru.sicampus.bootcamp2026.Repository.InvitationsRepository;
 import ru.sicampus.bootcamp2026.Repository.InvitedRepository;
@@ -26,7 +29,9 @@ public class InvitedServiceImpl implements InvitedService {
     @Autowired
     private InvitedRepository invitedRepository;
     @Autowired
-    InvitationsRepository invitationsRepository;
+    private  InvitationsRepository invitationsRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
     @Override
     public List<Invited> createdInviteds(List<EmployeeNamesRequest> stringList, Invitations invitations){
         List<Invited> inviteds=new ArrayList<>();
@@ -54,7 +59,7 @@ public class InvitedServiceImpl implements InvitedService {
             for(Invited invited:inviteds){
                 Map<String, String> in=new LinkedHashMap<>();
                 in.put("Booking",  invitations1.getBooking().getName());
-                in.put("Employee", invitations1.getEmployee().getName()+""+invitations1.getEmployee().getLast_name()+""+invitations1.getEmployee().getFather_name()+""+invitations1.getEmployee().getMail());
+                in.put("Employee", invitations1.getEmployee().getName()+" "+invitations1.getEmployee().getLast_name()+" "+invitations1.getEmployee().getFather_name()+" "+invitations1.getEmployee().getMail());
                 in.put("start_time",invitations1.getBooking().getStart().toString());
                 in.put("start_end",invitations1.getBooking().getEnd().toString());
                 in.put("Approval",invited.getApproval().toString());
@@ -65,7 +70,7 @@ public class InvitedServiceImpl implements InvitedService {
         for(Invited invited:inviteds){
             Map<String,String>  inv=new LinkedHashMap<>();
             inv.put("Booking",invited.getInvitations().getBooking().getName());
-            inv.put("Employee",invited.getEmployee().getName()+ ""+invited.getEmployee().getLast_name()+""+invited.getEmployee().getFather_name()+invited.getEmployee().getMail());
+            inv.put("Employee",invited.getEmployee().getName()+ " "+invited.getEmployee().getLast_name()+" "+invited.getEmployee().getFather_name()+" "+invited.getEmployee().getMail());
             inv.put("start_time",invited.getInvitations().getBooking().getStart().toString());
             inv.put("end_time",invited.getInvitations().getBooking().getEnd().toString());
             inv.put("Approval",invited.getApproval().toString());
@@ -75,5 +80,13 @@ public class InvitedServiceImpl implements InvitedService {
         response.setResult(result);
         response.setResult1(result1);
         return response;
+    }
+    @Override
+    public void updateInvited(String Booking_name){
+        String token=SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
+        Booking booking=bookingRepository.findByName(Booking_name).orElseThrow(()->new BookingNotFound(""));
+        Invitations invitations=invitationsRepository.findByBooking(booking);
+
     }
 }

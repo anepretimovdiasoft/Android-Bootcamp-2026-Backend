@@ -9,10 +9,14 @@ import ru.sicampus.bootcamp2026.Entity.Employee;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findByEmployee(Employee employee);
     List<Booking> findByStart(LocalDate date);
     Page<Booking> findByEmployee(Employee employee, Pageable pageable);
-    Booking findByName(String name);
+    Optional<Booking> findByName(String name);
+
+    boolean existsByName(String name);
 }
