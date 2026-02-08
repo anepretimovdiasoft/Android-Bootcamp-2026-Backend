@@ -68,11 +68,11 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingDTO getMeetingByID(Long id) {
-        Optional<Meeting> meeting = meetingRepository.findById(id);
-        if (meeting.isEmpty()) {
+        Meeting meeting = meetingRepository.findMeetingById(id);
+        if (meeting == null) {
             throw new MeetingNotFoundExeception("Meeting not found");
         }
-        return MeetingMapper.convertToDTO(meeting.get());
+        return MeetingMapper.convertToDTO(meeting);
     }
 
     @Override
