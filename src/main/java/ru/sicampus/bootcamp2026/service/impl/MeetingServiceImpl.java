@@ -67,8 +67,8 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MeetingDTO getMeetingByID(Long Id) {
-        Optional<Meeting> meeting = meetingRepository.findById(Id);
+    public MeetingDTO getMeetingByID(Long id) {
+        Optional<Meeting> meeting = meetingRepository.findById(id);
         if (meeting.isEmpty()) {
             throw new MeetingNotFoundExeception("Meeting not found");
         }
@@ -93,12 +93,21 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long Id) {
-        Optional<Meeting> meeting = meetingRepository.findById(Id);
+    public List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long id) {
+        Optional<Meeting> meeting = meetingRepository.findById(id);
         if (meeting.isEmpty()) {
             throw new MeetingNotFoundExeception("Meeting not found");
         }
 
         return meeting.get().getInvitations().stream().map(InvitationEmployeeMapper::convertToDTO).toList();
+    }
+
+    @Override
+    public void deleteById(Long id, String username) {
+        Meeting meeting = meetingRepository.findByIdAndOwner_Username(id, username);
+        if (meeting == null) {
+            throw new MeetingNotFoundExeception("Meeting not found in your meetings");
+        }
+        meetingRepository.deleteById(id);
     }
 }

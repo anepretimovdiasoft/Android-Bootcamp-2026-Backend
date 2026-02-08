@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,19 @@ public class MeetingController {
     })
     ResponseEntity<MeetingDTO> getMeetingByID(@PathVariable Long id) {
         return ResponseEntity.ok(meetingService.getMeetingByID(id));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Get a meeting by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found")
+
+    })
+    ResponseEntity<Void> deleteMeetingById(@PathVariable Long id, Authentication authentication) {
+        meetingService.deleteById(id, authentication.getName());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/participants")
