@@ -12,6 +12,9 @@ import java.util.List;
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     boolean existsByOwner_UsernameAndStartTime(String username, LocalDateTime startTime);
 
+    @EntityGraph(attributePaths = {"invitations", "invitations.employee"})
+    Meeting findMeetingById(Long id);
+
     @EntityGraph(attributePaths = {"owner"})
     Meeting findByIdAndOwner_Username(Long id, String username);
 

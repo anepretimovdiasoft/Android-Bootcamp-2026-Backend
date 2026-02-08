@@ -94,12 +94,12 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long id) {
-        Optional<Meeting> meeting = meetingRepository.findById(id);
-        if (meeting.isEmpty()) {
+        Meeting meeting = meetingRepository.findMeetingById(id);
+        if (meeting == null) {
             throw new MeetingNotFoundExeception("Meeting not found");
         }
 
-        return meeting.get().getInvitations().stream().map(InvitationEmployeeMapper::convertToDTO).toList();
+        return meeting.getInvitations().stream().map(InvitationEmployeeMapper::convertToDTO).toList();
     }
 
     @Override

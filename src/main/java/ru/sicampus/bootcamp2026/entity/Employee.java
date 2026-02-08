@@ -3,6 +3,8 @@ package ru.sicampus.bootcamp2026.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
@@ -49,5 +51,6 @@ public class Employee implements UserDetails {
     private Set<Invitation> invitations;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    // @Fetch(FetchMode.JOIN)
     private Set<Meeting> meetings;
 }
