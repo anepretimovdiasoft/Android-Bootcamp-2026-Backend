@@ -9,10 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.*;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeesResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.UpdateEmployeeResponse;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.*;
 import ru.sicampus.bootcamp2026.Entity.Avatar;
 import ru.sicampus.bootcamp2026.Entity.Contact;
 import ru.sicampus.bootcamp2026.Entity.Employee;
@@ -26,7 +23,6 @@ import ru.sicampus.bootcamp2026.Service.EmployeeService;
 import ru.sicampus.bootcamp2026.Service.TokenAuthService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -117,9 +113,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .findByName(dto.getAvatar()).orElseGet(() -> avatarRepository.save(
                         new Avatar(dto.getAvatar())
                 ));
-        if(!employeeRepository.existsByPassword(dto.getPassword())) {
-            throw new EmployeeFound("");
-        }
         Employee employee=new Employee();
         employee.setName(dto.getName());
         employee.setLast_name(dto.getLast_name());

@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.Dto.requst.Employee;
+package ru.sicampus.bootcamp2026.Dto.response.Employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

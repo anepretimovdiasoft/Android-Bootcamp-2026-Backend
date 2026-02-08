@@ -2,12 +2,7 @@ package ru.sicampus.bootcamp2026.Service;
 
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.*;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeesResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.UpdateEmployeeResponse;
-
-import java.util.List;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.*;
 
 @Service
 public interface EmployeeService {

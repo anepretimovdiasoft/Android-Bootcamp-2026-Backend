@@ -3,22 +3,14 @@ package ru.sicampus.bootcamp2026.Controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.*;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.AuthorizedEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.CreatedEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeeResponse;
-import ru.sicampus.bootcamp2026.Dto.response.Employee.GetEmployeesResponse;
-import ru.sicampus.bootcamp2026.Entity.Employee;
+import ru.sicampus.bootcamp2026.Dto.response.Employee.*;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeFound;
 import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
 import ru.sicampus.bootcamp2026.Service.EmployeeService;
 import ru.sicampus.bootcamp2026.Service.TokenAuthService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/Employee")
