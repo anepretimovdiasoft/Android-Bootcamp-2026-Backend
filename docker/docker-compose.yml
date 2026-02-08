@@ -27,8 +27,8 @@ services:
       context: ../
       dockerfile: ./docker/Dockerfile
     container_name: backend-app
-    environment:
-      JAVA_TOOL_OPTIONS: -Duser.timezone=Europe/Moscow
+#    environment:
+#      JAVA_TOOL_OPTIONS: -Duser.timezone=Europe/Moscow
     ports:
       - "8080:8080"
     networks:
