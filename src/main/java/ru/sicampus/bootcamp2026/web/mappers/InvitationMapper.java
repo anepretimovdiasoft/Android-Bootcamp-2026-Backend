@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class InvitationMapper {
 
     public InvitationDto toDto(Invitation invitation) {
-        User user = invitation.getUser();
+        User user = invitation.getMeeting().getOrganizer();
         Meeting meeting = invitation.getMeeting();
 
         return InvitationDto.builder()
