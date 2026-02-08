@@ -17,10 +17,7 @@ import ru.sicampus.bootcamp2026.Repository.InvitationsRepository;
 import ru.sicampus.bootcamp2026.Repository.InvitedRepository;
 import ru.sicampus.bootcamp2026.Service.InvitedService;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class InvitedServiceImpl implements InvitedService {
@@ -87,6 +84,7 @@ public class InvitedServiceImpl implements InvitedService {
         Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
         Booking booking=bookingRepository.findByName(Booking_name).orElseThrow(()->new BookingNotFound(""));
         Invitations invitations=invitationsRepository.findByBooking(booking);
-
+        List<Invited> inviteds=invitedRepository.findByInvitations(invitations);
+        Optional<Invited> invited=inviteds.stream().filter(i->i.getEmployee().equals(employee)).findFirst();
     }
 }

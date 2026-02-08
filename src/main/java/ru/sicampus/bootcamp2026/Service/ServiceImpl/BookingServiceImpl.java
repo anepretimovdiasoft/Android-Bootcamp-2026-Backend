@@ -146,14 +146,7 @@ public class BookingServiceImpl implements BookingService {
     public void updateBooking(GetBookingUpdateRequest dto){
         String token=SecurityContextHolder.getContext().getAuthentication().getName();
         Employee employee=employeeRepository.findByMail(token).orElseThrow();
-        Booking booking = bookingRepository.findByEmployee(employee)
-                .stream()
-                .filter(b ->
-                        Objects.equals(dto.getStart_time(), b.getStart()) &&
-                                Objects.equals(dto.getEnd_time(), b.getEnd())
-                )
-                .findFirst()
-                .orElseThrow(() -> new BookingNotFound(""));
+        Booking booking = bookingRepository.findByName(dto.getName()).orElseThrow(() ->new BookingNotFound(""));
         if(dto.getName()!=null){
             if(!bookingRepository.existsByName(dto.getName())) {
                 booking.setName(dto.getName());

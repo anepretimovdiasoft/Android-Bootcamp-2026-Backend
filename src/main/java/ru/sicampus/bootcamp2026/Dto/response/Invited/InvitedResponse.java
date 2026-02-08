@@ -10,14 +10,14 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class InvitedResponse {
-    private List<Map<String,String>> result;
-    private List<Map<String,String>> result1;
+    private List<Map<String,String>> yours;
+    private List<Map<String,String>> you ;
 
     public void setResult(List<Map<String, String>> result) {
-        this.result = result;
+        this.you = result;
     }
 
     public void setResult1(List<Map<String, String>> result1) {
-        this.result1 = result1;
+        this.yours = result1;
     }
 }
