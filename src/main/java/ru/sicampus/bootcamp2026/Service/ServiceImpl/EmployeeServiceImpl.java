@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Employee.*;
 import ru.sicampus.bootcamp2026.Dto.response.Employee.*;
@@ -36,6 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private TokenAuthService tokenAuthService;
     @Autowired
     private AvatarService avatarService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public GetEmployeeResponse getEmployee(GetEmployeeRequest dto){
         List<Employee>employee=employeeRepository.findByName(dto.getName());
@@ -97,11 +100,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return response;
     }
     @Override
-    public CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto){
-        if(!Objects.equals(dto.getCode(), 1234L)){
+    public CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto) {
+        if (!Objects.equals(dto.getCode(), 1234L)) {
             throw new IllegalArgumentException("");
         }
-        if(employeeRepository.existsByMail(dto.getMail())){
+        if (employeeRepository.existsByMail(dto.getMail())) {
             throw new EmployeeFound("The user already exists");
         }
 
@@ -113,15 +116,24 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .findByName(dto.getAvatar()).orElseGet(() -> avatarRepository.save(
                         new Avatar(dto.getAvatar())
                 ));
-        Employee employee=new Employee();
+        if (employeeRepository.existsByPassword(dto.getPassword())) {
+            throw new EmployeeFound("the password exists");
+        }
+        Employee employee = new Employee();
         employee.setName(dto.getName());
         employee.setLast_name(dto.getLast_name());
         employee.setFather_name(dto.getFather_name());
         employee.setMail(dto.getMail());
         employee.setAvatar(avatar);
-        employee.setPassword(dto.getPassword());
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            if (!employeeRepository.existsByPassword(dto.getPassword())) {
+                employee.setPassword(passwordEncoder.encode(dto.getPassword()));
+            } else {
+                throw new EmployeeFound("");
+            };
+        }
         employeeRepository.save(employee);
-        String token=tokenAuthService.createToken(dto.getMail());
+        String token = tokenAuthService.createToken(dto.getMail());
         return new CreatedEmployeeResponse(token);
     }
     @Override
@@ -157,7 +169,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             if(!employeeRepository.existsByPassword(dto.getPassword())) {
-                employee.setPassword(dto.getPassword());
+                employee.setPassword(passwordEncoder.encode(dto.getPassword()));
             }else{
                 throw new EmployeeFound("");
             }
