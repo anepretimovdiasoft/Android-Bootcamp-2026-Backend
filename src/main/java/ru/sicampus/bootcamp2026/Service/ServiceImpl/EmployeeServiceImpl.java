@@ -103,7 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public CreatedEmployeeResponse createdEmployee(CreatedEmployeeRequest dto){
-        if(dto.getCode()!=1234){
+        if(!Objects.equals(dto.getCode(), 1234)){
             throw new IllegalArgumentException("");
         }
         if(employeeRepository.existsByMail(dto.getMail())){
