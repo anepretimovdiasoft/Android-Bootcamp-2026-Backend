@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2026.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.dto.UserDto;
 import ru.sicampus.bootcamp2026.dto.UserRegisterDto;
 import ru.sicampus.bootcamp2026.entity.Position;
@@ -27,13 +28,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto getUserById(Long id) {
-        return userRepository.findById(id)
-                .map(UserMapper::toDto)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-    }
-
-    @Override
+    @Transactional
     public UserDto createUser(UserRegisterDto dto) {
         if (userRepository.existsByLogin(dto.getLogin())){
             throw new UserAlreadyExist("User with this login already exists");
@@ -52,6 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateUser(String login, UserDto dto) {
 
         User user = userRepository.findByLogin(login)
@@ -59,7 +55,10 @@ public class UserServiceImpl implements UserService {
 
         Optional<Position> optionalPosition = positionRepository.findByPosition(dto.getPosition());
         user.setPosition(optionalPosition.orElseThrow(() -> new PositionNotFoundException("Position not found")));
-
+        Optional<User> tmp = userRepository.findByLogin(dto.getLogin());
+        if (!(tmp.isEmpty() || user.equals(tmp.get()))){
+            throw new UserAlreadyExist("User with this login already exist");
+        }
         user.setLogin(dto.getLogin());
         user.setName(dto.getName());
         user.setLastname(dto.getLastname());
@@ -70,6 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String login) {
         userRepository.deleteUserByLogin(login);
     }

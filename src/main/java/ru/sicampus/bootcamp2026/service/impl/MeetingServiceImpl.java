@@ -2,6 +2,7 @@ package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.dto.MeetingDto;
 import ru.sicampus.bootcamp2026.entity.Invitation;
 import ru.sicampus.bootcamp2026.entity.Meeting;
@@ -65,6 +66,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @throws OrganizerInInviteesException если организатор указан среди приглашённых
      */
     @Override
+    @Transactional
     public MeetingDto createMeeting(MeetingDto dto, Long organizerId) {
         validateMeetingTime(dto);
         var meeting = createMeetingFromDto(new Meeting(), dto, organizerId);
@@ -110,6 +112,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @throws UserBusyInThisTimeException если новый участник занят
      */
     @Override
+    @Transactional
     public MeetingDto updateMeeting(Long id, MeetingDto dto, Long userId) {
         validateMeetingTime(dto);
         var existingMeeting = meetingRepository.findById(id)
@@ -197,6 +200,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @param meeting    встреча
      * @param newLogins  логины приглашённых
      */
+    @Transactional
     private void recreateAllInvitations(Meeting meeting, List<String> newLogins, Long organizerId) {
         invitationRepository.deleteByMeetingId(meeting.getId());
         var newInvitees = resolveInvitees(newLogins);

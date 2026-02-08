@@ -18,13 +18,17 @@
             <constraints nullable="false" notNullConstraintName="meeting_id_not_null"
                          foreignKeyName="fk_meetings_invitations"
                          referencedTableName="meetings"
-                         referencedColumnNames="id"/>
+                         referencedColumnNames="id"
+                         deleteCascade="true"
+            />
         </column>
         <column name="user_id" type="bigint">
             <constraints nullable="false" notNullConstraintName="user_id_not_null"
                          foreignKeyName="fk_users_invitations"
                          referencedTableName="users"
-                         referencedColumnNames="id"/>
+                         referencedColumnNames="id"
+                         deleteCascade="true"
+            />
         </column>
         <column name="status" type="varchar(20)">
             <constraints nullable="false" notNullConstraintName="status_not_null"/>

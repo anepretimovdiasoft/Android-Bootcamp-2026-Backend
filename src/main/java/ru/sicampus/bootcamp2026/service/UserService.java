@@ -5,7 +5,6 @@ import ru.sicampus.bootcamp2026.dto.UserRegisterDto;
 
 public interface UserService {
 
-    UserDto getUserById(Long id);
 
     UserDto createUser(UserRegisterDto dto);
 
