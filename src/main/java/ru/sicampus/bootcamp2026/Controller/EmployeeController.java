@@ -50,21 +50,17 @@ public class EmployeeController {
     @PostMapping("/auth")
     public ResponseEntity<?> AuthorizedEmployee(@Valid @RequestBody GetAuthorizedEmployeeRequest dto){
         boolean valid = employeeService.AuthorizedEmployee(dto);
-        if (!valid) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
         String token = tokenAuthService.createToken(dto.getEmail());
         return ResponseEntity.ok(new AuthorizedEmployeeResponse(token));
     }
 
     @PostMapping("/createdEm")
-    public ResponseEntity<CreatedEmployeeResponse> register(
+    public ResponseEntity<?> register(
             @Valid @RequestBody CreatedEmployeeRequest dto) {
 
         try {
-            CreatedEmployeeResponse employee = employeeService.createdEmployee(dto);
-            String token = tokenAuthService.createToken(employee.getToken());
-            return ResponseEntity.ok(new CreatedEmployeeResponse(token));
+            String employee = employeeService.createdEmployee(dto).getToken();
+            return ResponseEntity.ok(employee);
         } catch (EmployeeFound e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
