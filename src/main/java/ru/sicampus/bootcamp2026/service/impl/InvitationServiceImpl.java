@@ -59,6 +59,7 @@ public class InvitationServiceImpl implements InvitationService {
     public List<InvitationDTO> createInvitationsBatch(InvitationCreateBatchDTO dto, String username) {
         Meeting meeting = meetingRepository.findByIdAndOwner_Username(dto.getMeetingId(), username);
         ArrayList<Invitation> invitations = new ArrayList<>();
+        ArrayList<String> notInvited = new ArrayList<>();
         if(meeting == null) {
             throw new MeetingNotOwnedException("Meeting does not exist or is not owned by you");
         }
