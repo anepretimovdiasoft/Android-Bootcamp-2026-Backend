@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sicampus.bootcamp2026.dto.ImageDtos.ImageResponse;
-import ru.sicampus.bootcamp2026.service.impl.ImageService;
+import ru.sicampus.bootcamp2026.service.ImageService;
 
 @RestController
 @RequestMapping("/api/images")

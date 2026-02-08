@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.service.impl;
+package ru.sicampus.bootcamp2026.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
