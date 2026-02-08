@@ -8,4 +8,6 @@ import ru.sicampus.bootcamp2026.Entity.Invitations;
 @Repository
 public interface InvitationsRepository extends JpaRepository<Invitations,Long> {
     Invitations findByBooking(Booking booking);
+
+    boolean existsByBooking(Booking booking);
 }

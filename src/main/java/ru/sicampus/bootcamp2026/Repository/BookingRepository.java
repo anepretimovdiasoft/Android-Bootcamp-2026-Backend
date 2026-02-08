@@ -14,4 +14,5 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findByEmployee(Employee employee);
     List<Booking> findByStart(LocalDate date);
     Page<Booking> findByEmployee(Employee employee, Pageable pageable);
+    Booking findByName(String name);
 }

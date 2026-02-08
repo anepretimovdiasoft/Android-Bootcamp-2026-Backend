@@ -36,4 +36,8 @@ public class Invitations {
     public void setBooking(Booking booking) {
         this.booking = booking;
     }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 }

@@ -165,7 +165,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (dto.getAge() != null) {
             if (dto.getAge() < 18) try {
-                throw new BadRequestException("Возраст < 18");
+                throw new BadRequestException("Возраст > 18");
             } catch (BadRequestException e) {
                 throw new RuntimeException(e);
             }
