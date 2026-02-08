@@ -11,6 +11,8 @@ services:
       - "127.0.0.1:5430:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/pgdata
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U indexzero -d application_db" ]
@@ -27,6 +29,9 @@ services:
     container_name: backend-app
     ports:
       - "8080:8080"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     networks:
       - main_network
     depends_on:
