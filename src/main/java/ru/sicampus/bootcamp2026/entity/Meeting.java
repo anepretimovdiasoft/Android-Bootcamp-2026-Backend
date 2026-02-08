@@ -29,7 +29,7 @@ public class Meeting {
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "owner_employee_id", referencedColumnName = "id")
     private Employee owner;
 

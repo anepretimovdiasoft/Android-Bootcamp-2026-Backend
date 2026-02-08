@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2026.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -37,6 +38,7 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/employee/register").permitAll()
+                        .requestMatchers(HttpMethod.DELETE,"/api/employee/{username}").hasAuthority("APP-ADMIN")
                         .requestMatchers("/v3/api-docs/**").hasAuthority("APP-ADMIN")
                         // .requestMatchers(toH2Console()).hasAuthority("APP-ADMIN")
                         .anyRequest().authenticated()

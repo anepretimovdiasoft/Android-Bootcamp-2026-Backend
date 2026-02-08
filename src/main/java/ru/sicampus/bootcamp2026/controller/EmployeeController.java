@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.EmployeeDTO;
 import ru.sicampus.bootcamp2026.dto.EmployeeEditDTO;
 import ru.sicampus.bootcamp2026.dto.EmployeeRegisterDTO;
+import ru.sicampus.bootcamp2026.repository.EmployeeRepository;
 import ru.sicampus.bootcamp2026.service.EmployeeService;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+
     @PostMapping("/register")
     @Operation(summary = "Register an employee")
     @ApiResponses(value = {
@@ -33,7 +36,7 @@ public class EmployeeController {
 
     })
     ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody @Valid EmployeeRegisterDTO employeeRegisterDTO) {
-        return ResponseEntity.ok(employeeService.createEmployee(employeeRegisterDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.createEmployee(employeeRegisterDTO));
     }
 
     @PostMapping("/login")
@@ -56,7 +59,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "409", description = "Employee with such email or phone number already exists")
 
     })
-    public ResponseEntity<EmployeeDTO> patchVoid(@RequestBody @Valid EmployeeEditDTO employeeEditDTO, Authentication authentication) {
+    public ResponseEntity<EmployeeDTO> editEmployee(@RequestBody @Valid EmployeeEditDTO employeeEditDTO, Authentication authentication) {
         return ResponseEntity.ok(employeeService.editEmployee(employeeEditDTO, authentication.getName()));
     }
 
@@ -98,8 +101,19 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.searchEmployeesPaginated(search, pageable));
     }
 
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable String username) {
+        employeeService.deleteEmployee(username);
+        return ResponseEntity.noContent().build();
+    }
+    @DeleteMapping("")
+    public ResponseEntity<Void> selfDeleteEmployee(Authentication authentication) {
+        employeeService.deleteEmployee(authentication.getName());
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/loginTeapot")
-    public ResponseEntity<Object> postVoid() {
+    public ResponseEntity<Object> postTeapot() {
         return ResponseEntity.status(418).build();
     }
 

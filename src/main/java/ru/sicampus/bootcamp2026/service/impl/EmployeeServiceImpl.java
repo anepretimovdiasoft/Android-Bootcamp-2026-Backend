@@ -107,4 +107,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findByNameContainsIgnoreCase(search, pageable).map(EmployeeMapper::convertToDTO);
     }
 
+    @Override
+    public void deleteEmployee(String username) {
+        Employee employee = employeeRepository.findByUsername(username);
+        if(employee == null) {
+            throw new EmployeeNotFoundException("Employee Not Found");
+        }
+        employeeRepository.delete(employee);
+    }
+
 }
