@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -26,7 +27,7 @@ public class Invitations {
     @OneToMany(mappedBy = "invitations",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private ArrayList<Invited> inviteds=new ArrayList<>();
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -40,5 +41,9 @@ public class Invitations {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Employee getEmployee() {
+        return employee;
     }
 }

@@ -67,7 +67,7 @@ public class BookingServiceImpl implements BookingService {
             book.put("admin",
                     booking.getEmployee().getName() + " " +
                             booking.getEmployee().getLast_name() + " " +
-                            booking.getEmployee().getFather_name()
+                            booking.getEmployee().getFather_name()+""+booking.getEmployee().getMail()
             );
             ownBookings.add(book);
         }
@@ -104,7 +104,7 @@ public class BookingServiceImpl implements BookingService {
                     bookingDate.isAfter(startDate.plusDays(days))) continue;
             Map<String, Object> book = new LinkedHashMap<>();
             book.put("name", booking.getName());
-            book.put("admin", booking.getEmployee().getName());
+            book.put("admin", booking.getEmployee().getName()+""+booking.getEmployee().getLast_name()+""+booking.getEmployee().getFather_name()+booking.getEmployee().getMail());
             book.put("start", booking.getStart().toLocalTime());
             book.put("end", booking.getEnd().toLocalTime());
             List<String> invitedNames = invitedRepository.findByInvitations(invitationsRepository.findByBooking(booking)
@@ -134,7 +134,7 @@ public class BookingServiceImpl implements BookingService {
             book.put("admin",
                     booking.getEmployee().getName() + " " +
                             booking.getEmployee().getLast_name() + " " +
-                            booking.getEmployee().getFather_name()
+                            booking.getEmployee().getFather_name()+""+booking.getEmployee().getMail()
             );
             invitedBookings.add(book);
         }

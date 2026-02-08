@@ -2,12 +2,12 @@ package ru.sicampus.bootcamp2026.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name="invited")
 public class Invited {
@@ -32,5 +32,13 @@ public class Invited {
 
     public Invitations getInvitations() {
         return invitations;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setInvitations(Invitations invitations) {
+        this.invitations= this.invitations;
     }
 }

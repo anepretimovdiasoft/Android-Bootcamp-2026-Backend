@@ -7,4 +7,8 @@ public class EmployeeNamesRequest {
     @NotNull
     @NotBlank
     private String name;
+
+    public String getName() {
+        return name;
+    }
 }

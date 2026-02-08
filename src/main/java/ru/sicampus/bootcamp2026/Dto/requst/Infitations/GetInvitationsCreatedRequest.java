@@ -18,4 +18,8 @@ public class GetInvitationsCreatedRequest {
     public String getName() {
         return name;
     }
+
+    public List<EmployeeNamesRequest> getInviteds() {
+        return invited;
+    }
 }

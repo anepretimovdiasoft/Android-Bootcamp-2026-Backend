@@ -2,12 +2,10 @@ package ru.sicampus.bootcamp2026.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +34,7 @@ public class Booking {
 
     @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Invitations> invitations = new ArrayList<>();
-    public Object getName() {
+    public String getName() {
         return name;
     }
 
@@ -66,6 +64,10 @@ public class Booking {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
    

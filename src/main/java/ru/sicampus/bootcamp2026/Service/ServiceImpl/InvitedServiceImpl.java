@@ -1,4 +1,79 @@
 package ru.sicampus.bootcamp2026.Service.ServiceImpl;
 
-public class InvitedServiceImpl {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import ru.sicampus.bootcamp2026.Dto.requst.Infitations.EmployeeNamesRequest;
+import ru.sicampus.bootcamp2026.Dto.response.Invited.InvitedResponse;
+import ru.sicampus.bootcamp2026.Entity.Employee;
+import ru.sicampus.bootcamp2026.Entity.Invitations;
+import ru.sicampus.bootcamp2026.Entity.Invited;
+import ru.sicampus.bootcamp2026.Excepations.EmployeeNotFound;
+import ru.sicampus.bootcamp2026.Repository.EmployeeRepository;
+import ru.sicampus.bootcamp2026.Repository.InvitationsRepository;
+import ru.sicampus.bootcamp2026.Repository.InvitedRepository;
+import ru.sicampus.bootcamp2026.Service.InvitedService;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class InvitedServiceImpl implements InvitedService {
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private InvitedRepository invitedRepository;
+    @Autowired
+    InvitationsRepository invitationsRepository;
+    @Override
+    public List<Invited> createdInviteds(List<EmployeeNamesRequest> stringList, Invitations invitations){
+        List<Invited> inviteds=new ArrayList<>();
+        String token=SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee1=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
+        for(EmployeeNamesRequest name:stringList){
+            Employee employee=employeeRepository.findByMail(name.getName()).orElseThrow(()->new EmployeeNotFound(""));
+            Invited invited=new Invited();
+            invited.setEmployee(employee);
+            invited.setInvitations(invitations);
+            inviteds.add(invited);
+            invitedRepository.save(invited);
+        }
+        return inviteds;
+    }
+    @Override
+    public InvitedResponse getInvited(){
+        String token= SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
+        List<Invitations> invitations=invitationsRepository.findByEmployee(employee);
+        List<Map<String, String>> result=new ArrayList<>();
+        List<Map<String,String>> result1=new ArrayList<>();
+        for(Invitations invitations1:invitations){
+            List<Invited> inviteds=invitedRepository.findByInvitations(invitations1);
+            for(Invited invited:inviteds){
+                Map<String, String> in=new LinkedHashMap<>();
+                in.put("Booking",  invitations1.getBooking().getName());
+                in.put("Employee", invitations1.getEmployee().getName()+""+invitations1.getEmployee().getLast_name()+""+invitations1.getEmployee().getFather_name()+""+invitations1.getEmployee().getMail());
+                in.put("start_time",invitations1.getBooking().getStart().toString());
+                in.put("start_end",invitations1.getBooking().getEnd().toString());
+                in.put("Approval",invited.getApproval().toString());
+                result.add(in);
+            }
+        }
+        List<Invited> inviteds=invitedRepository.findByEmployee(employee);
+        for(Invited invited:inviteds){
+            Map<String,String>  inv=new LinkedHashMap<>();
+            inv.put("Booking",invited.getInvitations().getBooking().getName());
+            inv.put("Employee",invited.getEmployee().getName()+ ""+invited.getEmployee().getLast_name()+""+invited.getEmployee().getFather_name()+invited.getEmployee().getMail());
+            inv.put("start_time",invited.getInvitations().getBooking().getStart().toString());
+            inv.put("end_time",invited.getInvitations().getBooking().getEnd().toString());
+            inv.put("Approval",invited.getApproval().toString());
+            result1.add(inv);
+        }
+        InvitedResponse response=new InvitedResponse();
+        response.setResult(result);
+        response.setResult1(result1);
+        return response;
+    }
 }

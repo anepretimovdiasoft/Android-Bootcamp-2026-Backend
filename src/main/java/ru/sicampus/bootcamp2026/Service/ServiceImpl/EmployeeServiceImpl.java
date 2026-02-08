@@ -90,8 +90,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             List<Map<String,String>> contactsList = new ArrayList<>();
             for (Contact contact : contactRepository.findByEmployeeId(employee1.getId())) {
                 Map<String,String> c = new LinkedHashMap<>();
-                c.put("name", contact.getName());
-                c.put("contact", contact.getContact());
+                c.put( contact.getContact(), contact.getName());
                 contactsList.add(c);
             }
             e.put("contact", contactsList);
@@ -118,6 +117,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .findByName(dto.getAvatar()).orElseGet(() -> avatarRepository.save(
                         new Avatar(dto.getAvatar())
                 ));
+        if(!employeeRepository.existsByPassword(dto.getPassword())) {
+            throw new EmployeeFound("");
+        }
         Employee employee=new Employee();
         employee.setName(dto.getName());
         employee.setLast_name(dto.getLast_name());
