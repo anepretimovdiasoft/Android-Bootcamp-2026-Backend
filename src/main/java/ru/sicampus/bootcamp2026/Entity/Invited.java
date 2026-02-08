@@ -41,4 +41,8 @@ public class Invited {
     public void setInvitations(Invitations invitations) {
         this.invitations= this.invitations;
     }
+
+    public void setApproval(Boolean approval) {
+        Approval = approval;
+    }
 }

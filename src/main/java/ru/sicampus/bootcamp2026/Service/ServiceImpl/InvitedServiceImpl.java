@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Infitations.EmployeeNamesRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Infitations.GetUpdateInvitedRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Invited.InvitedResponse;
 import ru.sicampus.bootcamp2026.Entity.Booking;
 import ru.sicampus.bootcamp2026.Entity.Employee;
@@ -79,12 +80,18 @@ public class InvitedServiceImpl implements InvitedService {
         return response;
     }
     @Override
-    public void updateInvited(String Booking_name){
+    public void updateInvited(GetUpdateInvitedRequest dto){
         String token=SecurityContextHolder.getContext().getAuthentication().getName();
         Employee employee=employeeRepository.findByMail(token).orElseThrow(()->new EmployeeNotFound(""));
-        Booking booking=bookingRepository.findByName(Booking_name).orElseThrow(()->new BookingNotFound(""));
+        Booking booking=bookingRepository.findByName(dto.getName()).orElseThrow(()->new BookingNotFound(""));
         Invitations invitations=invitationsRepository.findByBooking(booking);
         List<Invited> inviteds=invitedRepository.findByInvitations(invitations);
-        Optional<Invited> invited=inviteds.stream().filter(i->i.getEmployee().equals(employee)).findFirst();
+        Invited invited = inviteds.stream()
+                .filter(i -> i.getEmployee().equals(employee))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Invited not found"));
+
+        invited.setApproval(dto.getApproval());
+        invitedRepository.save(invited);
     }
 }

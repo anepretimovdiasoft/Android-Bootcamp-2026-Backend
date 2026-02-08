@@ -10,8 +10,8 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class InvitedResponse {
-    private List<Map<String,String>> yours;
-    private List<Map<String,String>> you ;
+    private List<Map<String,String>> you;//ты//
+    private List<Map<String,String>> yours ;//тебе//;
 
     public void setResult(List<Map<String, String>> result) {
         this.you = result;
