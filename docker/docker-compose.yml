@@ -27,11 +27,10 @@ services:
       context: ../
       dockerfile: ./docker/Dockerfile
     container_name: backend-app
+    environment:
+      JAVA_TOOL_OPTIONS: -Duser.timezone=Europe/Moscow
     ports:
       - "8080:8080"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - main_network
     depends_on:
