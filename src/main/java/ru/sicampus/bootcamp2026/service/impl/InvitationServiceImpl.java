@@ -68,18 +68,23 @@ public class InvitationServiceImpl implements InvitationService {
             if(emp == null) {
                 throw new EmployeeNotFoundException("Employee not found: " + dto.getEmployeeUsernames().get(i) + ". Please check the selected users");
             }
-            if(invitationRepository.existsByMeeting_IdAndEmployee_Username(dto.getMeetingId(), dto.getEmployeeUsernames().get(i))) {
-                throw new InvitationAlreadyExistsException("Invitation already exists for employee: " + dto.getEmployeeUsernames().get(i) + ". Please check the selected users");
+            else if(invitationRepository.existsByMeeting_IdAndEmployee_Username(dto.getMeetingId(), dto.getEmployeeUsernames().get(i))) {
+                notInvited.add(emp.getUsername());
             }
-            if(invitationRepository.existsByMeeting_StartTimeAndEmployee_UsernameAndStatus(meeting.getStartTime(), dto.getEmployeeUsernames().get(i), "ACCEPTED")) {
-                throw new InvalidMeetingDateException("Employee is busy at this time: " + dto.getEmployeeUsernames().get(i) + ". Please check the selected users");
+            else if(invitationRepository.existsByMeeting_StartTimeAndEmployee_UsernameAndStatus(meeting.getStartTime(), dto.getEmployeeUsernames().get(i), "ACCEPTED")) {
+                notInvited.add(emp.getUsername());
             }
-            Invitation invitation = new Invitation();
-            invitation.setMessage(dto.getMessage());
-            invitation.setStatus("PENDING");
-            invitation.setMeeting(meeting);
-            invitation.setEmployee(emp);
-            invitations.add(invitation);
+            else {
+                Invitation invitation = new Invitation();
+                invitation.setMessage(dto.getMessage());
+                invitation.setStatus("PENDING");
+                invitation.setMeeting(meeting);
+                invitation.setEmployee(emp);
+                invitations.add(invitation);
+            }
+        }
+        if(!notInvited.isEmpty()) {
+          throw new NotAllUsersInvitedException("Some of the users were busy and not invited to the meeting.");
         }
         return invitationRepository.saveAllAndFlush(invitations).stream().map(InvitationMapper::convertToDTO).toList();
     }
