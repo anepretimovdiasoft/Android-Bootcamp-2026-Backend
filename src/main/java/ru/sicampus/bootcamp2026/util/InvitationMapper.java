@@ -15,6 +15,7 @@ public class InvitationMapper {
         dto.setStatus(invitation.getStatus());
         dto.setInvitedAt(invitation.getInvitedAt());
         dto.setRespondedAt(invitation.getRespondedAt());
+        dto.setMeeting(MeetingMapper.convertToDto(invitation.getMeeting()));
         return dto;
     }
 }

@@ -3,14 +3,14 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    
+
     <changeSet id="2026-01-29--0001-user" author="ggaidaenko">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="user"/>
+                <tableExists tableName="app_user"/>
             </not>
         </preConditions>
-        <createTable tableName="user">
+        <createTable tableName="app_user">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -23,8 +23,7 @@
             <column name="full_name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pfp_url" type="VARCHAR(255)">
-            </column>
+            <column name="pfp_url" type="VARCHAR(255)"/>
             <column name="created_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -33,6 +32,5 @@
             </column>
         </createTable>
     </changeSet>
-    
-    
+
 </databaseChangeLog>

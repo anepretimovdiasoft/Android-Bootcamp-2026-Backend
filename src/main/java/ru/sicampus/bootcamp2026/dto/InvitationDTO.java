@@ -11,4 +11,5 @@ public class InvitationDTO {
     private int status;
     private LocalDateTime invitedAt;
     private LocalDateTime respondedAt;
+    private MeetingDTO meeting;
 }

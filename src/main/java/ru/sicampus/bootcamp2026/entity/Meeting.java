@@ -23,7 +23,7 @@ public class Meeting {
     private User organizer;
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDate  date;
 
     @Column(name = "start_hour")
     private int startHour;
