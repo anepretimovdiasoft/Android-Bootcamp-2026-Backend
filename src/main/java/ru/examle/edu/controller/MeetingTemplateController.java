@@ -1,11 +1,11 @@
 package ru.examle.edu.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.examle.edu.dto.MeetingTemplateDTO;
 import ru.examle.edu.service.MeetingTemplateService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/meeting-templates")
@@ -15,8 +15,9 @@ public class MeetingTemplateController {
     private final MeetingTemplateService meetingTemplateService;
 
     @GetMapping
-    public List<MeetingTemplateDTO> getAllMeetingTemplates() {
-        return meetingTemplateService.getAllMeetingTemplates();
+    public Page<MeetingTemplateDTO> getAllMeetingTemplates(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "20") int size) {
+        return meetingTemplateService.getAllMeetingTemplates(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")

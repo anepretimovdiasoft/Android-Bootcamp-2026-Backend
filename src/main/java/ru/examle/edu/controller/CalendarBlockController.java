@@ -1,11 +1,11 @@
 package ru.examle.edu.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.examle.edu.dto.CalendarBlockDTO;
 import ru.examle.edu.service.CalendarBlockService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/calendar-blocks")
@@ -15,8 +15,9 @@ public class CalendarBlockController {
     private final CalendarBlockService calendarBlockService;
 
     @GetMapping
-    public List<CalendarBlockDTO> getAllCalendarBlocks() {
-        return calendarBlockService.getAllCalendarBlocks();
+    public Page<CalendarBlockDTO> getAllCalendarBlocks(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "20") int size) {
+        return calendarBlockService.getAllCalendarBlocks(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")

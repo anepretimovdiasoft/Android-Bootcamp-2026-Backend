@@ -1,0 +1,6 @@
+#FileLock
+#Sat Feb 07 01:31:42 MSK 2026
+hostName=192.168.1.65
+id=19c35151bfc88903bfd15d09f6e0eed62ad32c2098f
+method=file
+server=192.168.1.65\:50771

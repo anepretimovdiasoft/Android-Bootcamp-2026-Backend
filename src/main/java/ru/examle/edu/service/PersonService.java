@@ -1,12 +1,12 @@
 package ru.examle.edu.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.examle.edu.dto.PersonDTO;
 import ru.examle.edu.enity.Person;
 
-import java.util.List;
-
 public interface PersonService {
-    List<PersonDTO> getAllPersons();
+    Page<PersonDTO> getAllPersons(Pageable pageable);
 
     PersonDTO getPersonById(Long id);
 

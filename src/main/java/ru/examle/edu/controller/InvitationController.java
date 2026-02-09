@@ -1,11 +1,11 @@
 package ru.examle.edu.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.examle.edu.dto.InvitationDTO;
 import ru.examle.edu.service.InvitationService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/invitations")
@@ -15,8 +15,9 @@ public class InvitationController {
     private final InvitationService invitationService;
 
     @GetMapping
-    public List<InvitationDTO> getAllInvitations() {
-        return invitationService.getAllInvitations();
+    public Page<InvitationDTO> getAllInvitations(@RequestParam(defaultValue = "0") int page,
+                                                 @RequestParam(defaultValue = "20") int size) {
+        return invitationService.getAllInvitations(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")

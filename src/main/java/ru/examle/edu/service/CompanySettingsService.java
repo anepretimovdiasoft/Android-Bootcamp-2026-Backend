@@ -1,10 +1,11 @@
 package ru.examle.edu.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.examle.edu.dto.CompanySettingsDTO;
-import java.util.List;
 
 public interface CompanySettingsService {
-    List<CompanySettingsDTO> getAllCompanySettings();
+    Page<CompanySettingsDTO> getAllCompanySettings(Pageable pageable);
     CompanySettingsDTO getCompanySettingsById(Long id);
     CompanySettingsDTO createCompanySettings(CompanySettingsDTO companySettingsDTO);
     CompanySettingsDTO updateCompanySettings(Long id, CompanySettingsDTO companySettingsDTO);

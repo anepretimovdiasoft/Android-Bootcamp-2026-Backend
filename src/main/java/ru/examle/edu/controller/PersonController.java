@@ -2,13 +2,13 @@ package ru.examle.edu.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.examle.edu.dto.PersonDTO;
 import ru.examle.edu.service.PersonService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/person")
@@ -17,8 +17,9 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping
-    public List<PersonDTO> getAllPersons() {
-        return personService.getAllPersons();
+    public Page<PersonDTO> getAllPersons(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "20") int size) {
+        return personService.getAllPersons(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")

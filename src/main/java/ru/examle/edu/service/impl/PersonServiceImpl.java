@@ -1,6 +1,8 @@
 package ru.examle.edu.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.examle.edu.dto.PersonDTO;
 import ru.examle.edu.enity.Department;
@@ -12,10 +14,7 @@ import ru.examle.edu.repository.PersonRepository;
 import ru.examle.edu.service.PersonService;
 import ru.examle.edu.ulti.PersonMapper;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,16 +26,8 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public List<PersonDTO> getAllPersons() {
-//        List<Person> all = personRepository.findAll();
-//        List<PersonDTO> res = new ArrayList<>();
-//        for (Person person : all) {
-//            res.add(PersonMapper.convertToDTO(person));
-//        }
-//        return res;
-        return personRepository.findAll().stream()
-                .map(PersonMapper::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<PersonDTO> getAllPersons(Pageable pageable) {
+        return personRepository.findAll(pageable).map(PersonMapper::convertToDTO);
     }
 
     @Override

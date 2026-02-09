@@ -1,6 +1,8 @@
 package ru.examle.edu.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.examle.edu.dto.InvitationDTO;
@@ -8,9 +10,6 @@ import ru.examle.edu.entity.Invitation;
 import ru.examle.edu.repository.InvitationRepository;
 import ru.examle.edu.service.InvitationService;
 import ru.examle.edu.ulti.InvitationMapper;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,8 @@ public class InvitationServiceImpl implements InvitationService {
     private final InvitationMapper invitationMapper;
 
     @Override
-    public List<InvitationDTO> getAllInvitations() {
-        return invitationRepository.findAll().stream()
-                .map(invitationMapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<InvitationDTO> getAllInvitations(Pageable pageable) {
+        return invitationRepository.findAll(pageable).map(invitationMapper::toDTO);
     }
 
     @Override

@@ -1,11 +1,11 @@
 package ru.examle.edu.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.examle.edu.dto.MeetingDTO;
 import ru.examle.edu.service.MeetingService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -15,8 +15,9 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @GetMapping
-    public List<MeetingDTO> getAllMeetings() {
-        return meetingService.getAllMeetings();
+    public Page<MeetingDTO> getAllMeetings(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "20") int size) {
+        return meetingService.getAllMeetings(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")

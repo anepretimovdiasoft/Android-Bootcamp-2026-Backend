@@ -21,6 +21,7 @@
     <include file="db.changelog/2.0/2026-01-29--0008-company_settings.xml"/>
 
     <include file="db.changelog/data/2026-01-29--0001-users-data.xml"/>
+    <include file="db.changelog/2.0/2026-01-29--0009-users-seq-reset.xml"/>
     <include file="db.changelog/data/2026-01-29--0002-rooms-data.xml"/>
     <include file="db.changelog/data/2026-01-29--0003-meetings-data.xml"/>
     <include file="db.changelog/data/2026-01-29--0004-invitations-data.xml"/>

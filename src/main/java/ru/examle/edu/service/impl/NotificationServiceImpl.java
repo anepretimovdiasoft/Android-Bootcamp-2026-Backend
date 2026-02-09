@@ -1,6 +1,8 @@
 package ru.examle.edu.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.examle.edu.dto.NotificationDTO;
@@ -8,9 +10,6 @@ import ru.examle.edu.entity.Notification;
 import ru.examle.edu.repository.NotificationRepository;
 import ru.examle.edu.service.NotificationService;
 import ru.examle.edu.ulti.NotificationMapper;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationMapper notificationMapper;
 
     @Override
-    public List<NotificationDTO> getAllNotifications() {
-        return notificationRepository.findAll().stream()
-                .map(notificationMapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<NotificationDTO> getAllNotifications(Pageable pageable) {
+        return notificationRepository.findAll(pageable).map(notificationMapper::toDTO);
     }
 
     @Override

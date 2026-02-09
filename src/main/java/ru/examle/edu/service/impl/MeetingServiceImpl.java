@@ -1,6 +1,8 @@
 package ru.examle.edu.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.examle.edu.dto.MeetingDTO;
@@ -8,9 +10,6 @@ import ru.examle.edu.entity.Meeting;
 import ru.examle.edu.repository.MeetingRepository;
 import ru.examle.edu.service.MeetingService;
 import ru.examle.edu.ulti.MeetingMapper;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,8 @@ public class MeetingServiceImpl implements MeetingService {
     private final MeetingMapper meetingMapper;
 
     @Override
-    public List<MeetingDTO> getAllMeetings() {
-        return meetingRepository.findAll().stream()
-                .map(meetingMapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<MeetingDTO> getAllMeetings(Pageable pageable) {
+        return meetingRepository.findAll(pageable).map(meetingMapper::toDTO);
     }
 
     @Override
