@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface MeetingService {
     MeetingDTO createMeeting(MeetingCreateDTO meetingCreateDTO, String username);
-    MeetingDTO getMeetingByID(Long Id);
+    MeetingDTO getMeetingByID(Long id);
     List<MeetingDTO> getSchedule(LocalDateTime start, LocalDateTime end, String username);
     List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long Id);
+    void deleteById(Long id, String username);
 }

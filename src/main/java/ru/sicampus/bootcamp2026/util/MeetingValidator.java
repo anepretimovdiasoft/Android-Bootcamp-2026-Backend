@@ -12,6 +12,7 @@ public class MeetingValidator {
                 && startTime.getYear() == endTime.getYear()
                 && startTime.getMinute() == 0 && endTime.getMinute() == 0
                 && startTime.getSecond() == 0 && endTime.getSecond() == 0
+                && startTime.getNano() == 0 && endTime.getNano() == 0
                 && ChronoUnit.HOURS.between(startTime, endTime) == 1;
     }
 }

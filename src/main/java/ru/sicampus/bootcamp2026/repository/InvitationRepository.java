@@ -15,10 +15,10 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     List<Invitation> findByEmployee_UsernameAndStatus(String username, String status);
 
     @EntityGraph(attributePaths = {"employee", "meeting"})
-    boolean existsByMeeting_IdAndEmployee_Id(Long meetingId, Long employeeId);
+    boolean existsByMeeting_IdAndEmployee_Username(Long meetingId, String employeeUsername);
 
     @EntityGraph(attributePaths = {"employee", "meeting"})
-    boolean existsByMeeting_StartTimeAndEmployee_IdAndStatus(LocalDateTime startTime, Long employeeId, String status);
+    boolean existsByMeeting_StartTimeAndEmployee_UsernameAndStatus(LocalDateTime startTime, String employeeUsername, String status);
 
     @EntityGraph(attributePaths = {"employee", "meeting"})
     boolean existsByEmployee_UsernameAndMeeting_StartTimeAndStatus(String username, LocalDateTime startTime, String status);

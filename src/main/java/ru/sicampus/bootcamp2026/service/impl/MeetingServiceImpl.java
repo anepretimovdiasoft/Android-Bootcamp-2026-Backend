@@ -38,7 +38,6 @@ public class MeetingServiceImpl implements MeetingService {
         if(!MeetingValidator.validateStartEnd(meetingCreateDTO.getStartTime(), meetingCreateDTO.getEndTime())) {
             throw new InvalidMeetingDateException("Invalid start or end time");
         }
-
         if(meetingRepository.existsByOwner_UsernameAndStartTime(username, meetingCreateDTO.getStartTime())) {
             throw new InvalidMeetingDateException("You already have a meeting at this time");
         }
@@ -68,12 +67,12 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MeetingDTO getMeetingByID(Long Id) {
-        Optional<Meeting> meeting = meetingRepository.findById(Id);
-        if (meeting.isEmpty()) {
+    public MeetingDTO getMeetingByID(Long id) {
+        Meeting meeting = meetingRepository.findMeetingById(id);
+        if (meeting == null) {
             throw new MeetingNotFoundExeception("Meeting not found");
         }
-        return MeetingMapper.convertToDTO(meeting.get());
+        return MeetingMapper.convertToDTO(meeting);
     }
 
     @Override
@@ -94,12 +93,21 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long Id) {
-        Optional<Meeting> meeting = meetingRepository.findById(Id);
-        if (meeting.isEmpty()) {
+    public List<InvitationEmployeeDTO> getEmployeesByMeetingID(Long id) {
+        Meeting meeting = meetingRepository.findMeetingById(id);
+        if (meeting == null) {
             throw new MeetingNotFoundExeception("Meeting not found");
         }
 
-        return meeting.get().getInvitations().stream().map(InvitationEmployeeMapper::convertToDTO).toList();
+        return meeting.getInvitations().stream().map(InvitationEmployeeMapper::convertToDTO).toList();
+    }
+
+    @Override
+    public void deleteById(Long id, String username) {
+        Meeting meeting = meetingRepository.findByIdAndOwner_Username(id, username);
+        if (meeting == null) {
+            throw new MeetingNotFoundExeception("Meeting not found in your meetings");
+        }
+        meetingRepository.deleteById(id);
     }
 }

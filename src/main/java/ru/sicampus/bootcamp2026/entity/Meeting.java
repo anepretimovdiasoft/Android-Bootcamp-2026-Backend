@@ -3,6 +3,8 @@ package ru.sicampus.bootcamp2026.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -29,7 +31,7 @@ public class Meeting {
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "owner_employee_id", referencedColumnName = "id")
     private Employee owner;
 

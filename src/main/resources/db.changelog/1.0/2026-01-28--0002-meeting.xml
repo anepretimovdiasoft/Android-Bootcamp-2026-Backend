@@ -5,13 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <preConditions>
-        <not>
-            <tableExists tableName="meeting"/>
-        </not>
-    </preConditions>
-
     <changeSet id="2026-01-28--0002-meeting" author="indx0">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="meeting"/>
+            </not>
+        </preConditions>
         <createTable tableName="meeting">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>

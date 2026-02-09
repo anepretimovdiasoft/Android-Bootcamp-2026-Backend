@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +25,17 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+
     @PostMapping("/register")
     @Operation(summary = "Register an employee")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful"),
+            @ApiResponse(responseCode = "201", description = "Successful"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "409", description = "Employee with such username, email or phone number already exists")
 
     })
     ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody @Valid EmployeeRegisterDTO employeeRegisterDTO) {
-        return ResponseEntity.ok(employeeService.createEmployee(employeeRegisterDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.createEmployee(employeeRegisterDTO));
     }
 
     @PostMapping("/login")
@@ -52,9 +55,10 @@ public class EmployeeController {
             @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "409", description = "Employee with such email or phone number already exists")
 
     })
-    public ResponseEntity<EmployeeDTO> patchVoid(@RequestBody @Valid EmployeeEditDTO employeeEditDTO, Authentication authentication) {
+    public ResponseEntity<EmployeeDTO> editEmployee(@RequestBody @Valid EmployeeEditDTO employeeEditDTO, Authentication authentication) {
         return ResponseEntity.ok(employeeService.editEmployee(employeeEditDTO, authentication.getName()));
     }
 
@@ -94,6 +98,34 @@ public class EmployeeController {
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(employeeService.searchEmployeesPaginated(search, pageable));
+    }
+
+    @DeleteMapping("/{username}")
+    @Operation(summary = "Delete a user by username (ADMIN only)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful"),
+            @ApiResponse(responseCode = "404", description = "Employee not found"),
+            @ApiResponse(responseCode = "403", description = "No admin authority"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    public ResponseEntity<Void> deleteEmployee(@PathVariable String username) {
+        employeeService.deleteEmployee(username);
+        return ResponseEntity.noContent().build();
+    }
+    @DeleteMapping("")
+    @Operation(summary = "User self-deletion")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    public ResponseEntity<Void> selfDeleteEmployee(Authentication authentication) {
+        employeeService.deleteEmployee(authentication.getName());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/loginTeapot")
+    public ResponseEntity<Object> postTeapot() {
+        return ResponseEntity.status(418).build();
     }
 
 }

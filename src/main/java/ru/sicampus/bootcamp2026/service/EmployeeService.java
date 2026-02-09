@@ -14,4 +14,5 @@ public interface EmployeeService {
     EmployeeDTO getEmployeeByUsername(String username);
     List<EmployeeDTO> searchEmployees(String search);
     Page<EmployeeDTO> searchEmployeesPaginated(String search, Pageable pageable);
+    void deleteEmployee(String username);
 }

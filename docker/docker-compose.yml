@@ -1,14 +1,45 @@
 services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: indexzero
+      POSTGRES_PASSWORD: gkl370WVUPMgLhK
+      POSTGRES_DB: application_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "127.0.0.1:5430:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U indexzero -d application_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - main_network
+
   backend-app:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
     container_name: backend-app
+    environment:
+      JAVA_TOOL_OPTIONS: -Duser.timezone=Europe/Moscow
     ports:
       - "8080:8080"
     networks:
       - main_network
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 networks:
   main_network:
     external: true
+
+volumes:
+    postgres_data:

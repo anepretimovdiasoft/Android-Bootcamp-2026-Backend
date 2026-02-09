@@ -2,10 +2,7 @@ package ru.sicampus.bootcamp2026.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.sicampus.bootcamp2026.dto.InvitationAnswerDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationCreateDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationDTO;
-import ru.sicampus.bootcamp2026.dto.InvitationMeetingDTO;
+import ru.sicampus.bootcamp2026.dto.*;
 import ru.sicampus.bootcamp2026.entity.Employee;
 import ru.sicampus.bootcamp2026.entity.Invitation;
 import ru.sicampus.bootcamp2026.entity.Meeting;
@@ -17,6 +14,8 @@ import ru.sicampus.bootcamp2026.service.InvitationService;
 import ru.sicampus.bootcamp2026.util.InvitationMapper;
 import ru.sicampus.bootcamp2026.util.InvitationMeetingMapper;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,24 +30,24 @@ public class InvitationServiceImpl implements InvitationService {
     EmployeeRepository employeeRepository;
 
     @Override
-    public InvitationDTO createInvitation(InvitationCreateDTO invitationCreateDTO, String username) {
-        Meeting meeting = meetingRepository.findByIdAndOwner_Username(invitationCreateDTO.getMeetingId(), username);
-        Employee emp = employeeRepository.findById(invitationCreateDTO.getEmployeeId()).orElse(null);
+    public InvitationDTO createInvitation(InvitationCreateDTO dto, String username) {
+        Meeting meeting = meetingRepository.findByIdAndOwner_Username(dto.getMeetingId(), username);
+        Employee emp = employeeRepository.findByUsername(dto.getEmployeeUsername());
         if(meeting == null) {
-            throw new MeetingNotFoundExeception("Meeting not found");
+            throw new MeetingNotOwnedException("Meeting does not exist or is not owned by you");
         }
         if(emp == null) {
             throw new EmployeeNotFoundException("Employee not found");
         }
-        if(invitationRepository.existsByMeeting_IdAndEmployee_Id(invitationCreateDTO.getMeetingId(), invitationCreateDTO.getEmployeeId())) {
+        if(invitationRepository.existsByMeeting_IdAndEmployee_Username(dto.getMeetingId(), dto.getEmployeeUsername())) {
             throw new InvitationAlreadyExistsException("Invitation already exists");
         }
-        if(invitationRepository.existsByMeeting_StartTimeAndEmployee_IdAndStatus(meeting.getStartTime(), invitationCreateDTO.getEmployeeId(), "ACCEPTED")) {
+        if(invitationRepository.existsByMeeting_StartTimeAndEmployee_UsernameAndStatus(meeting.getStartTime(), dto.getEmployeeUsername(), "ACCEPTED")) {
             throw new InvalidMeetingDateException("Employee is busy at this time");
         }
 
         Invitation invitation = new Invitation();
-        invitation.setMessage(invitationCreateDTO.getMessage());
+        invitation.setMessage(dto.getMessage());
         invitation.setStatus("PENDING");
         invitation.setMeeting(meeting);
         invitation.setEmployee(emp);
@@ -57,8 +56,42 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public InvitationDTO answerInvitation(InvitationAnswerDTO invitationAnswerDTO, String username) {
-        Invitation inv = invitationRepository.findById(invitationAnswerDTO.getId()).orElse(null);
+    public List<InvitationDTO> createInvitationsBatch(InvitationCreateBatchDTO dto, String username) {
+        Meeting meeting = meetingRepository.findByIdAndOwner_Username(dto.getMeetingId(), username);
+        ArrayList<Invitation> invitations = new ArrayList<>();
+        ArrayList<String> notInvited = new ArrayList<>();
+        if(meeting == null) {
+            throw new MeetingNotOwnedException("Meeting does not exist or is not owned by you");
+        }
+        for(int i = 0; i < dto.getEmployeeUsernames().size(); i++) {
+            Employee emp = employeeRepository.findByUsername(dto.getEmployeeUsernames().get(i));
+            if(emp == null) {
+                throw new EmployeeNotFoundException("Employee not found: " + dto.getEmployeeUsernames().get(i) + ". Please check the selected users");
+            }
+            else if(invitationRepository.existsByMeeting_IdAndEmployee_Username(dto.getMeetingId(), dto.getEmployeeUsernames().get(i))) {
+                notInvited.add(emp.getUsername());
+            }
+            else if(invitationRepository.existsByMeeting_StartTimeAndEmployee_UsernameAndStatus(meeting.getStartTime(), dto.getEmployeeUsernames().get(i), "ACCEPTED")) {
+                notInvited.add(emp.getUsername());
+            }
+            else {
+                Invitation invitation = new Invitation();
+                invitation.setMessage(dto.getMessage());
+                invitation.setStatus("PENDING");
+                invitation.setMeeting(meeting);
+                invitation.setEmployee(emp);
+                invitations.add(invitation);
+            }
+        }
+        if(!notInvited.isEmpty()) {
+          throw new NotAllUsersInvitedException("Some of the users were busy and not invited to the meeting.");
+        }
+        return invitationRepository.saveAllAndFlush(invitations).stream().map(InvitationMapper::convertToDTO).toList();
+    }
+
+    @Override
+    public InvitationDTO answerInvitation(InvitationAnswerDTO dto, String username) {
+        Invitation inv = invitationRepository.findById(dto.getId()).orElse(null);
         if(inv == null) {
             throw new InvitationNotFoundException("Invitation not found");
         }
@@ -66,11 +99,11 @@ public class InvitationServiceImpl implements InvitationService {
             throw new InvitationNotOwnedException("Invitation does not owned by the employee");
         }
         if(invitationRepository.existsByEmployee_UsernameAndMeeting_StartTimeAndStatus(username, inv.getMeeting().getStartTime(), "ACCEPTED")
-                && invitationAnswerDTO.getStatus().equals("ACCEPTED")) {
+                && dto.getStatus().equals("ACCEPTED")) {
             throw new InvalidMeetingDateException("You are busy at this time");
         }
 
-        inv.setStatus(invitationAnswerDTO.getStatus());
+        inv.setStatus(dto.getStatus());
 
         return InvitationMapper.convertToDTO(invitationRepository.save(inv));
     }
