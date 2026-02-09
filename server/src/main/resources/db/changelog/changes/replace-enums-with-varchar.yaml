@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop-invitations-foreign-keys-before-enum-conversion
+      author: NikshetSteh
+      dbms: postgresql
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: invitations
+            constraintName: fk_invitations_meeting
+        - dropForeignKeyConstraint:
+            baseTableName: invitations
+            constraintName: fk_invitations_user
+
+  - changeSet:
+      id: convert-meetings-status-to-varchar
+      author: NikshetSteh
+      dbms: postgresql
+      changes:
+        - sql:
+            sql: |
+              ALTER TABLE meetings 
+              ALTER COLUMN status TYPE VARCHAR(50) 
+              USING status::TEXT;
+            stripComments: true
+
+  - changeSet:
+      id: convert-invitations-status-to-varchar
+      author: NikshetSteh
+      dbms: postgresql
+      changes:
+        - sql:
+            sql: |
+              ALTER TABLE invitations 
+              ALTER COLUMN status TYPE VARCHAR(50) 
+              USING status::TEXT;
+            stripComments: true
+
+
+  - changeSet:
+      id: recreate-invitations-foreign-keys-after-enum-conversion
+      author: NikshetSteh
+      dbms: postgresql
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: invitations
+            baseColumnNames: meeting_id
+            constraintName: fk_invitations_meeting
+            referencedTableName: meetings
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: invitations
+            baseColumnNames: invitee_id
+            constraintName: fk_invitations_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+  - changeSet:
+      id: drop-enum-types
+      author: NikshetSteh
+      dbms: postgresql
+      changes:
+        - sql:
+            sql: DROP TYPE meeting_status;
+        - sql:
+            sql: DROP TYPE invitation_status;

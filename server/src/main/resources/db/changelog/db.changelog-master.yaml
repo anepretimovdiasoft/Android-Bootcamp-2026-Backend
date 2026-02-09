@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/create-users-table.yaml
+  - include:
+      file: db/changelog/changes/create-meetings-and-invitations.yaml
+  - include:
+      file: db/changelog/changes/replace-enums-with-varchar.yaml

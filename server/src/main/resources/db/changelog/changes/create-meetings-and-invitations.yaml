@@ -1,0 +1,128 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-meeting-status-type
+      author: NikshetSteh
+      changes:
+        - sql:
+            sql: CREATE TYPE meeting_status AS ENUM ('SCHEDULED', 'CANCELLED', 'COMPLETED')
+            dbms: postgresql
+
+  - changeSet:
+      id: create-invitation-status-type
+      author: NikshetSteh
+      changes:
+        - sql:
+            sql: CREATE TYPE invitation_status AS ENUM ('PENDING', 'ACCEPTED', 'DECLINED')
+            dbms: postgresql
+
+  - changeSet:
+      id: create-meetings-table
+      author: NikshetSteh
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: meetings
+      changes:
+        - createTable:
+            tableName: meetings
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: organizer_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: location
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_time
+                  type: TIMESTAMP WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: duration_hours
+                  type: SMALLINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: meeting_status
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create-invitations-table
+      author: NikshetSteh
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: invitations
+      changes:
+        - createTable:
+            tableName: invitations
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: meeting_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: invitee_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: invitation_status
+                  constraints:
+                    nullable: false
+              - column:
+                  name: invited_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: responded_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+        - addForeignKeyConstraint:
+            baseTableName: invitations
+            baseColumnNames: meeting_id
+            constraintName: fk_invitations_meeting
+            referencedTableName: meetings
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: invitations
+            baseColumnNames: invitee_id
+            constraintName: fk_invitations_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addUniqueConstraint:
+            tableName: invitations
+            columnNames: meeting_id, invitee_id
+            constraintName: uk_meeting_invitee
