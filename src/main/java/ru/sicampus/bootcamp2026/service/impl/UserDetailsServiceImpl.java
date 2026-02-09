@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.entity.User;
-import ru.sicampus.bootcamp2026.exception.user.UserNotFoundException;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 
 import java.util.Optional;
@@ -22,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<User> user = userRepository.findByLogin(username);
 
         if (user.isEmpty()){
-            throw new UserNotFoundException("User not found");
+            throw new UsernameNotFoundException("User not found");
         }
 
         return user.get();

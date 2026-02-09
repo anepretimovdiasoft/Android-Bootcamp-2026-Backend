@@ -18,6 +18,11 @@ public class MeetingMapper {
         dto.setLocation(entity.getLocation());
         dto.setUrl(entity.getUrl());
 
+        dto.setInviteeLogins(entity.getInvitations().stream()
+                .map(invitation -> invitation.getInvitee().getLogin())
+                .toList()
+        );
+
         return dto;
     }
 }

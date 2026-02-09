@@ -10,6 +10,6 @@ public class UserNotOrganizerException extends ClientException {
 
     @Override
     public HttpStatus getHttpStatus() {
-        return HttpStatus.BAD_REQUEST;
+        return HttpStatus.FORBIDDEN;
     }
 }

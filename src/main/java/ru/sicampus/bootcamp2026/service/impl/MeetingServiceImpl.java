@@ -2,6 +2,7 @@ package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.dto.MeetingDto;
 import ru.sicampus.bootcamp2026.entity.Invitation;
 import ru.sicampus.bootcamp2026.entity.Meeting;
@@ -28,7 +29,6 @@ public class MeetingServiceImpl implements MeetingService {
     private final UserRepository userRepository;
     private final InvitationRepository invitationRepository;
 
-    private static final Long DEMO_ORGANIZER_ID = 1L;
     private static final Long UNREACHABLE_MEETING_ID = -1L;
 
     /**
@@ -66,15 +66,16 @@ public class MeetingServiceImpl implements MeetingService {
      * @throws OrganizerInInviteesException если организатор указан среди приглашённых
      */
     @Override
-    public MeetingDto createMeeting(MeetingDto dto) {
+    @Transactional
+    public MeetingDto createMeeting(MeetingDto dto, Long organizerId) {
         validateMeetingTime(dto);
-        var meeting = createMeetingFromDto(new Meeting(), dto);
+        var meeting = createMeetingFromDto(new Meeting(), dto, organizerId);
 
-        checkBusyTimeForOrganizer(dto, UNREACHABLE_MEETING_ID);
+        checkBusyTimeForOrganizer(dto, UNREACHABLE_MEETING_ID, organizerId);
 
         var users = resolveInvitees(dto.getInviteeLogins());
         var lengthListBefore = users.size();
-        users.removeIf(user -> user.getId().equals(DEMO_ORGANIZER_ID));
+        users.removeIf(user -> user.getId().equals(organizerId));
         var lengthListAfter = users.size();
         if (lengthListBefore != lengthListAfter){
             throw new OrganizerInInviteesException("Organizer won't be in list invitees");
@@ -111,6 +112,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @throws UserBusyInThisTimeException если новый участник занят
      */
     @Override
+    @Transactional
     public MeetingDto updateMeeting(Long id, MeetingDto dto, Long userId) {
         validateMeetingTime(dto);
         var existingMeeting = meetingRepository.findById(id)
@@ -119,29 +121,29 @@ public class MeetingServiceImpl implements MeetingService {
             throw new UserNotOrganizerException("User not organizer");
         }
 
-        checkBusyTimeForOrganizer(dto, id);
+        checkBusyTimeForOrganizer(dto, id, userId);
 
         boolean locationChanged = !Objects.equals(existingMeeting.getLocation(), dto.getLocation());
         boolean timeChanged = !existingMeeting.getStartAt().equals(dto.getStartAt())
                 || !existingMeeting.getEndAt().equals(dto.getEndAt());
         boolean isSignificantChange = timeChanged || locationChanged;
 
-        createMeetingFromDto(existingMeeting, dto);
+        createMeetingFromDto(existingMeeting, dto, userId);
 
         List<String> newLogins = Optional.ofNullable(dto.getInviteeLogins()).orElse(List.of());
 
         if (isSignificantChange) {
-            validateNewInviteesForConflicts(newLogins, existingMeeting);
+            validateNewInviteesForConflicts(newLogins, existingMeeting, userId);
         } else {
-            validateAddedInviteesForConflicts(newLogins, existingMeeting);
+            validateAddedInviteesForConflicts(newLogins, existingMeeting, userId);
         }
 
         var savedMeeting = meetingRepository.save(existingMeeting);
 
         if (isSignificantChange) {
-            recreateAllInvitations(savedMeeting, newLogins);
+            recreateAllInvitations(savedMeeting, newLogins, userId);
         } else {
-            updateInviteesOnly(savedMeeting, newLogins);
+            updateInviteesOnly(savedMeeting, newLogins, userId);
         }
 
         return MeetingMapper.toDto(savedMeeting);
@@ -154,9 +156,9 @@ public class MeetingServiceImpl implements MeetingService {
      * @param meeting   встреча (с новыми временем/местом)
      * @throws UserBusyInThisTimeException если один из приглашённых занят
      */
-    private void validateNewInviteesForConflicts(List<String> newLogins, Meeting meeting) {
+    private void validateNewInviteesForConflicts(List<String> newLogins, Meeting meeting, Long organizerId) {
         var newInvitees = resolveInvitees(newLogins);
-        newInvitees.removeIf(user -> user.getId().equals(DEMO_ORGANIZER_ID));
+        newInvitees.removeIf(user -> user.getId().equals(organizerId));
         for (var invitee : newInvitees) {
             if (hasConflict(invitee.getId(), meeting.getStartAt(), meeting.getEndAt(), meeting.getId())) {
                 throw new UserBusyInThisTimeException("User: " + invitee.getLogin() + " busy in this time...");
@@ -171,7 +173,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @param meeting   встреча
      * @throws UserBusyInThisTimeException если один из добавленных приглашённых занят
      */
-    private void validateAddedInviteesForConflicts(List<String> newLogins, Meeting meeting) {
+    private void validateAddedInviteesForConflicts(List<String> newLogins, Meeting meeting, Long organizerId) {
         List<Invitation> currentInvitations = invitationRepository.findByMeetingId(meeting.getId());
         Set<String> currentLogins = currentInvitations.stream()
                 .map(inv -> inv.getInvitee().getLogin())
@@ -182,7 +184,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         if (!toAdd.isEmpty()) {
             var newUsers = resolveInvitees(new ArrayList<>(toAdd));
-            newUsers.removeIf(user -> user.getId().equals(DEMO_ORGANIZER_ID));
+            newUsers.removeIf(user -> user.getId().equals(organizerId));
             for (var user : newUsers) {
                 if (hasConflict(user.getId(), meeting.getStartAt(), meeting.getEndAt(), meeting.getId())) {
                     throw new UserBusyInThisTimeException("User: " + user.getLogin() + " busy in this time...");
@@ -198,10 +200,11 @@ public class MeetingServiceImpl implements MeetingService {
      * @param meeting    встреча
      * @param newLogins  логины приглашённых
      */
-    private void recreateAllInvitations(Meeting meeting, List<String> newLogins) {
+    @Transactional
+    private void recreateAllInvitations(Meeting meeting, List<String> newLogins, Long organizerId) {
         invitationRepository.deleteByMeetingId(meeting.getId());
         var newInvitees = resolveInvitees(newLogins);
-        newInvitees.removeIf(user -> user.getId().equals(DEMO_ORGANIZER_ID));
+        newInvitees.removeIf(user -> user.getId().equals(organizerId));
         for (var invitee : newInvitees) {
             Invitation inv = new Invitation();
             inv.setMeeting(meeting);
@@ -240,8 +243,8 @@ public class MeetingServiceImpl implements MeetingService {
      * @return заполненная сущность встречи
      * @throws OrganizerNotExistsException если демо-организатор не найден в БД
      */
-    private Meeting createMeetingFromDto(Meeting meeting, MeetingDto dto){
-        var organizer = userRepository.findById(DEMO_ORGANIZER_ID)
+    private Meeting createMeetingFromDto(Meeting meeting, MeetingDto dto, Long organizerId){
+        var organizer = userRepository.findById(organizerId)
                 .orElseThrow(() -> new OrganizerNotExistsException("Meeting can't be created because organizer doesn't exist"));
 
         meeting.setTitle(dto.getTitle());
@@ -331,8 +334,8 @@ public class MeetingServiceImpl implements MeetingService {
      * @param excludeMeetingId  идентификатор встречи, которую следует игнорировать
      * @throws OrganizerBusyInThisTimeException если организатор занят
      */
-    private void checkBusyTimeForOrganizer(MeetingDto dto, Long excludeMeetingId){
-        if (hasConflict(DEMO_ORGANIZER_ID, dto.getStartAt(), dto.getEndAt(), excludeMeetingId)) {
+    private void checkBusyTimeForOrganizer(MeetingDto dto, Long excludeMeetingId, Long organizerId){
+        if (hasConflict(organizerId, dto.getStartAt(), dto.getEndAt(), excludeMeetingId)) {
             throw new OrganizerBusyInThisTimeException("Organizer is busy during this time");
         }
     }
@@ -347,7 +350,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @param meeting    встреча
      * @param newLogins  новый список логинов приглашённых
      */
-    private void updateInviteesOnly(Meeting meeting, List<String> newLogins) {
+    private void updateInviteesOnly(Meeting meeting, List<String> newLogins, Long organizerId) {
         List<Invitation> currentInvitations = invitationRepository.findByMeetingId(meeting.getId());
 
         Set<String> currentLogins = currentInvitations.stream()
@@ -373,7 +376,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         if (!toAdd.isEmpty()) {
             var newUsers = resolveInvitees(new ArrayList<>(toAdd));
-            newUsers.removeIf(user -> user.getId().equals(DEMO_ORGANIZER_ID));
+            newUsers.removeIf(user -> user.getId().equals(organizerId));
 
             for (var user : newUsers) {
                 Invitation inv = new Invitation();

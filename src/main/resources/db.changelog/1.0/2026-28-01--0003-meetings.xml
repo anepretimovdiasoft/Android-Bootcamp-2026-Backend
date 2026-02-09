@@ -19,6 +19,7 @@
                          foreignKeyName="fk_users_meetings"
                          referencedTableName="users"
                          referencedColumnNames="id"
+                         deleteCascade="true"
             />
         </column>
         <column name="title" type="varchar(100)">

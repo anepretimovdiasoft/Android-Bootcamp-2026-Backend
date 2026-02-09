@@ -2,20 +2,26 @@ package ru.sicampus.bootcamp2026.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.dto.InvitationDto;
+import ru.sicampus.bootcamp2026.entity.Meeting;
 import ru.sicampus.bootcamp2026.enums.InvitationStatus;
 import ru.sicampus.bootcamp2026.exception.invitation.InvitationAccessDeniedException;
 import ru.sicampus.bootcamp2026.exception.invitation.InvitationAlreadyRespondedException;
 import ru.sicampus.bootcamp2026.exception.invitation.InvitationNotFoundException;
 import ru.sicampus.bootcamp2026.exception.invitation.InvitationRespondAfterStartMeetingException;
+import ru.sicampus.bootcamp2026.exception.meeting.MeetingNotFoundException;
+import ru.sicampus.bootcamp2026.exception.meeting.UserNotOrganizerException;
 import ru.sicampus.bootcamp2026.exception.user.UserNotFoundException;
 import ru.sicampus.bootcamp2026.repository.InvitationRepository;
+import ru.sicampus.bootcamp2026.repository.MeetingRepository;
 import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.InvitationService;
 import ru.sicampus.bootcamp2026.util.InvitationMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +29,7 @@ public class InvitationServiceImpl implements InvitationService {
 
     private final InvitationRepository invitationRepository;
     private final UserRepository userRepository;
+    private final MeetingRepository meetingRepository;
 
     @Override
     public List<InvitationDto> getMyInvitations(Long currentUserId) {
@@ -36,6 +43,7 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
+    @Transactional
     public void respondToInvitation(Long invitationId, InvitationStatus status, Long currentUserId) {
         var invitation = invitationRepository.findById(invitationId)
                 .orElseThrow(() -> new InvitationNotFoundException("Invitation not found"));
@@ -53,9 +61,14 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public List<InvitationDto> getMeetingInvitations(Long meetingId, Long organizerId) {
-        validateUserExists(organizerId);
+    public List<InvitationDto> getMeetingInvitations(Long meetingId, Long userId) {
+        validateUserExists(userId);
+        Optional<Meeting> meeting = Optional.ofNullable(meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new MeetingNotFoundException("Meeting not found")));
 
+        if (!meeting.get().getOrganizer().getId().equals(userId)){
+            throw new UserNotOrganizerException("User not organizer");
+        }
         return invitationRepository.findByMeetingId(meetingId)
                 .stream()
                 .map(InvitationMapper::toDto)

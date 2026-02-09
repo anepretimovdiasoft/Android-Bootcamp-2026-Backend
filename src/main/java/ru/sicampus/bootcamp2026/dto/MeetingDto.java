@@ -15,7 +15,7 @@ public final class MeetingDto {
     private @NotNull LocalDateTime startAt;
     private @NotNull LocalDateTime endAt;
     private String description;
-    private MeetingType type;
+    private @NotNull MeetingType type;
     private String location;
     private String url;
     private List<String> inviteeLogins;

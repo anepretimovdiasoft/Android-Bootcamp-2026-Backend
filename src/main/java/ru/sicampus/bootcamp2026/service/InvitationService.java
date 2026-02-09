@@ -10,6 +10,6 @@ public interface InvitationService {
 
     void respondToInvitation(Long invitationId, InvitationStatus status, Long currentUserId);
 
-    List<InvitationDto> getMeetingInvitations(Long meetingId, Long organizerId);
+    List<InvitationDto> getMeetingInvitations(Long meetingId, Long userId);
 
 }

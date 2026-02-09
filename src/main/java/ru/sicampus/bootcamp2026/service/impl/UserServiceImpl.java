@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2026.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sicampus.bootcamp2026.dto.UserDto;
 import ru.sicampus.bootcamp2026.dto.UserRegisterDto;
 import ru.sicampus.bootcamp2026.entity.Position;
@@ -15,6 +16,7 @@ import ru.sicampus.bootcamp2026.repository.UserRepository;
 import ru.sicampus.bootcamp2026.service.UserService;
 import ru.sicampus.bootcamp2026.util.UserMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,13 +29,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto getUserById(Long id) {
-        return userRepository.findById(id)
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
                 .map(UserMapper::toDto)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .toList();
     }
 
     @Override
+    @Transactional
     public UserDto createUser(UserRegisterDto dto) {
         if (userRepository.existsByLogin(dto.getLogin())){
             throw new UserAlreadyExist("User with this login already exists");
@@ -52,6 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateUser(String login, UserDto dto) {
 
         User user = userRepository.findByLogin(login)
@@ -59,18 +64,21 @@ public class UserServiceImpl implements UserService {
 
         Optional<Position> optionalPosition = positionRepository.findByPosition(dto.getPosition());
         user.setPosition(optionalPosition.orElseThrow(() -> new PositionNotFoundException("Position not found")));
-
+        Optional<User> tmp = userRepository.findByLogin(dto.getLogin());
+        if (!(tmp.isEmpty() || user.equals(tmp.get()))){
+            throw new UserAlreadyExist("User with this login already exist");
+        }
         user.setLogin(dto.getLogin());
         user.setName(dto.getName());
         user.setLastname(dto.getLastname());
         user.setAboutMe(dto.getAboutMe());
         user.setPhotoUrl(dto.getPhotoUrl());
-        user.setPassword("temp");
 
         return UserMapper.toDto(userRepository.save(user));
     }
 
     @Override
+    @Transactional
     public void deleteUser(String login) {
         userRepository.deleteUserByLogin(login);
     }
