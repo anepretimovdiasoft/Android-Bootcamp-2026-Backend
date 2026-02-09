@@ -37,9 +37,23 @@ public class GlobalExceptionHandler {
 
     private HttpStatus determineHttpStatus(ErrorCode errorCode) {
         return switch (errorCode) {
+            case NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case INTERNAL_ERROR -> HttpStatus.INTERNAL_SERVER_ERROR;
+            case ACCESS_DENIED -> HttpStatus.FORBIDDEN;
+            case VALIDATION_ERROR -> HttpStatus.UNPROCESSABLE_ENTITY;
+
             case USER_NOT_FOUND -> HttpStatus.NOT_FOUND;
             case USER_ALREADY_EXISTS -> HttpStatus.CONFLICT;
-            default -> HttpStatus.BAD_REQUEST;
+            case INVALID_CREDENTIALS -> HttpStatus.UNAUTHORIZED;
+
+            case MEETING_NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case MEETING_ACCESS_DENIED -> HttpStatus.FORBIDDEN;
+            case MEETING_TIME_CONFLICT -> HttpStatus.CONFLICT;
+
+            case INVITATION_NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case INVITATION_ALREADY_EXISTS -> HttpStatus.CONFLICT;
+            case INVITATION_ALREADY_RESPONDED -> HttpStatus.CONFLICT;
+            case INVITATION_ACCESS_DENIED -> HttpStatus.FORBIDDEN;
         };
     }
 }

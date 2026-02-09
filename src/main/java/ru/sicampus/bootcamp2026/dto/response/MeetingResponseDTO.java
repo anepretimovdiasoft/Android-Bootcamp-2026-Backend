@@ -14,7 +14,7 @@ public class MeetingResponseDTO {
 
     private String title;
 
-    private String descripption;
+    private String description;
 
     private Instant timeStart;
 

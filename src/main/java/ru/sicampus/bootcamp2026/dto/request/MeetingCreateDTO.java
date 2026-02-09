@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import ru.sicampus.bootcamp2026.validation.HourStepTime;
 
@@ -8,19 +9,17 @@ import java.time.Instant;
 
 @Data
 public class MeetingCreateDTO {
-    @NotBlank
-    private long organizerId; // TODO: make organizer = current user
-
+    @NotNull
     @NotBlank
     private String title;
 
     private String description;
 
-    @NotBlank
+    @NotNull
     @HourStepTime
     private Instant timeStart;
 
-    @NotBlank
+    @NotNull
     @HourStepTime
     private Instant timeEnd;
 }

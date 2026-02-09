@@ -10,10 +10,6 @@
     <include file="db.changelog/1.0/2026-02-03--0004-authority.xml"/>
     <include file="db.changelog/1.0/2026-02-03--0005-user-authority.xml"/>
 
-    <include file="db.changelog/data/2026-01-28--0001-user-data.xml"/>
-    <include file="db.changelog/data/2026-01-28--0002-meeting-data.xml"/>
-    <include file="db.changelog/data/2026-01-28--0003-invitation-data.xml"/>
     <include file="db.changelog/data/2026-02-03--0004-authority-data.xml"/>
-    <include file="db.changelog/data/2026-02-03--0005-user-authority-data.xml"/>
 
 </databaseChangeLog>

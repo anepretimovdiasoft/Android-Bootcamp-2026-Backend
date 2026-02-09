@@ -1,17 +1,13 @@
 package ru.sicampus.bootcamp2026.service;
 
-import ru.sicampus.bootcamp2026.dto.request.UserCreateDTO;
-import ru.sicampus.bootcamp2026.dto.request.UserUpdateDTO;
-import ru.sicampus.bootcamp2026.dto.response.UserResponseDTO;
-import ru.sicampus.bootcamp2026.exception.UserExistsException;
-import ru.sicampus.bootcamp2026.exception.UserNotFoundException;
+import ru.sicampus.bootcamp2026.dto.request.MeetingCreateDTO;
+import ru.sicampus.bootcamp2026.dto.response.MeetingResponseDTO;
+import ru.sicampus.bootcamp2026.exception.MeetingException;
 
 import java.util.List;
 
 public interface MeetingService {
-    List<UserResponseDTO> getAllUsers();
-    UserResponseDTO getUserById(long id) throws UserNotFoundException;
-    UserResponseDTO createUser(UserCreateDTO dto) throws UserExistsException;
-    UserResponseDTO updateUser(long id, UserUpdateDTO dto) throws UserNotFoundException;
-    void deleteUser(long id);
+    MeetingResponseDTO createMeeting(MeetingCreateDTO dto) throws MeetingException;
+    List<MeetingResponseDTO> getSchedule();
+    void deleteMeeting(long id) throws MeetingException;
 }
