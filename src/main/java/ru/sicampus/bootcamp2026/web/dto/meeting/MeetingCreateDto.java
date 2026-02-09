@@ -26,7 +26,7 @@ public class MeetingCreateDto {
     private String address;
 
     @Schema(description = "Описание", example = "Обсудим вопросы заказчика по UX дизайну андройд приложения")
-    @Length(max = 50, message = "Длина описания максимум 140 символов.")
+    @Length(max = 140, message = "Длина описания максимум 140 символов.")
     private String description;
 
     @Schema(description = "Дата встречи", example = "2026-02-01")

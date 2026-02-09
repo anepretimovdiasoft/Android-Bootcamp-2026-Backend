@@ -3,6 +3,8 @@ package ru.sicampus.bootcamp2026.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.aspect.annotation.LogExample;
 import ru.sicampus.bootcamp2026.entity.User;
@@ -38,7 +40,10 @@ public class UserServiceImpl implements UserService {
     @LogExample
     @Transactional(readOnly = true)
     public Page<User> search(String search, Pageable pageable) {
-        return userRepository.search(search, pageable);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        return userRepository.search(search, user.getId(), pageable);
     }
 
     @Override
