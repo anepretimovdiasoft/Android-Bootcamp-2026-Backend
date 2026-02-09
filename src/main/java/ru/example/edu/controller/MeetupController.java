@@ -20,14 +20,19 @@ public class MeetupController {
     private final MeetupService meetupService;
 
     @GetMapping
-    public List<MeetupWithInvitesDTO> getAllMeetups() {return meetupService.getAllMeetups();}
+    public ResponseEntity<List<MeetupWithInvitesDTO>> getAllMeetups(@RequestParam(defaultValue = "0") Long id) {
+        if (id != 0) {
+            return ResponseEntity.status(HttpStatus.OK).body(meetupService.getAllPersonsMeetups(id));
+        }
+        return ResponseEntity.ok(meetupService.getAllMeetups());
+    }
 
     @GetMapping("/{id}")
     public MeetupWithInvitesDTO getMeetupById(@PathVariable Long id) {
         return meetupService.getMeetupById(id);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping()
     public ResponseEntity<MeetupDTO> createMeetup(@RequestBody MeetupToCreateDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(meetupService.createMeetup(dto));
     }

@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.example.edu.exception.DepartmentNotFoundException;
-import ru.example.edu.exception.InviteNotFoundException;
-import ru.example.edu.exception.MeetupNotFoundException;
-import ru.example.edu.exception.PersonNotFoundException;
+import ru.example.edu.exception.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,5 +26,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MeetupNotFoundException.class)
     public ResponseEntity<String> handleMeetupNotFoundException(MeetupNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PersonAlreadyExistsException.class)
+    public ResponseEntity<String> handlePersonAlreadyExistsException(PersonAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.CONFLICT);
     }
 }

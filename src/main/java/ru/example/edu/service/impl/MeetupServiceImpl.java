@@ -6,16 +6,19 @@ import ru.example.edu.dto.MeetupToCreateDTO;
 import ru.example.edu.dto.MeetupWithInvitesDTO;
 import ru.example.edu.dto.MeetupDTO;
 import ru.example.edu.dto.MeetupShortDTO;
+import ru.example.edu.entity.Invite;
 import ru.example.edu.entity.Meetup;
 import ru.example.edu.entity.Person;
 import ru.example.edu.exception.MeetupNotFoundException;
 import ru.example.edu.exception.PersonNotFoundException;
+import ru.example.edu.repository.InviteRepository;
 import ru.example.edu.repository.MeetupRepository;
 import ru.example.edu.repository.PersonRepository;
 import ru.example.edu.service.MeetupService;
 import ru.example.edu.util.MeetupMapper;
 import ru.example.edu.util.PersonMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 public class MeetupServiceImpl implements MeetupService  {
     private final MeetupRepository meetupRepository;
     private final PersonRepository personRepository;
+    private final InviteRepository inviteRepository;
 
     @Override
     public List<MeetupWithInvitesDTO> getAllMeetups() {
@@ -43,11 +47,11 @@ public class MeetupServiceImpl implements MeetupService  {
         if (optionalPerson.isEmpty()) {
             throw new PersonNotFoundException("Person not found!");
         }
-        MeetupDTO meetup = new MeetupDTO();
+        Meetup meetup = new Meetup();
         meetup.setDate(dto.getDate());
         meetup.setTime(dto.getTime());
-        meetup.setPlanner(PersonMapper.convertToShortDtoWithInvites(optionalPerson.get()));
-        return meetup;
+        meetup.setPlanner(optionalPerson.get());
+        return MeetupMapper.convertToDto(meetupRepository.save(meetup));
     }
 
     @Override
@@ -63,5 +67,19 @@ public class MeetupServiceImpl implements MeetupService  {
     public void deleteMeetup(Long id) {
         meetupRepository.findById(id).orElseThrow(() -> new MeetupNotFoundException("Meetup not found!"));
         meetupRepository.deleteById(id);
+    }
+
+    @Override
+    public List<MeetupWithInvitesDTO> getAllPersonsMeetups(Long id) {
+        Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException("Person with id " + id + " not found!"));
+
+        List<Meetup> meetups = new ArrayList<>();
+        for (Invite i : inviteRepository.findByParticipantId(id)) {
+            if (i.getAgree() != null && i.getAgree()) {
+                meetups.add(i.getMeetup());
+            }
+        }
+
+        return meetups.stream().map(MeetupMapper::convertToDtoWithInvites).collect(Collectors.toList());
     }
 }

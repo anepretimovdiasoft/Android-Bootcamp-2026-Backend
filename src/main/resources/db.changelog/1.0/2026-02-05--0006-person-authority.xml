@@ -4,28 +4,24 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="2026-01-29--0004-meetup" author="kbadogin">
+    <changeSet id="2026-02-05--0006-person-authority" author="kbadogin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="meetup"/>
+                <tableExists tableName="person_authorities"/>
             </not>
         </preConditions>
 
-        <createTable tableName="meetup">
+        <createTable tableName="person_authorities">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="date" type="DATE">
-                <constraints nullable="false"/>
+            <column name="person_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_persauth_person" referencedTableName="person" referencedColumnNames="id"/>
             </column>
 
-            <column name="time" type="TIME">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="planner_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_meetup_person" referencedTableName="person" referencedColumnNames="id"/>
+            <column name="authorities_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_persauth_authority" referencedTableName="authority" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>

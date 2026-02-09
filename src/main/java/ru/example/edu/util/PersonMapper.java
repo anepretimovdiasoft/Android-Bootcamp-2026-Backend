@@ -18,7 +18,7 @@ public class PersonMapper {
         personDTO.setName(person.getName());
         personDTO.setPhotoUrl(person.getPhotoUrl());
         personDTO.setDepartmentName(person.getDepartment().getName());
-        personDTO.setMeetups(person.getMeetups().stream().map(MeetupMapper::convertToShortDto).collect(Collectors.toList()));
+        personDTO.setMeetups(person.getMeetups().stream().map(MeetupMapper::convertToDto).collect(Collectors.toList()));
         personDTO.setInvites(person.getInvites().stream().map(InviteMapper::convertToDtoWithMeetup).collect(Collectors.toList()));
         return personDTO;
     }
