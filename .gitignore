@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+.env
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -30,6 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.env
+/data
+/uploads
 
 ### Mac OS ###
 .DS_Store

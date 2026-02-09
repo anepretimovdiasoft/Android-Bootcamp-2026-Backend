@@ -25,4 +25,10 @@ public class Meeting {
 
     @Column(name = "end_time", nullable = false)
     private OffsetDateTime endsAt;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "color_hex")
+    private String colorHex;
 }

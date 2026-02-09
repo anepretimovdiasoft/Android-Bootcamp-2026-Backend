@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.domain.User;
 import ru.sicampus.bootcamp2026.error.UserNotFoundException;
 import ru.sicampus.bootcamp2026.repo.UserRepository;
-
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

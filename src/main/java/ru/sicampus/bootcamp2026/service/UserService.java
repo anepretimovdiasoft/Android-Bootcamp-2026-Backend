@@ -12,10 +12,11 @@ import java.util.List;
 
 public interface UserService {
 
-    Page<UserResponse> getAllUserPaginated(Pageable pageable);
+    Page<UserResponse> getAllUserPaginated(String search, Pageable pageable);
+
     List<UserResponse> list();
 
-    List<MeetingResponse> listMeetingsByStatus(long userId, String status);
+    Page<MeetingResponse> listMeetingsByStatus(long userId, String status, Pageable pageable);
 
     InvitationDecisionRequest decideInvitation(long userId, long meetingId, InvitationDecisionRequest req);
 

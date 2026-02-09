@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.CreateMeetingRequest;
+import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingParticipantResponse;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingResponse;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.UpdateMeetingRequest;
 import ru.sicampus.bootcamp2026.service.MeetingService;
@@ -25,6 +26,11 @@ public class MeetingController {
     @GetMapping("/{id}")
     public MeetingResponse get(@PathVariable long id) {
         return service.get(id);
+    }
+
+    @GetMapping("/{id}/participants")
+    public List<MeetingParticipantResponse> getParticipants(@PathVariable long id) {
+        return service.getParticipants(id);
     }
 
     @PostMapping

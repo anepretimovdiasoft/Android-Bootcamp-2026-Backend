@@ -6,25 +6,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.sicampus.bootcamp2026.domain.Authority;
-import ru.sicampus.bootcamp2026.domain.User;
-import ru.sicampus.bootcamp2026.domain.UserMeeting;
-import ru.sicampus.bootcamp2026.domain.UserMeetingId;
+import ru.sicampus.bootcamp2026.domain.*;
 import ru.sicampus.bootcamp2026.dto.MeetingDtos.MeetingResponse;
-import ru.sicampus.bootcamp2026.dto.UserDtos.CreateUserRequest;
-import ru.sicampus.bootcamp2026.dto.UserDtos.InvitationDecisionRequest;
-import ru.sicampus.bootcamp2026.dto.UserDtos.UpdateUserRequest;
-import ru.sicampus.bootcamp2026.dto.UserDtos.UserResponse;
+import ru.sicampus.bootcamp2026.dto.UserDtos.*;
 import ru.sicampus.bootcamp2026.error.*;
-import ru.sicampus.bootcamp2026.repo.AuthorityRepository;
-import ru.sicampus.bootcamp2026.repo.UserMeetingRepository;
-import ru.sicampus.bootcamp2026.repo.UserRepository;
+import ru.sicampus.bootcamp2026.repo.*;
 import ru.sicampus.bootcamp2026.service.UserService;
 import ru.sicampus.bootcamp2026.util.MeetingMapper;
 import ru.sicampus.bootcamp2026.util.UserMapper;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -38,121 +28,93 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Page<UserResponse> getAllUserPaginated(Pageable pageable) {
-        return userRepository.findAll(pageable).map(UserMapper::toResponse);
+    public Page<UserResponse> getAllUserPaginated(String search, Pageable pageable) {
+        Page<User> userPage;
+        if (search == null || search.isBlank()) {
+            userPage = userRepository.findAll(pageable);
+        } else {
+            userPage = userRepository.findByNameContainingIgnoreCase(search, pageable);
+        }
+        return userPage.map(UserMapper::toResponse);
     }
 
     @Override
     public List<UserResponse> list() {
-        return userRepository.findAll().stream()
-                .map(UserMapper::toResponse)
-                .toList();
+        return userRepository.findAll().stream().map(UserMapper::toResponse).toList();
     }
 
     @Override
     @Transactional
     public InvitationDecisionRequest decideInvitation(long userId, long meetingId, InvitationDecisionRequest req) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException("User not found: " + userId);
-        }
-
         UserMeetingId id = new UserMeetingId(userId, meetingId);
-
-        UserMeeting um = usMetRepo.findById(id)
-                .orElseThrow(() -> new InvitationNotFoundException(
-                        "Invitation not found for user=" + userId + " meeting=" + meetingId
-                ));
-
+        UserMeeting um = usMetRepo.findById(id).orElseThrow(() -> new InvitationNotFoundException("Invitation not found"));
         um.setStatus(req.status());
         usMetRepo.save(um);
-
         return new InvitationDecisionRequest(um.getStatus());
     }
 
-
     @Override
     @Transactional(readOnly = true)
-    public List<MeetingResponse> listMeetingsByStatus(long userId, String status) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException("User not found: " + userId);
-        }
+    public Page<MeetingResponse> listMeetingsByStatus(long userId, String status, Pageable pageable) {
+        if (!userRepository.existsById(userId)) throw new UserNotFoundException("User not found: " + userId);
 
         String normalized = status == null ? "" : status.trim().toUpperCase();
-        if (!ALLOWED_STATUSES.contains(normalized)) {
-            throw new WrongInvitationException("Invalid status: " + status + ". Allowed: ACCEPTED|REJECTED|PENDING");
-        }
+        if (!ALLOWED_STATUSES.contains(normalized)) throw new WrongInvitationException("Invalid status");
 
-        return usMetRepo.findMeetingsByUserIdAndStatus(userId, normalized).stream()
-                .map(MeetingMapper::toResponse)
-                .toList();
+        return usMetRepo.findMeetingsByUserIdAndStatus(userId, normalized, pageable)
+                .map(MeetingMapper::toResponse);
     }
-
 
     @Override
     public UserResponse get(long id) {
-        User u = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
-
-        return new UserResponse(u.getId(), u.getPosition(), u.getName(), u.getLogin());
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found: " + id));
+        return UserMapper.toResponse(u);
     }
 
     @Override
     public UserResponse getByLogin(String login) {
-        Optional<User> user = userRepository.getUserByLogin(login);
-
-        if (user.isEmpty()) {
-            throw new UserNotFoundException("user not found!");
-        }
-        User u = user.get();
-        return new UserResponse(u.getId(), u.getPosition(), u.getName(), u.getLogin());
+        User u = userRepository.getUserByLogin(login).orElseThrow(() -> new UserNotFoundException("user not found!"));
+        return UserMapper.toResponse(u);
     }
 
     @Override
     @Transactional
     public UserResponse create(CreateUserRequest req) {
-        if (userRepository.getUserByLogin(req.login()).isPresent()) {
-            throw new UserAlreadyExistsException("login already exists");
-        }
-        Optional<Authority> roleUser = authorityRepository.getAuthorityByAuthority("ROLE_USER");
-        if (roleUser.isEmpty())  {
-            throw new RuntimeException("Authority not found");
-        }
+        if (userRepository.getUserByLogin(req.login()).isPresent()) throw new UserAlreadyExistsException("login already exists");
+        Authority roleUser = authorityRepository.getAuthorityByAuthority("ROLE_USER").orElseThrow(() -> new RuntimeException("Authority not found"));
         User u = User.builder()
                 .position(req.position())
                 .name(req.name())
                 .login(req.login())
-                .authorities(Set.of(roleUser.get()))
+                .authorities(Set.of(roleUser))
                 .password(passwordEncoder.encode((req.password())))
                 .build();
-
         u = userRepository.save(u);
-        return new UserResponse(u.getId(), u.getPosition(), u.getName(), u.getLogin());
+        return UserMapper.toResponse(u);
     }
 
     @Override
     @Transactional
     public UserResponse update(long id, UpdateUserRequest req) {
-        User u = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found: " + id));
 
         u.setPosition(req.position());
-        u.setLogin(req.login());
         u.setName(req.name());
+        u.setPhone(req.phone());
+        u.setBirthDate(req.birthDate());
+
+        if (req.avatarUrl() != null) {
+            u.setAvatarUrl(req.avatarUrl());
+        }
 
         userRepository.save(u);
-
-        return new UserResponse(u.getId(), u.getPosition(), u.getName(), u.getLogin());
+        return UserMapper.toResponse(u);
     }
-
-
 
     @Override
     @Transactional
     public void delete(long id) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException("User not found: " + id);
-        }
-
+        if (!userRepository.existsById(id)) throw new UserNotFoundException("User not found: " + id);
         usMetRepo.deleteByUser(userRepository.getUserById(id));
         userRepository.deleteById(id);
     }
