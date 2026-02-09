@@ -22,3 +22,6 @@ spring:
 logging:
   level:
     liquibase: info
+
+app:
+  base-url: ${APP_BASE_URL:https://teto-planner.fly.dev}

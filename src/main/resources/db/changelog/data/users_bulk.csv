@@ -1,0 +1,31 @@
+id,login,name,password_hash,telegram_nick
+dad55ad0-b517-4ef5-bccc-82e5733c1204,island_guest01,Island Guest 01,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest01_tg
+a2bb2ad5-acfb-4256-a7c8-6cb9f776a77a,island_guest02,Island Guest 02,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest02_tg
+fffa6a90-7916-4416-b645-1362cfa6f385,island_guest03,Island Guest 03,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest03_tg
+e9258ace-ca49-4c80-af29-4fb9cb817025,island_guest04,Island Guest 04,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest04_tg
+c53d32f3-4ab6-49af-97ce-e0719f16bf6e,island_guest05,Island Guest 05,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest05_tg
+f2d7d95a-f9a2-445d-9162-acaef209e0b5,island_guest06,Island Guest 06,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest06_tg
+d7841e9c-9504-45ef-b7f3-704c67d89fa3,island_guest07,Island Guest 07,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest07_tg
+3da241a1-4e61-4646-871e-7f66e67d6705,island_guest08,Island Guest 08,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest08_tg
+287632a5-d5fb-4497-9468-114c847c36a0,island_guest09,Island Guest 09,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest09_tg
+fb266130-1099-4ddb-a1ab-04f519b1c58b,island_guest10,Island Guest 10,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,island_guest10_tg
+858f423e-6301-4d03-a784-6c0b3888cb60,palm_contact01,Palm Beach Contact 01,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,palm_contact01_tg
+52f9d9b9-b9c6-4040-a114-5e6c7da29d8b,palm_contact02,Palm Beach Contact 02,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,palm_contact02_tg
+803464cb-fc6d-4480-bd62-3a468e65e52a,palm_contact03,Palm Beach Contact 03,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,palm_contact03_tg
+a0424e0f-4df8-480a-95da-3eb43975ebac,palm_contact04,Palm Beach Contact 04,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,palm_contact04_tg
+5d99a865-fb3a-4c15-aa16-2acde2b097cd,palm_contact05,Palm Beach Contact 05,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,palm_contact05_tg
+2d8d282d-ec12-4902-84d0-09b4b50f22bf,flight_crew01,Flight Crew 01,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,flight_crew01_tg
+eda5c2e0-2c2c-4997-96e2-0d0ce01cb3e5,flight_crew02,Flight Crew 02,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,flight_crew02_tg
+378d9802-4d6a-4959-b201-a0cd1f53c154,flight_crew03,Flight Crew 03,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,flight_crew03_tg
+2a9e92ec-e869-4df7-9e9e-03d95c028814,flight_crew04,Flight Crew 04,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,flight_crew04_tg
+3dde0bb2-be26-4aac-be30-148bb4829bcb,flight_crew05,Flight Crew 05,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,flight_crew05_tg
+9f464e85-20e5-40a7-92c4-44d983e293f3,estate_staff01,Estate Staff 01,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,estate_staff01_tg
+567ea2ea-db2c-4c71-8c8e-50a33011ca95,estate_staff02,Estate Staff 02,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,estate_staff02_tg
+4ca403fe-3d3f-4d60-b2e2-6b81bb53da37,estate_staff03,Estate Staff 03,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,estate_staff03_tg
+58431466-0471-40e2-86fd-6bbf2b6d8c9a,estate_staff04,Estate Staff 04,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,estate_staff04_tg
+6817620c-f7d6-4b09-afbf-858b895fa8cf,estate_staff05,Estate Staff 05,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,estate_staff05_tg
+bc17d613-aab9-452e-8d3a-9e8b7eeb9a6b,villa_guest01,Villa Guest 01,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,villa_guest01_tg
+251ffee5-f301-4a74-895f-1fea7dcc2852,villa_guest02,Villa Guest 02,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,villa_guest02_tg
+b8e704c2-febd-49d7-a5a4-8c8a8bc5f36e,villa_guest03,Villa Guest 03,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,villa_guest03_tg
+8e6caa16-9bfa-45f5-955e-2910e221f83b,villa_guest04,Villa Guest 04,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,villa_guest04_tg
+b822db3c-af86-4d39-bba3-34ed0e137a9c,villa_guest05,Villa Guest 05,$2b$12$1UDJYGJXKJjlGzE/1Z6Fn.Pg.6oCgEfVZTPbgQL98zt1p4XpicXM6,villa_guest05_tg

@@ -58,7 +58,7 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
             @Param("meetingDate") LocalDate meetingDate
     );
 
-    @EntityGraph(attributePaths = {"meeting", "meeting.organizer", "meeting.room", "meeting.participants", "meeting.participants.user", "user"})
+    @EntityGraph(attributePaths = {"meeting", "meeting.organizer", "meeting.room", "user"})
     @Query("""
         select mp from MeetingParticipantEntity mp
         join mp.meeting m
@@ -90,7 +90,7 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
     @Query("""
         select mp from MeetingParticipantEntity mp
         join fetch mp.user u
-        join mp.meeting m
+        join fetch mp.meeting m
         where mp.user.id in :userIds
           and mp.meetingDate = :meetingDate
           and mp.status = com.teto.planner.entity.ParticipantStatus.ACCEPTED

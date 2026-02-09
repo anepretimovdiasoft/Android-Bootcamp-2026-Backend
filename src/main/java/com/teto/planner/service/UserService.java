@@ -46,6 +46,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional(readOnly = true)
     public UsersPage listUsers(String query, LocalDate busyDate, boolean includeLoad, int page, int size) {
         Page<UserEntity> usersPage;
         var pageable = Pagination.pageRequest(page, size, Sort.by(Sort.Order.asc("login"), Sort.Order.asc("id")));
@@ -76,6 +77,7 @@ public class UserService {
         return new UsersPage(items, meta);
     }
 
+    @Transactional(readOnly = true)
     public UserDto getUser(UUID userId) {
         return userMapper.toDto(findUser(userId));
     }
@@ -111,6 +113,7 @@ public class UserService {
         if (bio != null) {
             user.setBio(bio);
         }
+        userRepository.flush();
         return userMapper.toDto(user);
     }
 
@@ -122,16 +125,21 @@ public class UserService {
 
     @Transactional
     public UserMeDto updateMe(UserEntity user, String name, String telegramNick, String bio) {
+        // `CurrentUserService` loads user outside a transaction, so it is typically detached here.
+        // Re-load inside the transaction to ensure changes are persisted.
+        UserEntity managed = findUser(user.getId());
         if (name != null) {
-            user.setName(name);
+            managed.setName(name);
         }
         if (telegramNick != null) {
-            user.setTelegramNick(telegramNick);
+            managed.setTelegramNick(telegramNick);
         }
         if (bio != null) {
-            user.setBio(bio);
+            managed.setBio(bio);
         }
-        return userMapper.toMe(user);
+        // Ensure UpdateTimestamp is reflected in the response.
+        userRepository.flush();
+        return userMapper.toMe(managed);
     }
 
     public UserMeDto toMe(UserEntity user) {
@@ -140,11 +148,14 @@ public class UserService {
 
     @Transactional
     public UserMeDto updateAvatar(UserEntity user, byte[] bytes, String contentType) {
-        user.setAvatarBytes(bytes);
-        user.setAvatarContentType(contentType);
-        return userMapper.toMe(user);
+        UserEntity managed = findUser(user.getId());
+        managed.setAvatarBytes(bytes);
+        managed.setAvatarContentType(contentType);
+        userRepository.flush();
+        return userMapper.toMe(managed);
     }
 
+    @Transactional(readOnly = true)
     public byte[] getAvatar(UUID userId) {
         UserEntity user = findUser(userId);
         if (user.getAvatarBytes() == null || user.getAvatarBytes().length == 0) {
@@ -153,6 +164,7 @@ public class UserService {
         return user.getAvatarBytes();
     }
 
+    @Transactional(readOnly = true)
     public UserEntity findUser(UUID userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("USER_NOT_FOUND", "User not found"));

@@ -9,10 +9,22 @@ import com.teto.planner.entity.RoleEntity;
 import com.teto.planner.entity.UserEntity;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
+    private final String baseUrl;
+
+    public UserMapper(@Value("${app.base-url:https://teto-planner.fly.dev}") String baseUrl) {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            this.baseUrl = "";
+        } else if (baseUrl.endsWith("/")) {
+            this.baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        } else {
+            this.baseUrl = baseUrl;
+        }
+    }
 
     public UserDto toDto(UserEntity user) {
         return new UserDto(
@@ -67,6 +79,6 @@ public class UserMapper {
         if (user.getAvatarBytes() == null || user.getAvatarBytes().length == 0) {
             return null;
         }
-        return "/api/users/" + user.getId() + "/avatar";
+        return baseUrl + "/api/users/" + user.getId() + "/avatar";
     }
 }

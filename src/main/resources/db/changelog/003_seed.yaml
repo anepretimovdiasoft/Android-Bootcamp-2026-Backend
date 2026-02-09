@@ -28,6 +28,36 @@ databaseChangeLog:
               - column: { name: telegram_nick, type: STRING }
 
   - changeSet:
+      id: 003-02a-seed-users-special
+      author: assistant
+      changes:
+        - loadData:
+            tableName: users
+            file: db/changelog/data/users_special.csv
+            separator: ","
+            columns:
+              - column: { name: id, type: UUID }
+              - column: { name: login, type: STRING }
+              - column: { name: name, type: STRING }
+              - column: { name: password_hash, type: STRING }
+              - column: { name: telegram_nick, type: STRING }
+
+  - changeSet:
+      id: 003-02b-seed-users-bulk
+      author: assistant
+      changes:
+        - loadData:
+            tableName: users
+            file: db/changelog/data/users_bulk.csv
+            separator: ","
+            columns:
+              - column: { name: id, type: UUID }
+              - column: { name: login, type: STRING }
+              - column: { name: name, type: STRING }
+              - column: { name: password_hash, type: STRING }
+              - column: { name: telegram_nick, type: STRING }
+
+  - changeSet:
       id: 003-03-seed-user-roles
       author: assistant
       changes:
@@ -46,6 +76,19 @@ databaseChangeLog:
         - loadData:
             tableName: rooms
             file: db/changelog/data/rooms.csv
+            separator: ","
+            columns:
+              - column: { name: id, type: UUID }
+              - column: { name: name, type: STRING }
+              - column: { name: capacity, type: NUMERIC }
+
+  - changeSet:
+      id: 003-05-seed-rooms-epstein
+      author: assistant
+      changes:
+        - loadData:
+            tableName: rooms
+            file: db/changelog/data/rooms_epstein.csv
             separator: ","
             columns:
               - column: { name: id, type: UUID }

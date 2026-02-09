@@ -27,6 +27,7 @@ public class UserRoleService {
         this.roleMapper = roleMapper;
     }
 
+    @Transactional(readOnly = true)
     public List<RoleDto> getRoles(UUID userId) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new BadRequestException("USER_NOT_FOUND", "User not found"));

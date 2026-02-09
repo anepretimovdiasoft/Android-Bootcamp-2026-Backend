@@ -27,6 +27,7 @@ public class RoomService {
         this.roomMapper = roomMapper;
     }
 
+    @Transactional(readOnly = true)
     public RoomsPage listRooms(int page, int size) {
         Page<RoomEntity> rooms = roomRepository.findAll(Pagination.pageRequest(
                 page,
@@ -37,6 +38,7 @@ public class RoomService {
         return new RoomsPage(items, new PageMeta(page, size, rooms.getTotalElements()));
     }
 
+    @Transactional(readOnly = true)
     public RoomsPage listAvailable(LocalDate meetingDate, Integer startHour, Integer capacity, int page, int size) {
         Short hour = startHour != null ? startHour.shortValue() : null;
         Page<RoomEntity> rooms = roomRepository.findAvailable(
@@ -49,6 +51,7 @@ public class RoomService {
         return new RoomsPage(items, new PageMeta(page, size, rooms.getTotalElements()));
     }
 
+    @Transactional(readOnly = true)
     public RoomDto getRoom(UUID roomId) {
         return roomMapper.toDto(findRoom(roomId));
     }
@@ -80,6 +83,7 @@ public class RoomService {
         roomRepository.delete(room);
     }
 
+    @Transactional(readOnly = true)
     public RoomEntity findRoom(UUID roomId) {
         return roomRepository.findById(roomId)
                 .orElseThrow(() -> new NotFoundException("ROOM_NOT_FOUND", "Room not found"));

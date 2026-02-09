@@ -1,5 +1,6 @@
 package com.teto.planner.controller;
 
+import com.teto.planner.dto.FirstFreeSlotResponse;
 import com.teto.planner.dto.IntersectionResponse;
 import com.teto.planner.entity.UserEntity;
 import com.teto.planner.service.CurrentUserService;
@@ -31,5 +32,15 @@ public class SchedulingController {
     ) {
         UserEntity organizer = currentUserService.getCurrentUser();
         return schedulingService.getIntersection(organizer, meetingDate, userIds);
+    }
+
+    @GetMapping("/first-free")
+    public FirstFreeSlotResponse getFirstFreeSlot(
+            @RequestParam("meetingDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate meetingDate,
+            @RequestParam("userIds") List<UUID> userIds,
+            @RequestParam(value = "durationHours", required = false) Integer durationHours
+    ) {
+        UserEntity organizer = currentUserService.getCurrentUser();
+        return schedulingService.getFirstFreeSlot(organizer, meetingDate, userIds, durationHours);
     }
 }

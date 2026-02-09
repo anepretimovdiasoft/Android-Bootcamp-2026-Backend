@@ -47,7 +47,7 @@ public class MeController {
         UserEntity user = currentUserService.getCurrentUser();
         UserMeDto updated = userService.updateAvatar(user, bytes, contentType);
         return ResponseEntity.ok(new AvatarUploadResponse(
-                "/api/users/" + updated.id() + "/avatar",
+                updated.avatarUrl(),
                 updated.avatarContentType()
         ));
     }

@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface MeetingRepository extends JpaRepository<MeetingEntity, UUID> {
 
-    @EntityGraph(attributePaths = {"organizer", "room", "participants", "participants.user"})
+    @EntityGraph(attributePaths = {"organizer", "room"})
     @Query("""
         select distinct m from MeetingEntity m
         left join m.participants mp

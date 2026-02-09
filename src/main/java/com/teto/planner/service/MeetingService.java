@@ -16,7 +16,9 @@ import com.teto.planner.entity.MeetingParticipantId;
 import com.teto.planner.entity.MeetingStatus;
 import com.teto.planner.entity.ParticipantRole;
 import com.teto.planner.entity.ParticipantStatus;
+import com.teto.planner.entity.RoomEntity;
 import com.teto.planner.entity.UserEntity;
+import com.teto.planner.dto.LoadStatus;
 import com.teto.planner.exception.ConflictException;
 import com.teto.planner.exception.ForbiddenException;
 import com.teto.planner.exception.NotFoundException;
@@ -26,10 +28,13 @@ import com.teto.planner.repository.MeetingParticipantRepository;
 import com.teto.planner.repository.MeetingRepository;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -58,6 +63,7 @@ public class MeetingService {
         this.meetingMapper = meetingMapper;
     }
 
+    @Transactional(readOnly = true)
     public MeetingsPage listMeetings(UserEntity currentUser, LocalDate startDate, LocalDate endDate,
                                      boolean includePending, int page, int size) {
         Page<MeetingEntity> meetings = meetingRepository.findForUserBetween(
@@ -70,16 +76,30 @@ public class MeetingService {
                         Sort.Order.asc("startHour"),
                         Sort.Order.asc("id")
                 )));
+        Map<LocalDate, Set<UUID>> idsByDate = collectIdsByDate(meetings.getContent());
+        Map<LocalDate, Map<UUID, Integer>> busyByDate = loadBusyHours(idsByDate);
+        Map<LocalDate, Map<UUID, LoadStatus>> statusByDate = loadStatusByDate(busyByDate);
+
         List<MeetingDto> items = meetings.getContent().stream()
-                .map(meetingMapper::toDto)
+                .map(meeting -> {
+                    Map<UUID, Integer> busy = busyByDate.getOrDefault(meeting.getMeetingDate(), Map.of());
+                    Map<UUID, LoadStatus> status = statusByDate.getOrDefault(meeting.getMeetingDate(), Map.of());
+                    return meetingMapper.toDto(meeting, busy, status);
+                })
                 .collect(Collectors.toList());
         return new MeetingsPage(items, new PageMeta(page, size, meetings.getTotalElements()));
     }
 
+    @Transactional(readOnly = true)
     public MeetingDto getMeeting(UUID meetingId) {
         MeetingEntity meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new NotFoundException("MEETING_NOT_FOUND", "Meeting not found"));
-        return meetingMapper.toDto(meeting);
+        Map<LocalDate, Set<UUID>> idsByDate = collectIdsByDate(List.of(meeting));
+        Map<LocalDate, Map<UUID, Integer>> busyByDate = loadBusyHours(idsByDate);
+        Map<LocalDate, Map<UUID, LoadStatus>> statusByDate = loadStatusByDate(busyByDate);
+        Map<UUID, Integer> busy = busyByDate.getOrDefault(meeting.getMeetingDate(), Map.of());
+        Map<UUID, LoadStatus> status = statusByDate.getOrDefault(meeting.getMeetingDate(), Map.of());
+        return meetingMapper.toDto(meeting, busy, status);
     }
 
     @Transactional
@@ -87,6 +107,11 @@ public class MeetingService {
         int duration = request.durationHours() != null ? request.durationHours() : 1;
         short startHour = request.startHour().shortValue();
         short durationHours = (short) duration;
+        Set<UUID> invitees = new HashSet<>();
+        if (request.participantIds() != null) {
+            invitees.addAll(request.participantIds());
+            invitees.remove(organizer.getId());
+        }
 
         if (participantRepository.countAcceptedAtSlot(organizer.getId(), request.meetingDate(), startHour) > 0) {
             throw new ConflictException("SLOT_CONFLICT", "Organizer is busy at that slot");
@@ -107,15 +132,18 @@ public class MeetingService {
         meeting.setDurationHours(durationHours);
         meeting.setStatus(MeetingStatus.SCHEDULED);
 
+        RoomEntity room = null;
         if (request.roomId() != null) {
-            meeting.setRoom(roomService.findRoom(request.roomId()));
+            room = roomService.findRoom(request.roomId());
+            meeting.setRoom(room);
         }
+        ensureRoomCapacity(room, 1 + invitees.size());
 
         Set<MeetingParticipantEntity> participants = new HashSet<>();
         participants.add(buildParticipant(meeting, organizer, ParticipantRole.ORGANIZER, ParticipantStatus.ACCEPTED));
 
         if (request.participantIds() != null) {
-            for (UUID userId : request.participantIds()) {
+            for (UUID userId : invitees) {
                 if (userId.equals(organizer.getId())) {
                     continue;
                 }
@@ -149,7 +177,9 @@ public class MeetingService {
                         request.roomId(), meeting.getMeetingDate(), meeting.getStartHour(), MeetingStatus.SCHEDULED)) {
                     throw new ConflictException("ROOM_CONFLICT", "Room already booked for that slot");
                 }
-                meeting.setRoom(roomService.findRoom(request.roomId()));
+                RoomEntity room = roomService.findRoom(request.roomId());
+                ensureRoomCapacity(room, countActiveParticipants(meeting));
+                meeting.setRoom(room);
             }
         }
         if (request.status() != null) {
@@ -167,6 +197,7 @@ public class MeetingService {
         meeting.setStatus(MeetingStatus.CANCELLED);
     }
 
+    @Transactional(readOnly = true)
     public BusySlotsResponse getBusySlots(UserEntity currentUser, LocalDate meetingDate) {
         List<MeetingParticipantEntity> slots = participantRepository.findBusySlots(currentUser.getId(), meetingDate);
         List<BusySlotDto> items = slots.stream()
@@ -175,10 +206,18 @@ public class MeetingService {
         return new BusySlotsResponse(meetingDate, items);
     }
 
+    @Transactional(readOnly = true)
     public List<MeetingParticipantDto> listParticipants(UUID meetingId) {
         MeetingEntity meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new NotFoundException("MEETING_NOT_FOUND", "Meeting not found"));
-        return meeting.getParticipants().stream().map(meetingMapper::toParticipant).collect(Collectors.toList());
+        Map<LocalDate, Set<UUID>> idsByDate = collectIdsByDate(List.of(meeting));
+        Map<LocalDate, Map<UUID, Integer>> busyByDate = loadBusyHours(idsByDate);
+        Map<LocalDate, Map<UUID, LoadStatus>> statusByDate = loadStatusByDate(busyByDate);
+        Map<UUID, Integer> busy = busyByDate.getOrDefault(meeting.getMeetingDate(), Map.of());
+        Map<UUID, LoadStatus> status = statusByDate.getOrDefault(meeting.getMeetingDate(), Map.of());
+        return meeting.getParticipants().stream()
+                .map(p -> meetingMapper.toParticipant(p, busy, status))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -190,11 +229,14 @@ public class MeetingService {
         Set<UUID> existing = meeting.getParticipants().stream()
                 .map(mp -> mp.getUser().getId())
                 .collect(Collectors.toSet());
+        List<UUID> newUserIds = request.userIds().stream()
+                .filter(userId -> !existing.contains(userId))
+                .toList();
+        if (!newUserIds.isEmpty()) {
+            ensureRoomCapacity(meeting, newUserIds.size());
+        }
 
-        for (UUID userId : request.userIds()) {
-            if (existing.contains(userId)) {
-                continue;
-            }
+        for (UUID userId : newUserIds) {
             UserEntity user = userService.findUser(userId);
             meeting.getParticipants().add(buildParticipant(meeting, user, ParticipantRole.ATTENDEE, ParticipantStatus.PENDING));
         }
@@ -212,6 +254,10 @@ public class MeetingService {
         requireOrganizer(currentUser, meeting);
 
         if (request.status() != null) {
+            if ((request.status() == ParticipantStatus.ACCEPTED || request.status() == ParticipantStatus.PENDING)
+                    && participant.getStatus() == ParticipantStatus.DECLINED) {
+                ensureRoomCapacity(meeting, 1);
+            }
             if (request.status() == ParticipantStatus.ACCEPTED
                     && participant.getStatus() != ParticipantStatus.ACCEPTED) {
                 long conflicts = participantRepository.countAcceptedAtSlot(userId, meeting.getMeetingDate(), meeting.getStartHour());
@@ -250,5 +296,90 @@ public class MeetingService {
         participant.setRole(role);
         participant.setStatus(status);
         return participant;
+    }
+
+    private void ensureRoomCapacity(MeetingEntity meeting, int additionalParticipants) {
+        if (meeting.getRoom() == null || meeting.getRoom().getCapacity() == null) {
+            return;
+        }
+        int current = countActiveParticipants(meeting);
+        if (current + additionalParticipants > meeting.getRoom().getCapacity()) {
+            throw new ConflictException("ROOM_CAPACITY_EXCEEDED", "Room capacity exceeded");
+        }
+    }
+
+    private void ensureRoomCapacity(RoomEntity room, int totalParticipants) {
+        if (room == null || room.getCapacity() == null) {
+            return;
+        }
+        if (totalParticipants > room.getCapacity()) {
+            throw new ConflictException("ROOM_CAPACITY_EXCEEDED", "Room capacity exceeded");
+        }
+    }
+
+    private int countActiveParticipants(MeetingEntity meeting) {
+        if (meeting.getParticipants() == null) {
+            return 0;
+        }
+        return (int) meeting.getParticipants().stream()
+                .filter(mp -> mp.getStatus() == ParticipantStatus.PENDING || mp.getStatus() == ParticipantStatus.ACCEPTED)
+                .count();
+    }
+
+    private Map<LocalDate, Set<UUID>> collectIdsByDate(List<MeetingEntity> meetings) {
+        Map<LocalDate, Set<UUID>> idsByDate = new HashMap<>();
+        for (MeetingEntity meeting : meetings) {
+            LocalDate date = meeting.getMeetingDate();
+            Set<UUID> ids = idsByDate.computeIfAbsent(date, key -> new HashSet<>());
+            ids.add(meeting.getOrganizer().getId());
+            if (meeting.getParticipants() != null) {
+                for (MeetingParticipantEntity participant : meeting.getParticipants()) {
+                    ids.add(participant.getUser().getId());
+                }
+            }
+        }
+        return idsByDate;
+    }
+
+    private Map<LocalDate, Map<UUID, Integer>> loadBusyHours(Map<LocalDate, Set<UUID>> idsByDate) {
+        Map<LocalDate, Map<UUID, Integer>> busyByDate = new HashMap<>();
+        for (Map.Entry<LocalDate, Set<UUID>> entry : idsByDate.entrySet()) {
+            LocalDate date = entry.getKey();
+            List<UUID> ids = new ArrayList<>(entry.getValue());
+            if (ids.isEmpty()) {
+                continue;
+            }
+            Map<UUID, Integer> busy = new HashMap<>();
+            for (var row : participantRepository.sumBusyHours(ids, date)) {
+                busy.put(row.getUserId(), row.getHours().intValue());
+            }
+            busyByDate.put(date, busy);
+        }
+        return busyByDate;
+    }
+
+    private Map<LocalDate, Map<UUID, LoadStatus>> loadStatusByDate(Map<LocalDate, Map<UUID, Integer>> busyByDate) {
+        Map<LocalDate, Map<UUID, LoadStatus>> statusByDate = new HashMap<>();
+        for (Map.Entry<LocalDate, Map<UUID, Integer>> entry : busyByDate.entrySet()) {
+            Map<UUID, LoadStatus> status = new HashMap<>();
+            for (Map.Entry<UUID, Integer> hours : entry.getValue().entrySet()) {
+                status.put(hours.getKey(), toLoadStatus(hours.getValue()));
+            }
+            statusByDate.put(entry.getKey(), status);
+        }
+        return statusByDate;
+    }
+
+    private LoadStatus toLoadStatus(Integer hours) {
+        if (hours == null) {
+            return LoadStatus.LOW;
+        }
+        if (hours <= 2) {
+            return LoadStatus.LOW;
+        }
+        if (hours <= 5) {
+            return LoadStatus.MEDIUM;
+        }
+        return LoadStatus.HIGH;
     }
 }

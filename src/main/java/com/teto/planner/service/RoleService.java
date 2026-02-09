@@ -29,6 +29,7 @@ public class RoleService {
         this.roleMapper = roleMapper;
     }
 
+    @Transactional(readOnly = true)
     public RolesPage listRoles(int page, int size) {
         Page<RoleEntity> roles = roleRepository.findAll(
                 Pagination.pageRequest(page, size, Sort.by(Sort.Order.asc("slug"), Sort.Order.asc("id")))
@@ -37,6 +38,7 @@ public class RoleService {
         return new RolesPage(items, new PageMeta(page, size, roles.getTotalElements()));
     }
 
+    @Transactional(readOnly = true)
     public RoleDto getRole(UUID roleId) {
         return roleMapper.toDto(findRole(roleId));
     }
@@ -73,6 +75,7 @@ public class RoleService {
         roleRepository.delete(findRole(roleId));
     }
 
+    @Transactional(readOnly = true)
     public RoleEntity findRole(UUID roleId) {
         return roleRepository.findById(roleId)
                 .orElseThrow(() -> new NotFoundException("ROLE_NOT_FOUND", "Role not found"));

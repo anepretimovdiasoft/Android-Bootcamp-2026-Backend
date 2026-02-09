@@ -44,7 +44,7 @@ public class UserEntity {
     @Column(name = "bio", length = 256)
     private String bio;
 
-    @Column(name = "avatar_bytes")
+    @Column(name = "avatar_bytes", columnDefinition = "bytea")
     private byte[] avatarBytes;
 
     @Column(name = "avatar_content_type", length = 64)
