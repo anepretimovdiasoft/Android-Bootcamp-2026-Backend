@@ -37,7 +37,7 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.createUsers(dto));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<UsersDTO> login(Authentication authentication) {
         return ResponseEntity.ok(usersService.getUsersByLogin(authentication.getName()));
     }
