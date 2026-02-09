@@ -51,7 +51,7 @@ public class Meeting {
     private Instant endTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", columnDefinition = "meeting_status",nullable = false)
     private MeetingStatus meetingStatus = MeetingStatus.SCHEDULED;
 
     @Column(name = "created_at", nullable = false)
@@ -66,5 +66,6 @@ public class Meeting {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
+    @Builder.Default
     private List<MeetingParticipant> meetingParticipants = new ArrayList<>();
 }
