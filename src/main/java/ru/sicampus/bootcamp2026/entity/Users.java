@@ -20,6 +20,9 @@ public class Users implements UserDetails {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "username")
     private String username;
 

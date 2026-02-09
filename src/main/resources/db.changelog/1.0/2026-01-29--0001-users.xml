@@ -22,6 +22,10 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name = "email" type="VARCHAR(50)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+
             <column name="password" type="VARCHAR(150)">
                 <constraints nullable="false"/>
             </column>

@@ -33,6 +33,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/users/username/{username}").permitAll()
+                        .requestMatchers("api/meetings/paginated/**").hasAnyAuthority(
+                                "ROLE_USER",
+                                "ROLE_ADMIN"
+                        )
                         .requestMatchers("/api/users/paginated").hasAnyAuthority(
                                 "ROLE_USER",
                                 "ROLE_ADMIN"

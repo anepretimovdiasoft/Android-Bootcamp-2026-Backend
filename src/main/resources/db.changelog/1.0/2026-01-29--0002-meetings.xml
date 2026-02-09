@@ -22,6 +22,12 @@
             <column name="date" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
+            <column name="title" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

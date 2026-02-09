@@ -5,6 +5,8 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Optional;
+
 
 @Data
 @Entity
@@ -23,5 +25,5 @@ public class Invitations {
     private Users invitedUserId;
 
     @Column(name = "accepted")
-    private boolean accepted;
+    private Boolean accepted;
 }

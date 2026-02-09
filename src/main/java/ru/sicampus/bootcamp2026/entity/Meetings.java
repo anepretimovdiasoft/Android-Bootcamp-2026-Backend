@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,11 @@ public class Meetings {
     private Users creatorId;
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDateTime date;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
 }

@@ -58,4 +58,9 @@ public class UsersController {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(usersService.getAllUsersPaginated(pageable));
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<String> checkAuth() {
+        return ResponseEntity.ok("Auth completed");
+    }
 }

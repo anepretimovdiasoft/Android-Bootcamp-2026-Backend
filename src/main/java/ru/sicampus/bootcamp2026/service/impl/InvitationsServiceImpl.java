@@ -36,7 +36,7 @@ public class InvitationsServiceImpl implements InvitationsService {
         Invitations invitation = new Invitations();
         invitation.setMeetingId(meeting);
         invitation.setInvitedUserId(invited);
-        invitation.setAccepted(invitationsDTO.isAccepted());
+        invitation.setAccepted(invitationsDTO.getAccepted());
         return InvitationsMapper.convertToDTO(invitationsRepository.save(invitation));
     }
 
@@ -48,7 +48,7 @@ public class InvitationsServiceImpl implements InvitationsService {
         Invitations invitation = invitationsRepository.findById(id).orElseThrow(InvitationNotFoundException::new);
         invitation.setMeetingId(meeting);
         invitation.setInvitedUserId(invited);
-        invitation.setAccepted(invitationsDTO.isAccepted());
+        invitation.setAccepted(invitationsDTO.getAccepted());
         return InvitationsMapper.convertToDTO(invitationsRepository.save(invitation));
     }
 

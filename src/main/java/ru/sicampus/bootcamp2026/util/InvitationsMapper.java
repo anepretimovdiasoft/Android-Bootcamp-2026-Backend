@@ -11,7 +11,7 @@ public class InvitationsMapper {
         invitationsDTO.setInvitedUserName(invitations.getInvitedUserId().getName());
         invitationsDTO.setMeetingCreatorName(invitations.getMeetingId().getCreatorId().getName());
         invitationsDTO.setMeetingDate(invitations.getMeetingId().getDate());
-        invitationsDTO.setAccepted(invitations.isAccepted());
+        invitationsDTO.setAccepted(invitations.getAccepted());
         return invitationsDTO;
     }
 }

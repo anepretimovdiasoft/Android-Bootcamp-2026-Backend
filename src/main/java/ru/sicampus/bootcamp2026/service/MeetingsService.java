@@ -13,4 +13,6 @@ public interface MeetingsService {
     void deleteUser(long id);
 
     Page<MeetingsDTO> getAllPaginated(int page, int size);
+
+    Page<MeetingsDTO> getAllUserInvitedPaginated(String username, int page, int size);
 }

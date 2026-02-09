@@ -12,6 +12,7 @@ public class UsersMapper {
         dto.setName(user.getName());
         dto.setUsername(user.getUsername());
         dto.setAvatarUrl(user.getAvatarUrl());
+        dto.setEmail(user.getEmail());
         return dto;
     }
 }

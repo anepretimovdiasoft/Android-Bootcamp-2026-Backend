@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingsDTO;
-import ru.sicampus.bootcamp2026.dto.UsersDTO;
 import ru.sicampus.bootcamp2026.service.MeetingsService;
 import ru.sicampus.bootcamp2026.service.UsersService;
 
@@ -38,7 +37,12 @@ public class MeetingsController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<MeetingsDTO>> getAllMeetingsPaginate(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<MeetingsDTO>> getAllMeetingsPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(meetingsService.getAllPaginated(page, size));
+    }
+
+    @GetMapping("/paginated/{username}")
+    public ResponseEntity<Page<MeetingsDTO>> getAllUserInvitedMeetingsPaginated(@PathVariable String username, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(meetingsService.getAllUserInvitedPaginated(username,page, size));
     }
 }
