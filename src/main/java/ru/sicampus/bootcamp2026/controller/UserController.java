@@ -46,29 +46,29 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @GetMapping("/username={username}")
-    public ResponseEntity<String> getByUsername(@PathVariable String username) {
+    @GetMapping("/by_username/{username}")
+    public ResponseEntity<String> getByUsername(@PathVariable(name = "username") String username) {
         UserDTO userDTO = userService.getUserByUsername(username);
         return ResponseEntity.ok("User with username " + username + " is registered");
     }
 
-    @GetMapping("/surname={surname}")
-    public ResponseEntity<List<UserDTO>> getAllUsersBySurname(@PathVariable String surname) {
+    @GetMapping("/by_surname/{surname}")
+    public ResponseEntity<List<UserDTO>> getAllUsersBySurname(@PathVariable(name = "surname") String surname) {
         return ResponseEntity.ok(userService.getAllUsersBySurname(surname));
     }
 
-    @GetMapping("/name={name}")
-    public ResponseEntity<List<UserDTO>> getAllUsersByName(@PathVariable String name) {
+    @GetMapping("/by_name/{name}")
+    public ResponseEntity<List<UserDTO>> getAllUsersByName(@PathVariable(name = "name") String name) {
         return ResponseEntity.ok(userService.getAllUsersByName(name));
     }
 
-    @GetMapping("/patronymic={patronymic}")
-    public ResponseEntity<List<UserDTO>> getAllUsersByPatronymic(@PathVariable String patronymic) {
+    @GetMapping("/by_patronymic/{patronymic}")
+    public ResponseEntity<List<UserDTO>> getAllUsersByPatronymic(@PathVariable(name = "patronymic") String patronymic) {
         return ResponseEntity.ok(userService.getAllUsersByPatronymic(patronymic));
     }
 
-    @GetMapping("/departmentName={departmentName}")
-    public ResponseEntity<List<UserDTO>> getAllUsersByDepartmentName(@PathVariable String departmentName) {
+    @GetMapping("/by_departmentName/{departmentName}")
+    public ResponseEntity<List<UserDTO>> getAllUsersByDepartmentName(@PathVariable(name = "departmentName") String departmentName) {
         return ResponseEntity.ok(userService.getAllUsersByDepartmentName(departmentName));
     }
 

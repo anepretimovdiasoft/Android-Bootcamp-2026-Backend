@@ -19,7 +19,17 @@ public interface MeetingService {
 
     List<MeetingDTO> getAllMeetingsByInvitedUserId(Long id);
 
+    Page<MeetingDTO> getAllMeetingsByInvitedUserIdPaginated(Long id, Pageable pageable);
+
+    Page<MeetingDTO> getAllMeetingsByInvitedUserIdAndDatePaginated(Long id, String dateString, Pageable pageable);
+
     List<MeetingDTO> getAllPlannedMeetingsByUserId(Long id);
+
+    Page<MeetingDTO> getAllPlannedMeetingsByUserIdPaginated(Long id, Pageable pageable);
+
+    Page<MeetingDTO> getAllPlannedMeetingsByUserIdAndDatePaginated(Long id, String dateString, Pageable pageable);
+
+    Page<MeetingDTO> getAllPlannedMeetingsByUserIdAndDatePeriodPaginated(Long id, String datePeriodStart, String datePeriodEnd, Pageable pageable);
 
     MeetingDTO updateMeeting(Long id, MeetingDTO dto);
 

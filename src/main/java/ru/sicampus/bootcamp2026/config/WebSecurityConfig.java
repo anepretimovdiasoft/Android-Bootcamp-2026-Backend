@@ -33,7 +33,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/users/register").permitAll()
-                        .requestMatchers("/api/users/username={username}").permitAll()
+                        .requestMatchers("/api/users/by_username/{username}").permitAll()
                         .requestMatchers("/api/**").hasAnyAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )

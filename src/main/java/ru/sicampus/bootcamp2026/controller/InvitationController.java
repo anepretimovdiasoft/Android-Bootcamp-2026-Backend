@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.InvitationDTO;
 import ru.sicampus.bootcamp2026.service.InvitationService;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -42,9 +43,43 @@ public class InvitationController {
         return ResponseEntity.ok(invitationService.getAllInvitationsPaginated(pageable));
     }
 
+    @GetMapping("/unaccepted/paginated/by_userId/{userId}")
+    public ResponseEntity<Page<InvitationDTO>> getAllUnacceptedInvitationsByUserIdPaginated(
+            @PathVariable(name = "userId") Long userId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "5") int pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        return ResponseEntity.ok(invitationService.getAllUnacceptedInvitationsByUserIdPaginated(userId, pageable));
+    }
+
+    @GetMapping("/by_userId/{userId}")
+    public ResponseEntity<List<InvitationDTO>> getAllInvitationsByUserId(
+            @PathVariable(name = "userId") Long userId,
+            @RequestParam(defaultValue = "1970-01-01") String since) {
+        return ResponseEntity.ok(invitationService.getAllInvitationsByUserId(userId, since));
+    }
+
+    @GetMapping("/paginated/by_userId/{userId}")
+    public ResponseEntity<Page<InvitationDTO>> getAllInvitationsByUserIdPaginated(@PathVariable(name = "userId") Long userId,
+            @RequestParam(defaultValue = "1970-01-01") String since,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "5") int pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        return ResponseEntity.ok(invitationService.getAllInvitationsByUserIdPaginated(userId, since, pageable));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<InvitationDTO> updateInvitation(@PathVariable Long id, @RequestBody InvitationDTO dto) {
         return ResponseEntity.ok(invitationService.updateInvitation(id, dto));
+    }
+
+    @PatchMapping("/confirm/{id}")
+    public ResponseEntity<InvitationDTO> confirmInvitation(@PathVariable Long id) {
+        return ResponseEntity.ok(invitationService.confirmInvitationById(id));
     }
 
     @DeleteMapping("/{id}")

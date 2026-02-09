@@ -1,7 +1,6 @@
 package ru.sicampus.bootcamp2026.dto;
 
 import lombok.Data;
-import ru.sicampus.bootcamp2026.entity.User;
 
 import java.sql.Time;
 import java.util.Date;

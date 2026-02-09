@@ -100,6 +100,8 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(dto.getUsername());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setDepartmentName(dto.getDepartmentName());
+        user.setEmail(dto.getEmail());
         user.setInvites(new ArrayList<>());
         user.setAuthorities(Set.of(authorityRepository.findByAuthority("ROLE_USER")
                 .orElseThrow(() -> new AuthorityNotFoundException("Authority not found"))));
