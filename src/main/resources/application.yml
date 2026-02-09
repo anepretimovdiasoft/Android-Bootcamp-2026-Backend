@@ -1,29 +1,36 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
 
   h2:
     console:
       enabled: true
+      path: /h2-console
 
   jpa:
-    generate-ddl: false
-
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: none
-
+      ddl-auto: update
     show-sql: true
+    properties:
+      hibernate.format_sql: true
 
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.xml
+
 logging:
   level:
     root: INFO
     org.springframework.security: DEBUG
     org.springframework.security.web.FilterChainProxy: DEBUG
     org.springframework.security.access: TRACE
+
 server:
+  port: 8080
   error:
     include-message: always
     include-binding-errors: always

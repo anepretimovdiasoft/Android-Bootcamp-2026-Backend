@@ -7,10 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name="invitations")
 public class Invitations {
     @Id
@@ -25,11 +27,23 @@ public class Invitations {
     @OneToMany(mappedBy = "invitations",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private ArrayList<Invited> inviteds=new ArrayList<>();
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
     public Booking getBooking() {
         return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Employee getEmployee() {
+        return employee;
     }
 }

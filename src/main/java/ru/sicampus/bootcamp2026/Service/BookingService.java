@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2026.Service;
 import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBooingByDayRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingByWeekRequest;
+import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingCreatedRequest;
 import ru.sicampus.bootcamp2026.Dto.requst.Booking.GetBookingUpdateRequest;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByDayResponse;
 import ru.sicampus.bootcamp2026.Dto.response.Booking.BookingByMonthResponse;
@@ -13,8 +14,9 @@ import java.time.LocalDateTime;
 
 @Service
 public interface BookingService {
-    BookingByDayResponse getBookingByDay(GetBooingByDayRequest dto);
-    BookingByWeekResponse getBookingByWeek(GetBookingByWeekRequest dt);
+    BookingByDayResponse getBookingByDay(GetBooingByDayRequest dto, int page, int size);
+    BookingByWeekResponse getBookingByWeek(GetBookingByWeekRequest dt, int page, int size);
     void updateBooking(GetBookingUpdateRequest dto);
+    void createdBooking(GetBookingCreatedRequest dto);
 
 }

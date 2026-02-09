@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class GetAuthorizedEmployeeRequest {
-    @NotBlank
-    @NotNull
-    @Email
+    @NotBlank(message = "email cannot contain spaces or an empty line")
+    @NotNull(message = "mail cannot be an empty value.")
+    @Email(message = "This mail does not match the mail format.")
     private String mail;
-    @NotNull
-    @NotBlank
-    @Size(min =3)
+    @NotNull(message = "The password cannot be empty.")
+    @NotBlank(message = "a password cannot be an empty string or contain spaces")
+    @Size(min =3,message = "a password cannot be less than 3 characters")
     private String password;
 
     public GetAuthorizedEmployeeRequest(String token) {

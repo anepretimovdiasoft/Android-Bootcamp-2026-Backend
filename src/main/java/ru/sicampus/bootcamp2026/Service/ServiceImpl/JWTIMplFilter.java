@@ -26,22 +26,20 @@ public class JWTIMplFilter extends OncePerRequestFilter {
     private TokenAuthService tokenAuthService;
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
-        System.out.println("JWT FILTER WORKS");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
             return;
         }
 
         String token = authHeader.substring(7);
 
-        if (!tokenAuthService.TokenAuthService(token)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        if (!tokenAuthService.TokenAuthService(token)) { // переименовать метод
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
             return;
         }
 
