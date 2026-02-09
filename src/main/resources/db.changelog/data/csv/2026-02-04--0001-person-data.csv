@@ -1,3 +1,22 @@
 name;username;email;department_id;password
 Алексей Иванов;ai;alex@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
 Елена Петрова;ep;elena@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Иван Сидоров;is;ivan@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Мария Козлова;mk;maria@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Сергей Волков;sv;sergey@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Ольга Новикова;on;olga@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Дмитрий Морозов;dm;dmitry@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Анна Соколова;as;anna@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Павел Лебедев;pl;pavel@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Юлия Орлова;yo;yulia@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Андрей Кузнецов;ak;andrey@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Татьяна Попова;tp;tatyana@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Максим Васильев;mv;maxim@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Екатерина Петрова;ek;ekaterina@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Артем Федоров;af;artem@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Наталья Михайлова;nm;natalya@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Кирилл Николаев;kn;kirill@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Ирина Захарова;iz;irina@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Александр Борисов;ab;alexander@company.com;1;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+Светлана Алексеева;sa;svetlana@company.com;2;$2a$12$TILHPS0WZA8h2//4RqIPieYUk4nMfqo83LkJpRiYtJ0rbJ7V4ePaO
+

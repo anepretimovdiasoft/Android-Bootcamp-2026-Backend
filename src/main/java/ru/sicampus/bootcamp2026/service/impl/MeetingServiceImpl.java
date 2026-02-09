@@ -6,14 +6,16 @@ import ru.sicampus.bootcamp2026.dto.CreateMeetingRequestDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
 import ru.sicampus.bootcamp2026.entity.Meeting;
 import ru.sicampus.bootcamp2026.entity.Person;
-import ru.sicampus.bootcamp2026.exception.MeetingNotFoundException;
-import ru.sicampus.bootcamp2026.exception.PersonNotFoundException;
 import ru.sicampus.bootcamp2026.repository.MeetingRepository;
 import ru.sicampus.bootcamp2026.repository.PersonRepository;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 import ru.sicampus.bootcamp2026.util.MeetingMapper;
+import ru.sicampus.bootcamp2026.util.PersonMapper;
 import ru.sicampus.bootcamp2026.util.TimeValidator;
+import ru.sicampus.bootcamp2026.util.checkers.IdChecker;
+import ru.sicampus.bootcamp2026.util.checkers.MeetingChecker;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,15 +25,29 @@ import java.util.stream.Collectors;
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
-    private final PersonRepository PersonRepository;
+    private final PersonRepository personRepository;
+
+    @Override
+    public List<MeetingDTO> getAllMeetings() {
+        return meetingRepository.findAll().stream().map(MeetingMapper::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MeetingDTO> getMeetingsByDate(LocalDate date) {
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.plusDays(1).atStartOfDay();
+
+        return meetingRepository.findByStartTimeBetween(start, end)
+                .stream()
+                .map(MeetingMapper::convertToDto)
+                .toList();
+    }
 
     @Override
     public MeetingDTO createMeeting(CreateMeetingRequestDTO request) {
         TimeValidator.validateMeetingTime(request.getStartTime(), request.getEndTime());
 
-        Person organizer = PersonRepository
-                .findById(request.getOrganizerId())
-                .orElseThrow(PersonNotFoundException::new);
+        Person organizer = IdChecker.checkId(personRepository, request.getOrganizerId());
 
         Meeting meeting = new Meeting();
         meeting.setTitle(request.getTitle());
@@ -48,27 +64,22 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingDTO getMeeting(Long id) {
-        Meeting meeting = meetingRepository
-                .findById(id)
-                .orElseThrow(MeetingNotFoundException::new);
+        Meeting meeting = MeetingChecker.checkMeeting(meetingRepository, id);
+
         return MeetingMapper.convertToDto(meeting);
     }
 
     @Override
     public void deleteMeeting(Long id) {
-        if (!meetingRepository.existsById(id)) {
-            throw new MeetingNotFoundException();
-        }
+        MeetingChecker.checkMeeting(meetingRepository, id);
         meetingRepository.deleteById(id);
     }
 
     @Override
-    public List<MeetingDTO> getPersonMeetings(Long PersonId) {
-        if (!PersonRepository.existsById(PersonId)) {
-            throw new RuntimeException("Person not found");
-        }
+    public List<MeetingDTO> getPersonMeetings(Long personId) {
+        IdChecker.checkId(personRepository, personId);
 
-        List<Meeting> meetings = meetingRepository.findByOrganizerId(PersonId);
+        List<Meeting> meetings = meetingRepository.findByOrganizerId(personId);
 
         return meetings.stream()
                 .map(MeetingMapper::convertToDto)

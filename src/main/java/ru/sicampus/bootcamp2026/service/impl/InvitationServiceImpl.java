@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import ru.sicampus.bootcamp2026.dto.InvitationDTO;
 import ru.sicampus.bootcamp2026.entity.Invitation;
 import ru.sicampus.bootcamp2026.entity.InvitationStatus;
-import ru.sicampus.bootcamp2026.exception.InvitationNotFoundException;
+import ru.sicampus.bootcamp2026.exception.InvalidStatusException;
 import ru.sicampus.bootcamp2026.repository.InvitationRepository;
 import ru.sicampus.bootcamp2026.service.InvitationService;
 import ru.sicampus.bootcamp2026.util.InvitationMapper;
+import ru.sicampus.bootcamp2026.util.MeetingMapper;
+import ru.sicampus.bootcamp2026.util.checkers.InvitationChecker;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,15 +23,20 @@ public class InvitationServiceImpl implements InvitationService {
     private final InvitationRepository invitationRepository;
 
     @Override
+    public List<InvitationDTO> getAllInvitations() {
+        return invitationRepository.findAll().stream().map(InvitationMapper::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
     public InvitationDTO respondToInvitation(Long invitationId, String response) {
-        Invitation invitation = invitationRepository
-                .findById(invitationId)
-                .orElseThrow(InvitationNotFoundException::new);
+        Invitation invitation = InvitationChecker.checkInvitation(invitationRepository, invitationId);
 
         if ("ACCEPT".equalsIgnoreCase(response)) {
             invitation.setStatus(InvitationStatus.ACCEPTED);
         } else if ("DECLINE".equalsIgnoreCase(response)) {
             invitation.setStatus(InvitationStatus.DECLINED);
+        } else {
+            throw new InvalidStatusException();
         }
         invitation.setRespondedAt(LocalDateTime.now());
 
@@ -39,8 +46,8 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public List<InvitationDTO> getPersonInvitations(Long PersonId) {
-        List<Invitation> invitations = invitationRepository.findByPersonId(PersonId);
+    public List<InvitationDTO> getPersonInvitations(Long personId) {
+        List<Invitation> invitations = invitationRepository.findByPersonId(personId);
         return invitations.stream()
                 .map(InvitationMapper::convertToDto)
                 .collect(Collectors.toList());

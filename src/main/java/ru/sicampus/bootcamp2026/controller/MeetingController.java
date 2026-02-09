@@ -1,11 +1,14 @@
 package ru.sicampus.bootcamp2026.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.CreateMeetingRequestDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
+import ru.sicampus.bootcamp2026.dto.PersonDTO;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -14,6 +17,19 @@ import java.util.List;
 public class MeetingController {
 
     private final MeetingService meetingService;
+
+    @GetMapping
+    public List<MeetingDTO> getMeetings(
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date) {
+
+        if (date == null) {
+            return meetingService.getAllMeetings();
+        }
+
+        return meetingService.getMeetingsByDate(date);
+    }
 
     @PostMapping
     public MeetingDTO createMeeting(@RequestBody CreateMeetingRequestDTO request) {

@@ -10,9 +10,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.PersonDTO;
 import ru.sicampus.bootcamp2026.dto.PersonRegisterDTO;
+import ru.sicampus.bootcamp2026.entity.Person;
+import ru.sicampus.bootcamp2026.exception.PersonNotFoundException;
+import ru.sicampus.bootcamp2026.repository.PersonRepository;
 import ru.sicampus.bootcamp2026.service.PersonService;
+import ru.sicampus.bootcamp2026.util.PersonMapper;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/person")
@@ -28,6 +34,11 @@ public class PersonController {
     @GetMapping("/{id}")
     public ResponseEntity<PersonDTO> getPersonById(@PathVariable Long id) {
         return ResponseEntity.ok(personService.getPersonById(id));
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<PersonDTO> getPersonByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(personService.getPersonByUsername(username));
     }
 
     @PostMapping("/register")
@@ -51,10 +62,10 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<String> getByUserName(String username) {
+    @GetMapping("/check/{username}")
+    public ResponseEntity<String> getByUserName(@PathVariable String username) {
         PersonDTO personDTO = personService.getPersonByUsername(username);
-        return ResponseEntity.ok("User" + personDTO.getUsername() + " is registered");
+        return ResponseEntity.ok("User " + personDTO.getUsername() + " is registered");
     }
 
     @GetMapping("/paginated")
@@ -66,3 +77,4 @@ public class PersonController {
         return ResponseEntity.ok(personService.getAllPersonPaginated(pageable));
     }
 }
+

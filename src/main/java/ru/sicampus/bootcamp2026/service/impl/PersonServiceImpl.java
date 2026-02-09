@@ -10,8 +10,6 @@ import ru.sicampus.bootcamp2026.dto.PersonRegisterDTO;
 import ru.sicampus.bootcamp2026.entity.Authority;
 import ru.sicampus.bootcamp2026.entity.Department;
 import ru.sicampus.bootcamp2026.entity.Person;
-import ru.sicampus.bootcamp2026.exception.DepartmentNotFoundException;
-import ru.sicampus.bootcamp2026.exception.PersonAlreadyExistsException;
 import ru.sicampus.bootcamp2026.exception.PersonNotFoundException;
 import ru.sicampus.bootcamp2026.repository.AuthorityRepository;
 import ru.sicampus.bootcamp2026.repository.DepartmentRepository;
@@ -24,7 +22,6 @@ import ru.sicampus.bootcamp2026.util.checkers.UsernameChecker;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,29 +32,6 @@ public class PersonServiceImpl implements PersonService {
     private final DepartmentRepository departmentRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
-
-
-    @Override
-    public Person convertRegisterToEntity(
-            PersonRegisterDTO dto,
-            Authority authority,
-            Department department,
-            String password
-    ) {
-        Person person = new Person();
-        person.setName(dto.getName());
-        person.setUsername(dto.getUsername());
-        person.setEmail(dto.getEmail());
-        person.setDepartment(department);
-        person.setPassword(password);
-        person.setAuthorities(Set.of(authority));
-        return person;
-    }
-
-    @Override
-    public String encodePassword(String password) {
-        return passwordEncoder.encode(password);
-    }
 
     @Override
     public List<PersonDTO> getAllPersons() {
@@ -70,30 +44,34 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO createPerson(PersonRegisterDTO dto) {
+    public PersonDTO getPersonByUsername(String username) {
+        Optional<Person> optionalPerson = personRepository.findByUsername(username);
 
+        if (optionalPerson.isEmpty()) {
+            throw new PersonNotFoundException("Person with username " + username + " name not found!");
+        }
+
+        return PersonMapper.convertToDto(optionalPerson.get());
+    }
+
+    @Override
+    public PersonDTO createPerson(PersonRegisterDTO dto) {
         UsernameChecker.checkUsername(personRepository, dto.getUsername());
         Department department = DepartmentChecker.checkDepartment(departmentRepository, dto.getDepartmentName());
         Authority authority = AuthorityChecker.checkAuthority(authorityRepository, "ROLE_USER");
-        String encodedPassword = encodePassword(dto.getPassword());
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
 
-        Person person = convertRegisterToEntity(dto, authority, department, encodedPassword);
+        Person person = PersonMapper.convertToEntity(dto, authority, department, encodedPassword);
 
         return PersonMapper.convertToDto(personRepository.save(person));
     }
 
     @Override
     public PersonDTO updatePerson(Long id, PersonDTO dto) {
-        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
-
         UsernameChecker.checkUsername(personRepository, dto.getUsername());
         Department department = DepartmentChecker.checkDepartment(departmentRepository, dto.getDepartmentName());
 
-        person.setName(dto.getName());
-        person.setUsername(dto.getUsername());
-        person.setEmail(dto.getEmail());
-        person.setPhotoUrl(dto.getPhotoUrl());
-        person.setDepartment(department);
+        Person person = PersonMapper.convertToEntity(id,dto, department, personRepository);
 
         return PersonMapper.convertToDto(personRepository.save(person));
     }
@@ -101,17 +79,6 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deletePerson(Long id) {
         personRepository.deleteById(id);
-    }
-
-    @Override
-    public PersonDTO getPersonByUsername(String username) {
-        Optional<Person> optionalPerson = personRepository.findByUsername(username);
-
-        if (optionalPerson.isEmpty()) {
-            throw new PersonNotFoundException("Person with username" + username + "name not found!");
-        }
-
-        return PersonMapper.convertToDto(optionalPerson.get());
     }
 
     @Override

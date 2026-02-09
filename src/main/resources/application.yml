@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: docker
 
   liquibase:
     enabled: true
@@ -52,3 +52,20 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/meeting_app}
+    username: ${DATABASE_USERNAME:admin}
+    password: ${DATABASE_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate

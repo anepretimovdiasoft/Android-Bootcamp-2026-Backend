@@ -14,10 +14,15 @@ public class InvitationController {
 
     private final InvitationService invitationService;
 
+    @GetMapping()
+    public List<InvitationDTO> getInvitations() {
+        return invitationService.getAllInvitations();
+    }
+
     @PostMapping("/{id}/respond")
     public InvitationDTO respondToInvitation(
             @PathVariable Long id,
-            @RequestParam String response) { // ?response=ACCEPT
+            @RequestParam String response) {
         return invitationService.respondToInvitation(id, response);
     }
 
