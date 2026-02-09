@@ -37,6 +37,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/users/email/{email}").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/api/invitation/**").authenticated()
                         .anyRequest().authenticated()
                 ).httpBasic(httpBase -> {})
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));

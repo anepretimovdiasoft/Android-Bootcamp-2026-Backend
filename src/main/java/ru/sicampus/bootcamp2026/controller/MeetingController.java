@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
 import ru.sicampus.bootcamp2026.dto.MeetingInputDTO;
-import ru.sicampus.bootcamp2026.dto.UserDTO;
+import ru.sicampus.bootcamp2026.dto.MemberDTO;
+import ru.sicampus.bootcamp2026.entity.Users;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 
 import java.util.List;
@@ -29,14 +31,14 @@ public class MeetingController {
         return ResponseEntity.ok(meetingService.getMeetingById(id));
     }
 
-    @PostMapping("/book/{userId}") // TODO: костыль, пока не появится авторизация
-    public ResponseEntity<MeetingDTO> createMeeting(@PathVariable("userId") Long userId, @RequestBody MeetingInputDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(meetingService.createMeeting(userId, dto));
+    @PostMapping("/book")
+    public ResponseEntity<MeetingDTO> createMeeting(@AuthenticationPrincipal Users user, @RequestBody MeetingInputDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(meetingService.createMeeting(user, dto));
     }
 
-    @PutMapping("/{id}/{userId}") // TODO: костыль, пока не появится авторизация
-    public ResponseEntity<MeetingDTO> updateMeeting(@PathVariable("id") Long id, @PathVariable("userId") Long userId, @RequestBody MeetingInputDTO dto) {
-        return ResponseEntity.ok(meetingService.updateMeeting(id, userId, dto));
+    @PutMapping("/{id}")
+    public ResponseEntity<MeetingDTO> updateMeeting(@PathVariable("id") Long id, @AuthenticationPrincipal Users user, @RequestBody MeetingInputDTO dto) {
+        return ResponseEntity.ok(meetingService.updateMeeting(id, user, dto));
     }
 
     @DeleteMapping("{id}")
@@ -46,10 +48,20 @@ public class MeetingController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<MeetingDTO>> getAllUsersPaginated(
+    public ResponseEntity<Page<MeetingDTO>> getAllMeetingPaginated(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         return ResponseEntity.ok(meetingService.getAllMeetingPaginated(meetingService.buildPage(page, size)));
+    }
+
+    @GetMapping("/{id}/members")
+    public ResponseEntity<List<MemberDTO>> getAllMembersOfMeeting(@PathVariable Long id) {
+        return ResponseEntity.ok(meetingService.getAllMemberOfMeeting(id));
+    }
+
+    @GetMapping("/schedule")
+    public ResponseEntity<List<MeetingDTO>> getAllMeetingAfterNod(@AuthenticationPrincipal Users user) {
+        return ResponseEntity.ok(meetingService.getAllMeetingAfterNow(user));
     }
 }

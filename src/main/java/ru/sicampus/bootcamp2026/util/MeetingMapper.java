@@ -2,9 +2,7 @@ package ru.sicampus.bootcamp2026.util;
 
 import lombok.experimental.UtilityClass;
 import ru.sicampus.bootcamp2026.dto.MeetingDTO;
-import ru.sicampus.bootcamp2026.dto.UserDTO;
 import ru.sicampus.bootcamp2026.entity.Meeting;
-import ru.sicampus.bootcamp2026.entity.Users;
 
 @UtilityClass
 public class MeetingMapper {
@@ -15,7 +13,7 @@ public class MeetingMapper {
         meetingDTO.setPlace(meeting.getPlace());
         meetingDTO.setDuration(meeting.getDuration());
         meetingDTO.setStart(meeting.getStart());
-        meetingDTO.setTheme(meetingDTO.getTheme());
+        meetingDTO.setTheme(meeting.getTheme());
         meetingDTO.setCreator(UserMapper.convertToDto(meeting.getCreator()));
 
         return meetingDTO;

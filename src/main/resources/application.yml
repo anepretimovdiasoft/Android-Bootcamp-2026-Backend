@@ -1,10 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-
-  h2:
-    console:
-      enabled: true
+  profiles:
+    active: local
 
   liquibase:
     enabled: true
@@ -15,3 +11,39 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/bootcamp_db
+    username: bootcamp
+    password: bootcamp123
+    driver-class-name: org.postgresql.Driver
+
+  h2:
+    console:
+      enabled: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
