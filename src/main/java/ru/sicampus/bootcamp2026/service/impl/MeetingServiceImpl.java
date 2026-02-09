@@ -9,10 +9,7 @@ import ru.sicampus.bootcamp2026.dto.fromApp.MeetingResponseDTO;
 import ru.sicampus.bootcamp2026.dto.toApp.MeetingDTO;
 import ru.sicampus.bootcamp2026.dto.toApp.TimeSlotDTO;
 import ru.sicampus.bootcamp2026.entity.*;
-import ru.sicampus.bootcamp2026.exception.AlreadyBookedTimeSlotException;
-import ru.sicampus.bootcamp2026.exception.InvalidTimeRangeException;
-import ru.sicampus.bootcamp2026.exception.MeetingNotFoundException;
-import ru.sicampus.bootcamp2026.exception.UserNotFoundException;
+import ru.sicampus.bootcamp2026.exception.*;
 import ru.sicampus.bootcamp2026.repository.*;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 import ru.sicampus.bootcamp2026.util.MeetingMapper;
@@ -40,12 +37,23 @@ public class MeetingServiceImpl implements MeetingService {
     public MeetingDTO createMeeting(NewMeetingDTO dto) {
         LocalTime startTime = dto.getStartTime();
         LocalTime endTime = dto.getEndTime();
+        LocalDate dateDTO = dto.getDate();
+        String meetingTitle = dto.getTitle();
+
+        if (meetingTitle == null || meetingTitle.isEmpty()) {
+            throw new InvalidSlotTitleException("Не указано название встречи.");
+        }
+        if (dateDTO == null) {
+            throw new InvalidSlotDateException("Не указана дата проведения встречи.");
+        }
+        if (startTime == null || endTime == null) {
+            throw new InvalidSlotTimeException("Не указан временной слот для проведения встречи.");
+        }
         if (startTime.isAfter(endTime)) {
             throw new InvalidTimeRangeException("Время начала не может быть позднее времени окончания.");
         }
-
         if (timeSlotRepository.existsAlreadyBookedSlots(dto.getDate(), startTime, endTime)) {
-            throw new AlreadyBookedTimeSlotException("Временной слот (" + startTime + " - " + endTime + ") невозможно создать. Часть времени забронирована для другого слота.");
+            throw new AlreadyBookedTimeSlotException("Временной слот (" + startTime + " - " + endTime + ") невозможно создать. Часть времени забронирована для другой встречи.");
         }
 
         User organizer = userRepository.findById(dto.getOrganizerId()).orElseThrow(() ->
@@ -67,7 +75,7 @@ public class MeetingServiceImpl implements MeetingService {
         //создание меро (включает слот)
         Meeting meeting = new Meeting();
         meeting.setOrganizer(organizer);
-        meeting.setTitle(dto.getTitle());
+        meeting.setTitle(meetingTitle);
         meeting.setDescription(dto.getDescription());
         meeting.setTimeSlot(slot);
 
@@ -161,6 +169,11 @@ public class MeetingServiceImpl implements MeetingService {
         List<Meeting> meetings = meetingRepository.findUserMeetings(id, startDate, endDate, sort);
 
         return convertList(meetings);
+    }
+
+    @Override
+    public List<MeetingDTO> getOrganizerMeetings(Long organizerId) {
+        return convertList(meetingRepository.findOrganizerMeetings(organizerId));
     }
 
     @Override

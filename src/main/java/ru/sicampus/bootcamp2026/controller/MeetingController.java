@@ -10,7 +10,6 @@ import ru.sicampus.bootcamp2026.dto.toApp.MeetingDTO;
 import ru.sicampus.bootcamp2026.dto.toApp.TimeSlotDTO;
 import ru.sicampus.bootcamp2026.service.MeetingService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -55,5 +54,10 @@ public class MeetingController {
     ) {
         Sort sort = Sort.by(Sort.Order.asc("timeSlot.date.date"), Sort.Order.asc("timeSlot.startTime"));
         return ResponseEntity.ok(meetingService.getUserMeetings(id, startDate, endDate, sort));
+    }
+
+    @GetMapping("/organizer/{id}")
+    public ResponseEntity<List<MeetingDTO>> getOrganizerMeetings(@PathVariable Long id) {
+        return ResponseEntity.ok(meetingService.getOrganizerMeetings(id));
     }
 }

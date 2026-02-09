@@ -15,6 +15,7 @@ public interface MeetingService {
     void deleteMeeting(Long meetingId);
 
     MeetingDTO getMeetingById(Long meetingId);
+
     List<MeetingDTO> getAllMeetings();
 
     List<TimeSlotDTO> getEmptySlotsByDate(String date);
@@ -25,6 +26,8 @@ public interface MeetingService {
             String endDate,
             Sort sort
     );
+
+    List<MeetingDTO> getOrganizerMeetings(Long organizerId);
 
     void respondToMeeting(MeetingResponseDTO dto);
 

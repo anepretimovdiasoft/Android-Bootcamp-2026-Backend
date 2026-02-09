@@ -34,6 +34,19 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     @Query("""
             SELECT DISTINCT m
             FROM Meeting m
+            LEFT JOIN FETCH m.participants p
+            JOIN FETCH m.timeSlot ts
+            JOIN FETCH ts.date d
+            JOIN FETCH m.organizer
+            LEFT JOIN FETCH p.participant
+            LEFT JOIN FETCH p.participantStatus
+            WHERE (m.organizer.id = :organizerId)
+            """)
+    List<Meeting> findOrganizerMeetings(@Param("organizerId") Long id);
+
+    @Query("""
+            SELECT DISTINCT m
+            FROM Meeting m
             JOIN FETCH m.organizer
             JOIN FETCH m.timeSlot ts
             JOIN FETCH ts.date
