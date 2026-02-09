@@ -1,18 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="2026-01-28--0001-user-data" author="Yiman">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="user"/>
-        </preConditions>
+    <changeSet id="2026-01-28--0001-user" author="yiman">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(255)"/>
+            <column name="photo_url" type="VARCHAR(1000)"/>
+            <column name="position" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
+    <changeSet id="load-users-data" author="yiman">
         <loadData
                 file="db.changelog/data/csv/2026-01-28--0001-user-data.csv"
-                separator=";"
-                tableName="user">
+                separator=","
+                tableName="users">
             <column name="id" type="NUMERIC"/>
             <column name="email" type="STRING"/>
             <column name="full_name" type="STRING"/>
@@ -21,6 +46,7 @@
             <column name="position" type="STRING"/>
             <column name="username" type="STRING"/>
             <column name="password" type="STRING"/>
+            <column name="enabled" type="BOOLEAN" defaultValueBoolean="true"/>
         </loadData>
     </changeSet>
 

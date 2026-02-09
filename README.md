@@ -144,7 +144,7 @@
 
 
 
-Backend
+Backend 
 
 # 1\. Аутентификация и авторизация
 
@@ -207,8 +207,4 @@ status (PENDING / ACCEPTED / REJECTED).
 Использование Spring Data JPA Repositories.
 
 Настройка PostgreSQL  .
-
-
-
-https://dbdiagram.io/d/Zadanie-3-6978b7c1bd82f5fce2c256b3
 

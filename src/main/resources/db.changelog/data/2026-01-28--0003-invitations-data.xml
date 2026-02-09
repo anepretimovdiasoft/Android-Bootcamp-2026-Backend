@@ -1,22 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="2026-01-28--0003-invitations-data" author="Yiman">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="invitations"/>
-        </preConditions>
-
-        <loadData
-                file="db/changelog/data/csv/2026-01-28--0003-invitations-data.csv"
-                separator=";"
-                tableName="invitations">
+    <changeSet id="2026-01-28--0003-invitations-data" author="yiman">
+        <loadData tableName="invitations"
+                  file="db.changelog/data/csv/2026-01-28--0003-invitations-data.csv"
+                  separator=","
+                  quotchar="&quot;">
             <column name="id" type="NUMERIC"/>
             <column name="meet_id" type="NUMERIC"/>
             <column name="user_id" type="NUMERIC"/>
             <column name="status" type="STRING"/>
+            <column name="responded_at" type="TIMESTAMP"/>
         </loadData>
     </changeSet>
 

@@ -1,16 +1,14 @@
 package ru.sicampus.bootcamp2026.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "invitations")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class Invitation {
 
     @Id
@@ -23,16 +21,11 @@ public class Invitation {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private Person person;
+    private User user;
 
     @Column(nullable = false)
-    private String status = "PENDING"; // PENDING, ACCEPTED, DECLINED, CANCELLED
+    private String status = "PENDING"; // PENDING, ACCEPTED, DECLINED
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
+    @Column(name = "responded_at")
+    private LocalDateTime respondedAt;
 }

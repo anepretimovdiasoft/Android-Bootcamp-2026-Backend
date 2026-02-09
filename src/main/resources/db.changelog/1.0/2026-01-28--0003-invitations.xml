@@ -1,43 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="2026-01-28--0003-invitations" author="Yiman">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="user"/>
-            <tableExists tableName="meetings"/>
-            <not>
-                <tableExists tableName="invitations"/>
-            </not>
-        </preConditions>
-
+    <changeSet id="2026-01-28--0003-invitations" author="yiman">
         <createTable tableName="invitations">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="meet_id" type="BIGINT">
                 <constraints nullable="false"
-                             foreignKeyName="fk_invitations_meet"
-                             referencedTableName="meetings"
-                             referencedColumnNames="id"
-                             deleteCascade="true"/>
+                             foreignKeyName="fk_invitation_meet"
+                             references="meets(id)"/>
             </column>
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false"
-                             foreignKeyName="fk_invitations_user"
-                             referencedTableName="user"
-                             referencedColumnNames="id"
-                             deleteCascade="true"/>
+                             foreignKeyName="fk_invitation_user"
+                             references="users(id)"/>
             </column>
             <column name="status" type="VARCHAR(20)" defaultValue="PENDING">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="responded_at" type="TIMESTAMP"/>
         </createTable>
+
+        <addUniqueConstraint tableName="invitations"
+                             columnNames="meet_id, user_id"
+                             constraintName="uk_invitation_meet_user"/>
+    </changeSet>
+
+    <changeSet id="load-invitations-data" author="yiman">
+        <loadData
+                file="db.changelog/data/csv/2026-01-28--0003-invitations-data.csv"
+                separator=","
+                tableName="invitations">
+            <column name="id" type="NUMERIC"/>
+            <column name="meet_id" type="NUMERIC"/>
+            <column name="user_id" type="NUMERIC"/>
+            <column name="status" type="STRING"/>
+            <column name="responded_at" type="DATE"/>
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>

@@ -1,18 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="2026-02-02--0004-user-authority-data" author="Yiman">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="user_authorities"/>
-        </preConditions>
-
-        <loadData
-                file="db.changelog/data/csv/2026-02-02--0004-user-authority-data.csv"
-                separator=";"
-                tableName="user_authorities">
+    <changeSet id="2026-02-02--0004-user-authority-data" author="yiman">
+        <loadData tableName="user_authorities"
+                  file="db.changelog/data/csv/2026-02-02--0004-user-authority-data.csv"
+                  separator=","
+                  quotchar="&quot;">
             <column name="user_id" type="NUMERIC"/>
             <column name="authority_id" type="NUMERIC"/>
         </loadData>

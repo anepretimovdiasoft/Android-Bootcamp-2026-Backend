@@ -1,4 +1,5 @@
-id;email;full_name;phone_number;photo_url;position;username;password
-1;admin@example.com;Администратор Системы;+79160000001;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg;Системный администратор;admin;$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
-2;user1@example.com;Иванов Иван Иванович;+79161234567;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg;Менеджер проектов;ivanov;$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
-3;user2@example.com;Петрова Анна Сергеевна;+79261234568;https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg;Старший разработчик;petrova;$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
+id,email,full_name,phone_number,photo_url,position,username,password
+1,admin@company.com,Admin User,+77771234567,https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg,System Administrator,admin,$2a$10$X.1Z8j8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6E
+2,yiman@company.com,Yiman Developer,+77777654321,https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg,Backend Developer,yiman,$2a$10$X.1Z8j8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6E
+3,alex@company.com,Alex Manager,+77771112233,https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg,Project Manager,alex,$2a$10$X.1Z8j8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6E
+4,maria@company.com,Maria Designer,+77774445566,https://images.firma-gamma.ru/images/5/6/d36639273692l.jpg,UI/UX Designer,maria,$2a$10$X.1Z8j8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6Ee7J8VlC4s9Q7Fq6J6E

@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="2026-02-02--0003-authority" author="Yiman">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="authorities"/>
-            </not>
-        </preConditions>
-
+    <changeSet id="2026-02-02--0003-authority" author="yiman">
         <createTable tableName="authorities">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -19,6 +14,16 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="load-authorities-data" author="yiman">
+        <loadData
+                file="db.changelog/data/csv/2026-02-02--0003-authority-data.csv"
+                separator=","
+                tableName="authorities">
+            <column name="id" type="NUMERIC"/>
+            <column name="authority" type="STRING"/>
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>
